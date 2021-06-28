@@ -20,3 +20,20 @@ This is very much a work in progress. Use at your own risk.
 Hidden functions for each register (names the same as each register but in lowercase) 
 are available. There are still a bunch of registers that have not been implemented. 
 Namely the Module Status commands (0x20 - 0x2F) and dither control.
+
+## Example Usage
+
+```python
+# import, initialize, and connect to laser
+import pytla
+laser = pytla.ITLA('/dev/ttyUSB0', 9600)
+laser.connect()
+
+# Set the frequency to 193.560 THz
+laser.set_frequency(193.560)
+
+# Set the power to 10 dBm
+laser.set_power(10)
+```
+
+More info about features available currently can be found in [pytla docs](https://alexrkaufman.github.io/pytla).
