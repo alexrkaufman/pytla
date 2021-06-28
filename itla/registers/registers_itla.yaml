@@ -1,0 +1,705 @@
+# Yaml file specifying all the registers for the OIT-ITLA-MSA-01.3 spec.
+# This spec can be found at https://www.oiforum.com/technical-work/implementation-agreements-ias/
+# The registers are defined here with the information from Table 9.2-1
+# with the addition of a boolean value specifying whether the data is signed
+
+NOP:
+  register: 0x00
+  fnname: nop
+  description: >
+    Provide a way to read a pending response as a from an interrupt,
+    to determine if there is a pending operation, or determine the specific
+    error condition for a failed command.
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+DevTyp:
+  register: 0x01
+  fnname: devtyp
+  description: >
+    Returns device type
+    (tunable laser source, filter, modulator, etc.)
+    as a null terminated string.
+  readonly: true
+  AEA: true
+  signed: false
+
+MFGR:
+  register: 0x02
+  fnname: mfgr
+  description: >
+    Returns manufacturer as a null terminated string
+    in AEA mode (vendor specific format).
+  readonly: true
+  AEA: true
+  signed: false
+
+Model:
+  register: 0x03
+  fnname: model
+  description: >
+    Returns a model numm terminated string
+    in AEA mode (vendor specific format).
+  readonly: true
+  AEA: true
+  signed: false
+
+SerNo:
+  register: 0x04
+  fnname: serno
+  description: >
+    Returns the serial number as a null terminated string
+    in AEA mode.
+  readonly: true
+  AEA: true
+  signed: false
+
+MFGDate:
+  register: 0x05
+  fnname: mfgdate
+  description: >
+    Returns the manufacturing date as a null terminated string.
+  readonly: true
+  AEA: true
+  signed: false
+
+Release:
+  register: 0x06
+  fnname: release
+  description: >
+    Resturns a manufacturer specific firmware release as a
+    null terminated string in AEA mode.
+  readonly: true
+  AEA: true
+  signed: false
+
+RelBack:
+  register: 0x07
+  fnname: relback
+  description: >
+    Returns a manutacturer specific firmware backwards compatibility
+    as a null terminated string.
+  readonly: true
+  AEA: true
+  signed: false
+
+GenCfg:
+  register: 0x08
+  fnname: gencfg
+  description: >
+    General module configuration.
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+AEA-EAC:
+  register: 0x09
+  fnname: aea_eac
+  description: >
+    Automatic extended address configuation register.
+  readonly: true
+  AEA: false
+  signed: false
+
+AEA-EA:
+  register: 0x0A
+  fnname: aea_ea
+  description: >
+    Automatic extended address (16 bits).
+  readonly: true
+  AEA: false
+  signed: false
+
+AEA-EAR:
+  register: 0x0B
+  fnname: aea_ear
+  description: >
+    Location accessed thru AEA-EA and AEA-EAC.
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+IOCap:
+  register: 0x0D
+  fnname: iocap
+  description: >
+    Physical interface specific information
+    (such as data rate, etc.).
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+EAC:
+  register: 0x0E
+  fnname: eac
+  description: >
+    Extended address configuration register
+    - auto increment/decrement flag on read and on write
+    and additional address bits.
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+EA:
+  register: 0x0F
+  fnname: ea
+  description: >
+    Extended address (16 bits).
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+EAR:
+  register: 0x10
+  fnname: ear
+  description: >
+    Location accessed thru EA and EAC.
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+LstResp:
+  register: 0x13
+  fnname: lstresp
+  description: >
+    Returns last response.
+  readonly: true
+  AEA: false
+  signed: false
+
+DLConfig:
+  register: 0x14
+  fnname: dlconfig
+  description: >
+    Download configuation register.
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+DLStatus:
+  register: 0x15
+  fnname: dlstatus
+  description: >
+    Download status register.
+  readonly: true
+  AEA: false
+  signed: false
+
+StatusF:
+  register: 0x20
+  fnname: statusf
+  description: >
+    Contains reset status, optical faults and alarms, and enable status.
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+StatusW:
+  register: 0x21
+  fnname: statusw
+  description: >
+    Contains reset status, warning optical faults and alarms, and enable status.
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+FPowTH:
+  register: 0x22
+  fnname: fpowth
+  description: >
+    Returns/Sets the threshold forr the output power FATAL condition.
+    Encoded as +/-dB*100.
+  readonly: false
+  data_name: pwr_fatal_threshold
+  AEA: false
+  signed: false
+
+WPowTH:
+  register: 0x23
+  fnname: wpowth
+  description: >
+    Returns/Sets the threshold for the power warning.
+    Encoded as +/-dB*100
+  readonly: false
+  data_name: pwr_warning_threshold
+  AEA: false
+  signed: false
+
+FFreqTH:
+  register: 0x24
+  fnname: ffreqth
+  description: >
+    Returns/Sets the threshold for the power warning.
+    Encoded as +/- dB*100.
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+WFreqTH:
+  register: 0x25
+  fnname: wfreqth
+  description: >
+    Returns/Sets the threshold for the frequency error warning.
+    Encoded as +/-GHz*10
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+FThermTh:
+  register: 0x26
+  fnname: fthermth
+  description: >
+    Returns/Sets the threshold for thermal deviations
+    (>+/- C*100) at which FATAL is asserted.
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+WThermTh:
+  register: 0x27
+  fnname: wthermth
+  description: >
+    Returns/Sets the threshold for thermal deviations
+    (>+/- C*100) at which a warning is asserted.
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+SRQT:
+  register: 0x28
+  fnname: srqt
+  description: >
+    Indicated which bits in the Fatal and Warning status registers,
+    0x20-0x21 cause a SRQ condition and asserts the SRQ*line.
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+FatalT:
+  register: 0x29
+  fnname: fatalt
+  description: >
+    Indicated which bits in the Fatal & Warning status register,
+    0x20-0x21, assert a FATAL condition.
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+ALMT:
+  register: 0x2A
+  fnname: almt
+  description: >
+    Indicated which bits in the status registers,
+    0x20-0x21, cause an alarm condition.
+    (Default behavior asserted wheteher laser is LOCKED on frequency).
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+Channel:
+  register: 0x30
+  fnname: channel
+  description: >
+    Setting valid channel causes a tuning operation to occur.
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+PWR:
+  register: 0x31
+  fnname: pwr
+  description: >
+    Sets the optical power set point.
+    Encoded as dBm*100.
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: true
+
+ResEna:
+  register: 0x32
+  fnname: resena
+  description: >
+    Reset/Enable - Enable output, hard and soft reset.
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+MCB:
+  register: 0x33
+  fnname: mcb
+  description: >
+    Module configuation behavior.
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+GRID:
+  register: 0x34
+  fnname: grid
+  description: >
+    Allows the grid spacing to be set for channel numbering.
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: true
+
+FCF1:
+  register: 0x35
+  fnname: fcf1
+  description: >
+    First channel frequency (THz part).
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+FCF2:
+  register: 0x36
+  fnname: fcf2
+  description: >
+    First channel frequency (GHz part * 10).
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+LF1:
+  register: 0x40
+  fnname: lf1
+  description: >
+    Returns channel's frequency as THz.
+  readonly: true
+  AEA: false
+  signed: false
+
+LF2:
+  register: 0x41
+  fnname: lf2
+  description: >
+    Returns channel's frequency as GHz * 10.
+  readonly: true
+  AEA: false
+  signed: false
+
+OOP:
+  register: 0x42
+  fnname: oop
+  description: >
+    Returns the optical output power as dBm*100.
+  readonly: true
+  AEA: false
+  signed: true
+
+CTemp:
+  register: 0x43
+  fnname: ctemp
+  description: >
+    Returns the current temperature (monitored by the temperature alarms).
+    Encoded as C*100.
+  readonly: true
+  AEA: false
+  signed: true
+
+FTFR:
+  register: 0x4F
+  fnname: ftfr
+  description: >
+    Returns the min/max fint tune frequency range (MHz).
+  readonly: true
+  AEA: false
+  signed: false
+
+OPSL:
+  register: 0x50
+  fnname: opsl
+  description: >
+    Returns the min possible optical power setting.
+  readonly: true
+  AEA: false
+  signed: true
+
+OPSH:
+  register: 0x51
+  fnname: opsh
+  description: >
+    Returns the max possible optical power setting.
+  readonly: true
+  AEA: false
+  signed: true
+
+LFL1:
+  register: 0x52
+  fnname: lfl1
+  description: >
+    Laser's first frequency (THz).
+  readonly: true
+  AEA: false
+  signed: false
+
+LFL2:
+  register: 0x53
+  fnname: lfl2
+  description: >
+    Laser's first frequency (GHz * 10).
+  readonly: true
+  AEA: false
+  signed: false
+
+LFH1:
+  register: 0x54
+  fnname: lfh1
+  description: >
+    Laser's last frequency (THz).
+  readonly: true
+  AEA: false
+  signed: false
+
+LFH2:
+  register: 0x55
+  fnname: lfh2
+  description: >
+    Laser's last frequency (GHz * 10).
+  readonly: true
+  AEA: false
+  signed: false
+
+LGrid:
+  register: 0x56
+  fnname: lgrid
+  description: Laser's minimum supported grid spacing (GHz * 10).
+  readonly: true
+  AEA: false
+  signed: false
+
+Currents:
+  register: 0x57
+  fnname: currents
+  description: >
+    Return module specific currents.
+  readonly: true
+  AEA: true
+  signed: true
+
+Temps:
+  register: 0x58
+  fnname: temps
+  description: >
+    Return module specific temperatures.
+  readonly: true
+  AEA: true
+  signed: true
+
+DitherE:
+  register: 0x59
+  fnname: dithere
+  description: >
+    Digital dither enable
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+DitherR:
+  register: 0x5A
+  fnname: ditherr
+  description: >
+    Digital dither rate.
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+DitherF:
+  register: 0x5B
+  fnname: ditherf
+  description: >
+    Digital dither frequency modulation.
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+DitherA:
+  register: 0x5C
+  fnname: dithera
+  description: >
+    Digital dither amplitude modulation.
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+TBTFL:
+  register: 0x5D
+  fnname: tbtfl
+  description: >
+    Sets the lower boundary for a warning on base of the butterfly temperature.
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: true
+
+TBTFH:
+  register: 0x5E
+  fnname: tbtfh
+  description: >
+    Sets the upper boundary for a warning on base of the butterfly temperature.
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: true
+
+FAgeTh:
+  register: 0x5F
+  fnname: fageth
+  description: >
+    Specifies the maximum end of line (EOL) percent aging at which warning condition for the vendor specific error is asserted.
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+WAgeTh:
+  register: 0x60
+  fnname: wageth
+  description: >
+    Specified the maximum end of life (EOL) at which warning condition for the vendor specific error is asserted.
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+Age:
+  register: 0x61
+  fnname: age
+  description: >
+    Returns the laser's age as a percentage.
+  readonly: true
+  AEA: false
+  signed: false
+
+FTF:
+  register: 0x62
+  fnname: ftf
+  description: >
+    Fine tune frequency adjustment of laser output.
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: true
+
+FFreqTh2:
+  register: 0x63
+  fnname: ffreqth2
+  description: >
+    Returns.Sets the MHz part of the frequency FATAL threshold.
+    Used in conjunction with WFreqTh (0x25)
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+WFreqTh2:
+  register: 0x64
+  fnname: wfreqth2
+  description: >
+    Returns.Sets the MHz part of the frequency error warning threshold.
+    Used in conjunction with WFreqTh (0x25)
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+ChannelH:
+  register: 0x65
+  fnname: channelh
+  description: >
+    High work of 32 bit channel value wused in confunction with Channel (0x30)
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: false
+
+GRID2:
+  register: 0x66
+  fnname: grid2
+  description: >
+    Returns/Sets the MHz part of the channel grid spacing.
+    Used in conjunction with GRID (0x34).
+  readonly: false
+  data_name: data
+  AEA: false
+  signed: true
+
+FCF3:
+  register: 0x67
+  fnname: fcf3
+  description: >
+    Returns/Sets the MHz part of the first channel's frequency.
+    Used in conjunction with FCF1 and FCF2 (0x35, 0x36).
+  readonly: false
+  data_name: freq_MHz
+  AEA: false
+  signed: false
+
+LF3:
+  register: 0x68
+  fnname: lf3
+  description: >
+    Returns the MHz part of the current channel laser frequency.
+    Used in conjunction with LF1 and LF2 (0x40, 0x41).
+  readonly: true
+  AEA: false
+  signed: false
+
+LFL3:
+  register: 0x69
+  fnname: lfl3
+  description: >
+    Laser's first frequency (MHz).
+    Used in conjunction with LFL1 and LFL2 (0x52, 0x53).
+  readonly: true
+  AEA: false
+  signed: false
+
+LFH3:
+  register: 0x6A
+  fnname: lfh3
+  description: >
+    Laser's first frequency (MHz).
+    Used in conjunction with LFH1 and LFH2 (0x54, 0x55).
+  readonly: true
+  AEA: false
+  signed: false
+
+LGrid2:
+  register: 0x6B
+  fnname: lgrid2
+  description: >
+    Laser's minimum supported grid spacing (MHz).
+    Used in conjunction with LGrid (0x56).
+  readonly: true
+  AEA: false
+  signed: false
