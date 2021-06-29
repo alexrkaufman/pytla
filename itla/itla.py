@@ -254,6 +254,53 @@ class ITLA():
 
         return response_bytes.decode('utf-8')
 
+    def get_manufacturer(self):
+        """
+        Return's a string containing the manufacturer's name.
+        """
+        response_bytes = self._mfgr()
+
+        return response_bytes.decode('utf-8')
+
+    def get_model(self):
+        """
+        return's the model as a string
+        """
+        response_bytes = self._model()
+
+        return response_bytes.decode('utf-8')
+
+    def get_serialnumber(self):
+        """
+        returns the serial number
+        """
+        response_bytes = self._serno()
+
+        return response_bytes.decode('utf-8')
+
+    def get_manufacturing_date(self):
+        """returns the manufacturing date"""
+        response_bytes = self._mfgdate()
+
+        return response_bytes.decode('utf-8')
+
+    def get_firmware_release(self):
+        """
+        returns a manufacturer specific firmware release
+        """
+        response_bytes = self._release()
+
+        return response_bytes.decode('utf-8')
+
+    def get_backwardscompatibility(self):
+        """
+        returns a manufacturer specific firmware backwards compatibility
+        as a null terminated string
+        """
+        response_bytes = self._relback()
+
+        return response_bytes.decode('utf-8')
+
     def read_aea(self):
         """
         reads the AEA register data until an execution error is thrown.
@@ -721,7 +768,8 @@ class ITLA():
         """
         # read four bytes
         response = self._device.read(4)
-        # print(f'response: {response.hex()}')
+
+        print(f'response: {response.hex()}')
 
         # get the checksum and ... check it.
         checksum = int(response.hex()[0], 16)
@@ -732,7 +780,7 @@ class ITLA():
                             + f'{computed_checksum}')
 
         status = int(f'{response[0]:08b}'[-2:], 2)
-        # print(f'status: {status}')
+        print(f'status: {status}')
 
         try:
             raise self._response_status[status]
