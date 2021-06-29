@@ -58,47 +58,8 @@ class ITLA():
         0x03: CPException('CP: Command not complete, pending.')
     }
 
-    # This successfully generates function for each register as defined in the
-    # file registers.yaml
-    registers_path = resource_filename('itla', 'registers/registers_itla.yaml')
-
-    with open(registers_path, 'r') as yaml_file:
-        _register_spec = yaml.safe_load(yaml_file)
-
-        for _register_name in _register_spec:
-            # If the function is read only generate this way
-            if _register_spec[_register_name]['readonly']:
-
-                _fn_definition = (
-                    "def _{fn_name}(self):\n"
-                    "    \"\"\"{doc_string}\"\"\"\n"
-                    "    self.send_command({register})\n"
-                    "    return self.get_response({register})")
-
-                exec(_fn_definition.format(
-                    fn_name=_register_spec[_register_name]['fnname'],
-                    doc_string=_register_spec[_register_name]['description'],
-                    register=_register_spec[_register_name]['register']))
-
-            else:
-
-                _fn_definition = (
-                    "def _{fn_name}(self, {data_name}=None):\n"
-                    "    \"\"\"{doc_string}\"\"\"\n"
-                    "    self.send_command({register}, {data_name}, signed={signed})\n"
-                    "    return self.get_response({register})")
-
-                exec(_fn_definition.format(
-                    fn_name=_register_spec[_register_name]['fnname'],
-                    data_name=_register_spec[_register_name]['data_name'],
-                    doc_string=_register_spec[_register_name]['description'],
-                    signed=_register_spec[_register_name]['signed'],
-                    register=_register_spec[_register_name]['register']))
-
-    # remove unnecessary variables from memory
-    del(yaml_file)
-
-    def __init__(self, serial_port, baudrate, timeout=0.5):
+    def __init__(self, serial_port, baudrate, timeout=0.5,
+                 register_files=None):
         """TODO describe function
 
         :param serial_port:
@@ -111,6 +72,36 @@ class ITLA():
         self._baudrate = baudrate
         self._timeout = timeout
         self._device = None
+
+        register_files = [resource_filename('itla', 'registers/registers_itla.yaml'),
+                          *register_files]
+
+        # this function creates register functions
+        def mkfn(*, fnname, register, description, readonly, signed, AEA):
+            if readonly:
+                def reg_fun(self):
+                    self.send_command(register, signed=signed)
+                    return self.get_response(register)
+
+            else:
+                def reg_fun(self, data=None):
+                    self.send_command(register, data, signed=signed)
+                    return self.get_response(register)
+
+            reg_fun.__doc__ = description
+            reg_fun.__name__ = fnname
+            return reg_fun
+
+        for register_file in register_files:
+            register_file = resource_filename('itla', 'registers/' + register_file)
+            with open(register_file, 'r') as register_yaml:
+                register_spec = yaml.safe_load(register_yaml)
+
+                for register_name in register_spec:
+                    register_data = register_spec[register_name]
+                    setattr(ITLA,
+                            '_' + register_data['fnname'],
+                            mkfn(**register_data))
 
     def __enter__(self):
         """TODO describe function

@@ -11,7 +11,6 @@ NOP:
     to determine if there is a pending operation, or determine the specific
     error condition for a failed command.
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -91,7 +90,6 @@ GenCfg:
   description: >
     General module configuration.
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -119,7 +117,6 @@ AEA-EAR:
   description: >
     Location accessed thru AEA-EA and AEA-EAC.
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -130,7 +127,6 @@ IOCap:
     Physical interface specific information
     (such as data rate, etc.).
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -142,7 +138,6 @@ EAC:
     - auto increment/decrement flag on read and on write
     and additional address bits.
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -152,7 +147,6 @@ EA:
   description: >
     Extended address (16 bits).
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -162,7 +156,6 @@ EAR:
   description: >
     Location accessed thru EA and EAC.
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -181,7 +174,6 @@ DLConfig:
   description: >
     Download configuation register.
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -200,7 +192,6 @@ StatusF:
   description: >
     Contains reset status, optical faults and alarms, and enable status.
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -210,7 +201,6 @@ StatusW:
   description: >
     Contains reset status, warning optical faults and alarms, and enable status.
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -221,7 +211,6 @@ FPowTH:
     Returns/Sets the threshold forr the output power FATAL condition.
     Encoded as +/-dB*100.
   readonly: false
-  data_name: pwr_fatal_threshold
   AEA: false
   signed: false
 
@@ -232,7 +221,6 @@ WPowTH:
     Returns/Sets the threshold for the power warning.
     Encoded as +/-dB*100
   readonly: false
-  data_name: pwr_warning_threshold
   AEA: false
   signed: false
 
@@ -243,7 +231,6 @@ FFreqTH:
     Returns/Sets the threshold for the power warning.
     Encoded as +/- dB*100.
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -254,7 +241,6 @@ WFreqTH:
     Returns/Sets the threshold for the frequency error warning.
     Encoded as +/-GHz*10
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -265,7 +251,6 @@ FThermTh:
     Returns/Sets the threshold for thermal deviations
     (>+/- C*100) at which FATAL is asserted.
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -276,7 +261,6 @@ WThermTh:
     Returns/Sets the threshold for thermal deviations
     (>+/- C*100) at which a warning is asserted.
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -287,7 +271,6 @@ SRQT:
     Indicated which bits in the Fatal and Warning status registers,
     0x20-0x21 cause a SRQ condition and asserts the SRQ*line.
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -298,7 +281,6 @@ FatalT:
     Indicated which bits in the Fatal & Warning status register,
     0x20-0x21, assert a FATAL condition.
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -310,7 +292,6 @@ ALMT:
     0x20-0x21, cause an alarm condition.
     (Default behavior asserted wheteher laser is LOCKED on frequency).
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -320,7 +301,6 @@ Channel:
   description: >
     Setting valid channel causes a tuning operation to occur.
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -331,7 +311,6 @@ PWR:
     Sets the optical power set point.
     Encoded as dBm*100.
   readonly: false
-  data_name: data
   AEA: false
   signed: true
 
@@ -341,7 +320,6 @@ ResEna:
   description: >
     Reset/Enable - Enable output, hard and soft reset.
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -351,7 +329,6 @@ MCB:
   description: >
     Module configuation behavior.
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -361,7 +338,6 @@ GRID:
   description: >
     Allows the grid spacing to be set for channel numbering.
   readonly: false
-  data_name: data
   AEA: false
   signed: true
 
@@ -371,7 +347,6 @@ FCF1:
   description: >
     First channel frequency (THz part).
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -381,7 +356,6 @@ FCF2:
   description: >
     First channel frequency (GHz part * 10).
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -517,7 +491,6 @@ DitherE:
   description: >
     Digital dither enable
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -527,7 +500,6 @@ DitherR:
   description: >
     Digital dither rate.
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -537,7 +509,6 @@ DitherF:
   description: >
     Digital dither frequency modulation.
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -547,7 +518,6 @@ DitherA:
   description: >
     Digital dither amplitude modulation.
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -557,7 +527,6 @@ TBTFL:
   description: >
     Sets the lower boundary for a warning on base of the butterfly temperature.
   readonly: false
-  data_name: data
   AEA: false
   signed: true
 
@@ -567,7 +536,6 @@ TBTFH:
   description: >
     Sets the upper boundary for a warning on base of the butterfly temperature.
   readonly: false
-  data_name: data
   AEA: false
   signed: true
 
@@ -577,7 +545,6 @@ FAgeTh:
   description: >
     Specifies the maximum end of line (EOL) percent aging at which warning condition for the vendor specific error is asserted.
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -587,7 +554,6 @@ WAgeTh:
   description: >
     Specified the maximum end of life (EOL) at which warning condition for the vendor specific error is asserted.
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -606,7 +572,6 @@ FTF:
   description: >
     Fine tune frequency adjustment of laser output.
   readonly: false
-  data_name: data
   AEA: false
   signed: true
 
@@ -617,7 +582,6 @@ FFreqTh2:
     Returns.Sets the MHz part of the frequency FATAL threshold.
     Used in conjunction with WFreqTh (0x25)
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -628,7 +592,6 @@ WFreqTh2:
     Returns.Sets the MHz part of the frequency error warning threshold.
     Used in conjunction with WFreqTh (0x25)
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -638,7 +601,6 @@ ChannelH:
   description: >
     High work of 32 bit channel value wused in confunction with Channel (0x30)
   readonly: false
-  data_name: data
   AEA: false
   signed: false
 
@@ -649,7 +611,6 @@ GRID2:
     Returns/Sets the MHz part of the channel grid spacing.
     Used in conjunction with GRID (0x34).
   readonly: false
-  data_name: data
   AEA: false
   signed: true
 
@@ -660,7 +621,6 @@ FCF3:
     Returns/Sets the MHz part of the first channel's frequency.
     Used in conjunction with FCF1 and FCF2 (0x35, 0x36).
   readonly: false
-  data_name: freq_MHz
   AEA: false
   signed: false
 
