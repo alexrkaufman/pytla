@@ -86,47 +86,8 @@ class ITLA():
         0x03: CPException(&#39;CP: Command not complete, pending.&#39;)
     }
 
-    # This successfully generates function for each register as defined in the
-    # file registers.yaml
-    registers_path = resource_filename(&#39;itla&#39;, &#39;registers/registers_itla.yaml&#39;)
-
-    with open(registers_path, &#39;r&#39;) as yaml_file:
-        _register_spec = yaml.safe_load(yaml_file)
-
-        for _register_name in _register_spec:
-            # If the function is read only generate this way
-            if _register_spec[_register_name][&#39;readonly&#39;]:
-
-                _fn_definition = (
-                    &#34;def _{fn_name}(self):\n&#34;
-                    &#34;    \&#34;\&#34;\&#34;{doc_string}\&#34;\&#34;\&#34;\n&#34;
-                    &#34;    self.send_command({register})\n&#34;
-                    &#34;    return self.get_response({register})&#34;)
-
-                exec(_fn_definition.format(
-                    fn_name=_register_spec[_register_name][&#39;fnname&#39;],
-                    doc_string=_register_spec[_register_name][&#39;description&#39;],
-                    register=_register_spec[_register_name][&#39;register&#39;]))
-
-            else:
-
-                _fn_definition = (
-                    &#34;def _{fn_name}(self, {data_name}=None):\n&#34;
-                    &#34;    \&#34;\&#34;\&#34;{doc_string}\&#34;\&#34;\&#34;\n&#34;
-                    &#34;    self.send_command({register}, {data_name}, signed={signed})\n&#34;
-                    &#34;    return self.get_response({register})&#34;)
-
-                exec(_fn_definition.format(
-                    fn_name=_register_spec[_register_name][&#39;fnname&#39;],
-                    data_name=_register_spec[_register_name][&#39;data_name&#39;],
-                    doc_string=_register_spec[_register_name][&#39;description&#39;],
-                    signed=_register_spec[_register_name][&#39;signed&#39;],
-                    register=_register_spec[_register_name][&#39;register&#39;]))
-
-    # remove unnecessary variables from memory
-    del(yaml_file)
-
-    def __init__(self, serial_port, baudrate, timeout=0.5):
+    def __init__(self, serial_port, baudrate, timeout=0.5,
+                 register_files={&#39;registers_itla.yaml&#39;}):
         &#34;&#34;&#34;TODO describe function
 
         :param serial_port:
@@ -139,6 +100,33 @@ class ITLA():
         self._baudrate = baudrate
         self._timeout = timeout
         self._device = None
+
+        # this function creates register functions
+        def mkfn(*, fnname, register, description, readonly, signed, AEA):
+            if readonly:
+                def reg_fun(self):
+                    self.send_command(register, signed=signed)
+                    return self.get_response(register)
+
+            else:
+                def reg_fun(self, data=None):
+                    self.send_command(register, data, signed=signed)
+                    return self.get_response(register)
+
+            reg_fun.__doc__ = description
+            reg_fun.__name__ = fnname
+            return reg_fun
+
+        for register_file in register_files:
+            register_file = resource_filename(&#39;itla&#39;, &#39;registers/&#39; + register_file)
+            with open(register_file, &#39;r&#39;) as register_yaml:
+                register_spec = yaml.safe_load(register_yaml)
+
+                for register_name in register_spec:
+                    register_data = register_spec[register_name]
+                    setattr(ITLA,
+                            &#39;_&#39; + register_data[&#39;fnname&#39;],
+                            mkfn(**register_data))
 
     def __enter__(self):
         &#34;&#34;&#34;TODO describe function
@@ -288,6 +276,53 @@ class ITLA():
         returns a string containing the device type.
         &#34;&#34;&#34;
         response_bytes = self._devtyp()
+
+        return response_bytes.decode(&#39;utf-8&#39;)
+
+    def get_manufacturer(self):
+        &#34;&#34;&#34;
+        Return&#39;s a string containing the manufacturer&#39;s name.
+        &#34;&#34;&#34;
+        response_bytes = self._mfgr()
+
+        return response_bytes.decode(&#39;utf-8&#39;)
+
+    def get_model(self):
+        &#34;&#34;&#34;
+        return&#39;s the model as a string
+        &#34;&#34;&#34;
+        response_bytes = self._model()
+
+        return response_bytes.decode(&#39;utf-8&#39;)
+
+    def get_serialnumber(self):
+        &#34;&#34;&#34;
+        returns the serial number
+        &#34;&#34;&#34;
+        response_bytes = self._serno()
+
+        return response_bytes.decode(&#39;utf-8&#39;)
+
+    def get_manufacturing_date(self):
+        &#34;&#34;&#34;returns the manufacturing date&#34;&#34;&#34;
+        response_bytes = self._mfgdate()
+
+        return response_bytes.decode(&#39;utf-8&#39;)
+
+    def get_firmware_release(self):
+        &#34;&#34;&#34;
+        returns a manufacturer specific firmware release
+        &#34;&#34;&#34;
+        response_bytes = self._release()
+
+        return response_bytes.decode(&#39;utf-8&#39;)
+
+    def get_backwardscompatibility(self):
+        &#34;&#34;&#34;
+        returns a manufacturer specific firmware backwards compatibility
+        as a null terminated string
+        &#34;&#34;&#34;
+        response_bytes = self._relback()
 
         return response_bytes.decode(&#39;utf-8&#39;)
 
@@ -758,6 +793,7 @@ class ITLA():
         &#34;&#34;&#34;
         # read four bytes
         response = self._device.read(4)
+
         print(f&#39;response: {response.hex()}&#39;)
 
         # get the checksum and ... check it.
@@ -822,7 +858,7 @@ class ITLA():
 <dl>
 <dt id="itla.itla.ITLA"><code class="flex name class">
 <span>class <span class="ident">ITLA</span></span>
-<span>(</span><span>serial_port, baudrate, timeout=0.5)</span>
+<span>(</span><span>serial_port, baudrate, timeout=0.5, register_files={'registers_itla.yaml'})</span>
 </code></dt>
 <dd>
 <div class="desc"><p>A class that represents the an ITLA
@@ -895,47 +931,8 @@ I think this is probably a bad idea even though it isnt write only.</p>
         0x03: CPException(&#39;CP: Command not complete, pending.&#39;)
     }
 
-    # This successfully generates function for each register as defined in the
-    # file registers.yaml
-    registers_path = resource_filename(&#39;itla&#39;, &#39;registers/registers_itla.yaml&#39;)
-
-    with open(registers_path, &#39;r&#39;) as yaml_file:
-        _register_spec = yaml.safe_load(yaml_file)
-
-        for _register_name in _register_spec:
-            # If the function is read only generate this way
-            if _register_spec[_register_name][&#39;readonly&#39;]:
-
-                _fn_definition = (
-                    &#34;def _{fn_name}(self):\n&#34;
-                    &#34;    \&#34;\&#34;\&#34;{doc_string}\&#34;\&#34;\&#34;\n&#34;
-                    &#34;    self.send_command({register})\n&#34;
-                    &#34;    return self.get_response({register})&#34;)
-
-                exec(_fn_definition.format(
-                    fn_name=_register_spec[_register_name][&#39;fnname&#39;],
-                    doc_string=_register_spec[_register_name][&#39;description&#39;],
-                    register=_register_spec[_register_name][&#39;register&#39;]))
-
-            else:
-
-                _fn_definition = (
-                    &#34;def _{fn_name}(self, {data_name}=None):\n&#34;
-                    &#34;    \&#34;\&#34;\&#34;{doc_string}\&#34;\&#34;\&#34;\n&#34;
-                    &#34;    self.send_command({register}, {data_name}, signed={signed})\n&#34;
-                    &#34;    return self.get_response({register})&#34;)
-
-                exec(_fn_definition.format(
-                    fn_name=_register_spec[_register_name][&#39;fnname&#39;],
-                    data_name=_register_spec[_register_name][&#39;data_name&#39;],
-                    doc_string=_register_spec[_register_name][&#39;description&#39;],
-                    signed=_register_spec[_register_name][&#39;signed&#39;],
-                    register=_register_spec[_register_name][&#39;register&#39;]))
-
-    # remove unnecessary variables from memory
-    del(yaml_file)
-
-    def __init__(self, serial_port, baudrate, timeout=0.5):
+    def __init__(self, serial_port, baudrate, timeout=0.5,
+                 register_files={&#39;registers_itla.yaml&#39;}):
         &#34;&#34;&#34;TODO describe function
 
         :param serial_port:
@@ -948,6 +945,33 @@ I think this is probably a bad idea even though it isnt write only.</p>
         self._baudrate = baudrate
         self._timeout = timeout
         self._device = None
+
+        # this function creates register functions
+        def mkfn(*, fnname, register, description, readonly, signed, AEA):
+            if readonly:
+                def reg_fun(self):
+                    self.send_command(register, signed=signed)
+                    return self.get_response(register)
+
+            else:
+                def reg_fun(self, data=None):
+                    self.send_command(register, data, signed=signed)
+                    return self.get_response(register)
+
+            reg_fun.__doc__ = description
+            reg_fun.__name__ = fnname
+            return reg_fun
+
+        for register_file in register_files:
+            register_file = resource_filename(&#39;itla&#39;, &#39;registers/&#39; + register_file)
+            with open(register_file, &#39;r&#39;) as register_yaml:
+                register_spec = yaml.safe_load(register_yaml)
+
+                for register_name in register_spec:
+                    register_data = register_spec[register_name]
+                    setattr(ITLA,
+                            &#39;_&#39; + register_data[&#39;fnname&#39;],
+                            mkfn(**register_data))
 
     def __enter__(self):
         &#34;&#34;&#34;TODO describe function
@@ -1097,6 +1121,53 @@ I think this is probably a bad idea even though it isnt write only.</p>
         returns a string containing the device type.
         &#34;&#34;&#34;
         response_bytes = self._devtyp()
+
+        return response_bytes.decode(&#39;utf-8&#39;)
+
+    def get_manufacturer(self):
+        &#34;&#34;&#34;
+        Return&#39;s a string containing the manufacturer&#39;s name.
+        &#34;&#34;&#34;
+        response_bytes = self._mfgr()
+
+        return response_bytes.decode(&#39;utf-8&#39;)
+
+    def get_model(self):
+        &#34;&#34;&#34;
+        return&#39;s the model as a string
+        &#34;&#34;&#34;
+        response_bytes = self._model()
+
+        return response_bytes.decode(&#39;utf-8&#39;)
+
+    def get_serialnumber(self):
+        &#34;&#34;&#34;
+        returns the serial number
+        &#34;&#34;&#34;
+        response_bytes = self._serno()
+
+        return response_bytes.decode(&#39;utf-8&#39;)
+
+    def get_manufacturing_date(self):
+        &#34;&#34;&#34;returns the manufacturing date&#34;&#34;&#34;
+        response_bytes = self._mfgdate()
+
+        return response_bytes.decode(&#39;utf-8&#39;)
+
+    def get_firmware_release(self):
+        &#34;&#34;&#34;
+        returns a manufacturer specific firmware release
+        &#34;&#34;&#34;
+        response_bytes = self._release()
+
+        return response_bytes.decode(&#39;utf-8&#39;)
+
+    def get_backwardscompatibility(self):
+        &#34;&#34;&#34;
+        returns a manufacturer specific firmware backwards compatibility
+        as a null terminated string
+        &#34;&#34;&#34;
+        response_bytes = self._relback()
 
         return response_bytes.decode(&#39;utf-8&#39;)
 
@@ -1567,6 +1638,7 @@ I think this is probably a bad idea even though it isnt write only.</p>
         &#34;&#34;&#34;
         # read four bytes
         response = self._device.read(4)
+
         print(f&#39;response: {response.hex()}&#39;)
 
         # get the checksum and ... check it.
@@ -1619,13 +1691,6 @@ I think this is probably a bad idea even though it isnt write only.</p>
         # 6) profit
         pass</code></pre>
 </details>
-<h3>Class variables</h3>
-<dl>
-<dt id="itla.itla.ITLA.registers_path"><code class="name">var <span class="ident">registers_path</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="itla.itla.ITLA.connect"><code class="name flex">
@@ -1798,6 +1863,26 @@ does not occur on Windows.</strong></p></div>
     return f&#39;Age: {age} / 100%&#39;</code></pre>
 </details>
 </dd>
+<dt id="itla.itla.ITLA.get_backwardscompatibility"><code class="name flex">
+<span>def <span class="ident">get_backwardscompatibility</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns a manufacturer specific firmware backwards compatibility
+as a null terminated string</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_backwardscompatibility(self):
+    &#34;&#34;&#34;
+    returns a manufacturer specific firmware backwards compatibility
+    as a null terminated string
+    &#34;&#34;&#34;
+    response_bytes = self._relback()
+
+    return response_bytes.decode(&#39;utf-8&#39;)</code></pre>
+</details>
+</dd>
 <dt id="itla.itla.ITLA.get_channel"><code class="name flex">
 <span>def <span class="ident">get_channel</span></span>(<span>self)</span>
 </code></dt>
@@ -1887,6 +1972,24 @@ off grid tuning for the laser's frequency.</p>
     ftf = int.from_bytes(response, &#39;big&#39;, signed=True)
 
     return ftf * 1e-3</code></pre>
+</details>
+</dd>
+<dt id="itla.itla.ITLA.get_firmware_release"><code class="name flex">
+<span>def <span class="ident">get_firmware_release</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns a manufacturer specific firmware release</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_firmware_release(self):
+    &#34;&#34;&#34;
+    returns a manufacturer specific firmware release
+    &#34;&#34;&#34;
+    response_bytes = self._release()
+
+    return response_bytes.decode(&#39;utf-8&#39;)</code></pre>
 </details>
 </dd>
 <dt id="itla.itla.ITLA.get_frequency"><code class="name flex">
@@ -2051,6 +2154,58 @@ would be. The variable <code>self._response</code> is set to the last response a
     return self._lstresp()</code></pre>
 </details>
 </dd>
+<dt id="itla.itla.ITLA.get_manufacturer"><code class="name flex">
+<span>def <span class="ident">get_manufacturer</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return's a string containing the manufacturer's name.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_manufacturer(self):
+    &#34;&#34;&#34;
+    Return&#39;s a string containing the manufacturer&#39;s name.
+    &#34;&#34;&#34;
+    response_bytes = self._mfgr()
+
+    return response_bytes.decode(&#39;utf-8&#39;)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla.ITLA.get_manufacturing_date"><code class="name flex">
+<span>def <span class="ident">get_manufacturing_date</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the manufacturing date</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_manufacturing_date(self):
+    &#34;&#34;&#34;returns the manufacturing date&#34;&#34;&#34;
+    response_bytes = self._mfgdate()
+
+    return response_bytes.decode(&#39;utf-8&#39;)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla.ITLA.get_model"><code class="name flex">
+<span>def <span class="ident">get_model</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>return's the model as a string</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_model(self):
+    &#34;&#34;&#34;
+    return&#39;s the model as a string
+    &#34;&#34;&#34;
+    response_bytes = self._model()
+
+    return response_bytes.decode(&#39;utf-8&#39;)</code></pre>
+</details>
+</dd>
 <dt id="itla.itla.ITLA.get_output_wavelength"><code class="name flex">
 <span>def <span class="ident">get_output_wavelength</span></span>(<span>self)</span>
 </code></dt>
@@ -2174,6 +2329,7 @@ Only an approximation, apparently. Units dBm.</p>
     &#34;&#34;&#34;
     # read four bytes
     response = self._device.read(4)
+
     print(f&#39;response: {response.hex()}&#39;)
 
     # get the checksum and ... check it.
@@ -2205,6 +2361,24 @@ Only an approximation, apparently. Units dBm.</p>
                         + f&#39;Got {response[1]} expected {register}.&#39;)
 
     return response[2:]</code></pre>
+</details>
+</dd>
+<dt id="itla.itla.ITLA.get_serialnumber"><code class="name flex">
+<span>def <span class="ident">get_serialnumber</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the serial number</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_serialnumber(self):
+    &#34;&#34;&#34;
+    returns the serial number
+    &#34;&#34;&#34;
+    response_bytes = self._serno()
+
+    return response_bytes.decode(&#39;utf-8&#39;)</code></pre>
 </details>
 </dd>
 <dt id="itla.itla.ITLA.get_temp"><code class="name flex">
@@ -2772,28 +2946,33 @@ the function <code>set_fcf</code>.</p>
 <li><code><a title="itla.itla.ITLA.dither_enable" href="#itla.itla.ITLA.dither_enable">dither_enable</a></code></li>
 <li><code><a title="itla.itla.ITLA.enable" href="#itla.itla.ITLA.enable">enable</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_age" href="#itla.itla.ITLA.get_age">get_age</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_backwardscompatibility" href="#itla.itla.ITLA.get_backwardscompatibility">get_backwardscompatibility</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_channel" href="#itla.itla.ITLA.get_channel">get_channel</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_device_type" href="#itla.itla.ITLA.get_device_type">get_device_type</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_fcf" href="#itla.itla.ITLA.get_fcf">get_fcf</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_fine_tuning" href="#itla.itla.ITLA.get_fine_tuning">get_fine_tuning</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_firmware_release" href="#itla.itla.ITLA.get_firmware_release">get_firmware_release</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_frequency" href="#itla.itla.ITLA.get_frequency">get_frequency</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_frequency_max" href="#itla.itla.ITLA.get_frequency_max">get_frequency_max</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_frequency_min" href="#itla.itla.ITLA.get_frequency_min">get_frequency_min</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_grid" href="#itla.itla.ITLA.get_grid">get_grid</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_grid_min" href="#itla.itla.ITLA.get_grid_min">get_grid_min</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_last_response" href="#itla.itla.ITLA.get_last_response">get_last_response</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_manufacturer" href="#itla.itla.ITLA.get_manufacturer">get_manufacturer</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_manufacturing_date" href="#itla.itla.ITLA.get_manufacturing_date">get_manufacturing_date</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_model" href="#itla.itla.ITLA.get_model">get_model</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_output_wavelength" href="#itla.itla.ITLA.get_output_wavelength">get_output_wavelength</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_power_max" href="#itla.itla.ITLA.get_power_max">get_power_max</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_power_min" href="#itla.itla.ITLA.get_power_min">get_power_min</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_power_output" href="#itla.itla.ITLA.get_power_output">get_power_output</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_power_setting" href="#itla.itla.ITLA.get_power_setting">get_power_setting</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_response" href="#itla.itla.ITLA.get_response">get_response</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_serialnumber" href="#itla.itla.ITLA.get_serialnumber">get_serialnumber</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_temp" href="#itla.itla.ITLA.get_temp">get_temp</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_wavelength" href="#itla.itla.ITLA.get_wavelength">get_wavelength</a></code></li>
 <li><code><a title="itla.itla.ITLA.hard_reset" href="#itla.itla.ITLA.hard_reset">hard_reset</a></code></li>
 <li><code><a title="itla.itla.ITLA.nop" href="#itla.itla.ITLA.nop">nop</a></code></li>
 <li><code><a title="itla.itla.ITLA.read_aea" href="#itla.itla.ITLA.read_aea">read_aea</a></code></li>
-<li><code><a title="itla.itla.ITLA.registers_path" href="#itla.itla.ITLA.registers_path">registers_path</a></code></li>
 <li><code><a title="itla.itla.ITLA.send_command" href="#itla.itla.ITLA.send_command">send_command</a></code></li>
 <li><code><a title="itla.itla.ITLA.set_channel" href="#itla.itla.ITLA.set_channel">set_channel</a></code></li>
 <li><code><a title="itla.itla.ITLA.set_dither_amplitude" href="#itla.itla.ITLA.set_dither_amplitude">set_dither_amplitude</a></code></li>
