@@ -1,0 +1,171 @@
+# Some of these registers are also just defined by Pure photonics in other
+# documentation. Those are included here as well. They should probably be broken
+# up into their own document for import in the PPLaser class.
+# There are some weird extra registers defined in a document emailed to me by Heino
+# These registers are defined here they dont have real names so I made them up.
+# -----------------------------------------------------------------------
+
+
+MODE:
+  register: 0x90
+  fnname: mode
+  description: >
+    Select low-noise mode:
+    0: Standard operation.
+    1: No-dither operation.
+    2: Whisper-mode operation.
+  readonly: false
+  AEA: false
+  signed: false
+  signed: false
+
+
+CJSetPoint:
+  register: 0xD0
+  fnname: cjsetpoint
+  description: |
+    boy oh boy i dont know
+  readonly: false
+  AEA: false
+  signed: false
+  signed: false
+
+CJOffset:
+  register: 0xD1
+  fnname: cjoffset
+  description: |
+    similar to csoffset I think
+  readonly: true
+  AEA: false
+  signed: false
+  signed: false
+
+CJCalibration:
+  register: 0xD2
+  fnname: cjcalibration
+  description: |
+    Begins the calibration procedure for clean jump. Not totally clear on this.
+  readonly: false
+  AEA: false
+  signed: false
+  signed: false
+
+PWORD:
+  register: 0xE0
+  fnname: pword
+  description: >
+    Password to enable laser.
+    W: Provide password to the laser.
+    R: provide a 16bit integer that will help Pure Photonics to calculate the password for you.
+  readonly: false
+  AEA: false
+  signed: false
+  signed: false
+
+CSRANGE:
+  register: 0xE4
+  fnname: csrange
+  description: >
+    Range for the clean sweep feature in GHz.
+  readonly: false
+  AEA: false
+  signed: false
+  signed: false
+
+CSSTART:
+  register: 0xE5
+  fnname: csstart
+  description: >
+    Start or stop the clean sweep feature.
+    This is a WRITE ONLY feature.
+    0: stop
+    1: start
+  readonly: false
+  AEA: false
+  signed: false
+  signed: false
+
+CSOFFSET:
+  register: 0xE6
+  fnname: csoffset
+  description: >
+    Provide the offset during the clean sweep in unity of 0.1GHz with an offset of 200GHZ.
+    Calculate the offset as (readout - 2000) * 0.1 GHz.
+  readonly: true
+  AEA: false
+  signed: false
+  signed: false
+
+CJTHZ:
+  register: 0xEA
+  fnname: cjthz
+  description: >
+    Clean jump target frequency; THz portion.
+    ie. To set 195.3452THz write 195 to 0xEA and 3452 to 0xEB.
+  readonly: false
+  AEA: false
+  signed: false
+  signed: false
+
+CJGHZ:
+  register: 0xEB
+  fnname: cjghz
+  description: >
+    Clean jump target frequency; 0.1GHz portion.
+    ie. To set 195.3452THz write 195 to 0xEA and 3452 to 0xEB.
+  readonly: false
+  AEA: false
+  signed: false
+  signed: false
+
+CJSLED:
+  register: 0xEC
+  fnname: cjsled
+  description: >
+    Clean jump target temperature for the laser in 0.01C.
+  readonly: false
+  AEA: false
+  signed: false
+  signed: false
+
+CJSTART:
+  register: 0xED
+  fnname: cjstart
+  description: >
+    Execute the clean jump.
+    This is a WRITE ONLY function.
+    1: start (performs the jump)
+  readonly: false
+  AEA: false
+  signed: false
+  signed: false
+
+# These are undocumented registers.
+
+CSRATE:
+  register: 0xF1
+  fnname: csrate
+  description: >
+    sets the maximum sweep rate in units of MHz/sec
+  readonly: false
+  AEA: false
+  signed: false
+
+CSCONSTANTS:
+  register: 0xF8
+  fnname: csconstants
+  description: >
+    calibration constants derived from the .csmap file
+    to ensure proper operation at the extreme's of the sweep
+  readonly: false
+  AEA: false
+  signed: false
+
+CJCURRENT:
+  register: 0xE9
+  fnname: cjcurrent
+  description: >
+    load the target current for the next frequency with data in units of 0.1mA
+  readonly: false
+  AEA: false
+  signed: false
