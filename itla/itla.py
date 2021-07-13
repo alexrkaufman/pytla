@@ -775,6 +775,39 @@ class ITLA():
 
         return ftf * 1e-3
 
+    def get_temps(self):
+        '''
+        Returns a list of currents in degrees Celcius.
+        In the following order:
+
+        Technology 1: [Diode Temp, Case Temp]
+        '''
+        # get response this should be a long byte string
+        response = self._temps()
+
+        data = [int.from_bytes(response[i: i+2], 'big', signed=True) / 10
+                for i in range(0, len(response), 2)]
+
+        return data
+
+    def get_currents(self):
+        '''
+        Returns a list of currents in mA.
+        In the following order:
+
+        Technology 1: [TEC, Diode]
+        Technology 2: [TED, Diode 1, Diode 2, Diode 3, Diode 4, SOA]
+        Technology 3: [TEC, Diode 1, tbd, tbd, tbd, ...]
+        '''
+        # get response this should be a long byte string
+        response = self._currents()
+
+        data = [int.from_bytes(response[i: i+2], 'big', signed=True) / 10
+                for i in range(0, len(response), 2)]
+
+        return data
+
+
     def send_command(self, register, data=None, signed=False):
         """Sends commands to a device.
         This function takes the hexstring, turns it into a bytestring,
