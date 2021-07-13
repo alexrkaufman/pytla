@@ -516,19 +516,69 @@ class ITLA():
 
             raise ValueError('waveform must be \'sinusoidal\', or \'triangular\'')
 
-        pass
+        data = [0] * 16
+        # bit 1 Digital Dither Enable bit
+        data[1] = 1
+        data = int(''.join(str(x) for x in data[::-1]), 2)
+
+        try:
+            self._dithere(data)
+        except CPException:
+            print('enabling dither')
 
     def dither_disable(self):
-        pass
+        """
+        disables digital dither
+        """
+        #i think that we should try to preserve other bits rather than setting all
+        #data to zero across the board
+        data = [0] * 16
+        data = int(''.join(str(x) for x in data[::-1]), 2)
+        self._dithere(data)
 
     def set_dither_rate(self, rate):
-        pass
+        """
+        set dither rate in kHz, utilizes DitherR register
+        :param rate: an unsigned short integer specifying dither rate in kHz
+        """
+        self._ditherr(rate)
+
+    def get_dither_rate(self):
+        """
+        get dither rate, utilizes DitherR register
+        """
+        response = self._ditherr()
+        return int.from_bytes(response, 'big')
 
     def set_dither_frequency(self, rate):
-        pass
+        """
+        set dither modulation frequency, utilizes DitherF register
+        :param rate: an unsigned short integer encoded as the FM peak-to-peak frequency
+        deviation as Ghz*10
+        """
+        self._ditherf(rate)
+
+    def get_dither_frequency(self):
+        """
+        get dither modulation frequency, utilizes DitherF register
+        """
+        response = self._ditherf()
+        return int.from_bytes(response, 'big')
 
     def set_dither_amplitude(self, amplitude):
-        pass
+        """
+        set dither modulation amplitude, utilizes DitherA register
+        :param amplitude: an unsigned short integer encoded as the AM peak-to-peak amplitude
+        deviation as 10*percentage of the optical power
+        """
+        self._dithera(amplitude)
+
+    def get_dither_amplitude(self):
+        """
+        get dither modulation amplitude, utilizes DitherA register
+        """
+        response = self._dithera()
+        return int.from_bytes(response, 'big')
 
     def get_wavelength(self):
         """TODO describe function
