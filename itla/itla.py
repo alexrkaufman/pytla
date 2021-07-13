@@ -73,8 +73,10 @@ class ITLA():
         self._timeout = timeout
         self._device = None
 
-        register_files = [resource_filename('itla', 'registers/registers_itla.yaml'),
-                          *register_files]
+        if register_files is None:
+            register_files = []
+
+        register_files = ['registers_itla.yaml', *register_files]
 
         # this function creates register functions
         def mkfn(*, fnname, register, description, readonly, signed, AEA):
@@ -93,7 +95,8 @@ class ITLA():
             return reg_fun
 
         for register_file in register_files:
-            register_file = resource_filename('itla', 'registers/' + register_file)
+            register_file = resource_filename('itla',
+                                              'registers/' + register_file)
             with open(register_file, 'r') as register_yaml:
                 register_spec = yaml.safe_load(register_yaml)
 
