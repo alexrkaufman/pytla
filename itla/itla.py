@@ -442,26 +442,28 @@ class ITLA():
         self.set_fcf(freq)
         self.set_channel(1)
 
-        # There needs to be some delay between this and setting channel.
-        # even with some delay the CII error occurs from time to time. Fix.
-        # This delay is way longer than i would like.
-        # It would be ideal to have no sleeping necessary conditions.
-        sleep(1)
-        try:
-            self.set_fine_tuning(0)
+        # This does a check so this only runs if fine tuning has been turned on.
+        if self.get_fine_tuning() != 0:
 
-        except ExecutionError as ee:
-
+            # There needs to be some delay between this and setting channel.
+            # even with some delay the CII error occurs from time to time. Fix.
+            # This delay is way longer than i would like.
+            # It would be ideal to have no sleeping necessary conditions.
+            sleep(1)
             try:
-                self.nop()
+                self.set_fine_tuning(0)
 
-            except NOPException as nop_e:
-                raise nop_e
+            except ExecutionError as ee:
 
-        except CPException as cpe:
-            print('Fine tuning takes some time. Waiting 5s.')
-            sleep(5)
+                try:
+                    self.nop()
 
+                except NOPException as nop_e:
+                    raise nop_e
+
+                except CPException as cpe:
+                    print('Fine tuning takes some time. Waiting 5s.')
+                    sleep(5)
 
     def get_fcf(self):
         """ Get the currently set first channel frequency.
