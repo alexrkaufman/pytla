@@ -15,7 +15,8 @@ manufacturer requirements with another yaml register file to specify the new reg
 
 ## Status
 
-This is very much a work in progress. Use at your own risk.
+This is very much a work in progress. Use at your own risk. I would call this
+pre-alpha but most functionality exists and we use it at SpectrumLab.
 
 Hidden functions for each register (names the same as each register but in lowercase)
 are available. Some registers still don't have user friendly functions defined
