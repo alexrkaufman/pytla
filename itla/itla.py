@@ -586,7 +586,7 @@ class ITLA():
         :returns:
 
         """
-        pass
+        raise Warning("this is not implemented yet.")
 
     def get_output_wavelength(self):
         """TODO describe function
@@ -594,7 +594,7 @@ class ITLA():
         :returns:
 
         """
-        pass
+        raise Warning("this is not implemented yet.")
 
     def get_temp(self):
         """TODO describe function
@@ -896,6 +896,8 @@ class ITLA():
         return self._lstresp()
 
     def upgrade_firmware(self, firmware_file):
+        """ This function should update the firmware for the laser.
+        """
 
         # STEPS:
         # 1) release
@@ -904,4 +906,4 @@ class ITLA():
         # 4) send dlconfig signal
         # 5) ????
         # 6) profit
-        pass
+        raise Warning("this is not implemented yet.")
