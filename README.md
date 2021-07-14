@@ -54,6 +54,11 @@ corresponding function would be `_register()`.
 
 ## For Manufacturers
 
+If you would like to have a specific class available for your particular type of
+laser please create a yaml file as specified below and submit it for inclusion.
+Please also provide any details for the order of operations required to enable
+or activate your features.
+
 This library was designed to be simple to extend for implementing manufacturer
 specific registers and functions. The first step is to create a yaml file
 containing all of the additional registers your laser will utilize. Each entry
