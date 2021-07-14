@@ -1,0 +1,1297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>itla.pplaser API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>itla.pplaser</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from .itla import ITLA
+from .itla_errors import *
+from time import sleep
+import yaml
+
+
+class PPLaser(ITLA):
+    &#34;&#34;&#34;
+    The pure photonics laser class implements specific features or handles particular
+    quirks of the pure photonics laser. The pure photonics laser has additional
+    registers for a couple of applications.
+
+    * `set_frequency` and `set_fcf` had to be overridden
+      * These are overwritten because fcf3 causes some issues
+    * `get_frequency` is *not* overridden because these registers can still be read without issue
+    &#34;&#34;&#34;
+
+    # TODO re-define init to run super() and but set baudrate for you
+    def __init__(self, serial_port, baudrate=9600):
+        super().__init__(serial_port, baudrate,
+                         register_files={&#39;registers_itla.yaml&#39;, &#39;registers_pp.yaml&#39;})
+        self._frequency_max = None
+        self._frequency_min = None
+
+    def connect(self):
+        &#34;&#34;&#34;Overriden connect function with query for max and min frequency
+        &#34;&#34;&#34;
+        super().connect()
+        self._frequency_max = self.get_frequency_max()
+        self._frequency_min = self.get_frequency_min()
+
+    def set_fcf(self, freq):
+        &#39;&#39;&#39;
+        This sets the first channel frequency.
+        It does not reset the channel so this frequency will only be equal
+        to the output frequency if channel=1.
+
+        There is an issue in setting the first channel frequency for
+        the pure photonics laser as compared to the ITLA 1.3 standard.
+
+        If we set the FCF3 register it will clear the FCF2 register.
+
+        Because the `set_frequency` function calls this function this will also
+        correct the issue in setting the frequency generally.
+
+        verifies that fcf is set within the appropriate laser frequency range
+        and raises RVE error if not
+        &#39;&#39;&#39;
+        if freq &lt; self._frequency_min or freq &gt; self._frequency_max:
+            raise RVEError(&#34;The desired frequency is outside &#34;
+                           &#34;of the range for this laser.&#34;)
+
+        freq = int(freq * 1e6)
+
+        freq_str = str(freq)
+        fcf1 = int(freq_str[0:3])
+        fcf2 = int(freq_str[3:7])
+        # the final two decimal places (0-99MHz) are ignored.
+
+        try:
+            self._fcf1(fcf1)
+            self._fcf2(fcf2)
+
+        except ExecutionError:
+
+            try:
+                self.nop()
+            except RVEError as error:
+                raise error from None
+            except CIEError as error:
+                raise error from None
+
+    def set_channel(self, channel):
+        &#34;&#34;&#34;
+        It is likely not possible to reach channels in the range where
+        channelh would kick in anyway. However since the laser is built on the
+        OIF-ITLA-1.2 standard we should just avoid calling it.
+        &#34;&#34;&#34;
+        # check type and stuff
+        if not isinstance(channel, int):
+            raise TypeError(&#34;Channel must be an integer&#34;)
+        if channel &lt; 0:
+            raise ValueError(&#34;Channel must be positive.&#34;)
+        if channel &gt; 0xFFFF:
+            raise ValueError(&#34;Channel must be a 16 bit integer (&lt;=0xFFFF).&#34;)
+
+        # Split the channel choice into two options.
+        channel_hex = f&#39;{channel:08x}&#39;
+
+        channell = int(channel_hex[4:], 16)
+        self._channel(channell)
+
+    def set_grid(self, grid_freq):
+        &#34;&#34;&#34;
+        Set the grid spacing in GHz. resolution in GHz/10.
+
+        PPLaser built on 1.2 standard so we dont do grid2
+        &#34;&#34;&#34;
+        grid_freq = int(grid_freq * 10)
+
+        self._grid(grid_freq)
+
+    def get_grid_min(self):
+        &#34;&#34;&#34;get the minimum grid spacing
+        &#34;&#34;&#34;
+        try:
+            self._lgrid()
+            freq_lgrid = int(self._response[4:], 16)
+
+        except ExecutionError as ee:
+            self.nop()
+
+        return freq_lgrid * 1e-1
+
+    def get_mode(self):
+        &#34;&#34;&#34;get which low noise mode&#34;&#34;&#34;
+        modes = {0: &#39;normal&#39;,
+                 1: &#39;nodither&#39;,
+                 2: &#39;whisper&#39;}
+
+        response = self._mode()
+        response = int.from_bytes(response, &#39;big&#39;)
+
+        return modes[response]
+
+    def normalmode(self):
+        &#34;&#34;&#34;set mode to standard dither mode&#34;&#34;&#34;
+        self._mode(0)
+
+    def nodithermode(self):
+        &#34;&#34;&#34;Set mode to nodither mode
+
+        It is unclear whether this just also activates whisper mode.
+        The feature guide says &#34;a value of 1 defaults to 2&#34;.
+        &#34;&#34;&#34;
+        self._mode(1)
+
+    def whispermode(self):
+        &#34;&#34;&#34;Enables whisper mode where all control loops
+        are disabled resulting in a lower noise mode.&#34;&#34;&#34;
+        self._mode(2)
+
+    def get_cleansweep_amplitude(self):
+        &#34;&#34;&#34;get the amplitude of the clean sweep.
+
+        The clean sweep will ramp to (+0.5 to -0.5) * amplitude.
+        (Basically it will be centered at the current frequency.)
+        &#34;&#34;&#34;
+        response = self._csrange()
+        cs_amplitude = int.from_bytes(response, &#39;big&#39;)
+
+        return cs_amplitude
+
+    def set_cleansweep_amplitude(self, range_GHz):
+        &#34;&#34;&#34;Sets the amplitude of the clean sweep.
+
+        The clean sweep will ramp to (+0.5 to -0.5) * amplitude.
+        (Basically it will be centered at the current frequency.)
+        &#34;&#34;&#34;
+        self._csrange(range_GHz)
+
+    def cleansweep_enable(self):
+        &#34;&#34;&#34;Enables clean sweep mode.
+        The clean sweep will ramp to (+0.5 to -0.5) * amplitude.
+        (Basically it will be centered at the current frequency.)
+        &#34;&#34;&#34;
+        response = self.get_mode()
+        if response == &#39;normal&#39;:
+            raise Exception(&#34;Laser currently in normal mode.&#34;,
+                            &#34;please set to nodither or whisper mode&#34;)
+
+        self._csstart(1)
+
+    def cleansweep_disable(self):
+        &#34;&#34;&#34;Turn&#39;s off clean sweep mode.&#34;&#34;&#34;
+
+        self._csstart(0)
+
+    def cleansweep_setup(self, freq_low, freq_high):
+        &#34;&#34;&#34;
+        A wrapper function that takes the start and end frequencies
+        you would like to sweep over. It computes and sets the clean sweep
+        amplitude and the midpoint.
+
+        The clean sweep operation will begin in the center of the high and low.
+
+        &#34;&#34;&#34;
+
+        if freq_low &lt; self._frequency_min or freq_high &gt; self._frequency_max:
+            raise ValueError(&#39;The range you would like to sweep over&#39;,
+                             &#39;is outside of the bounds for this laser&#39;)
+
+        # sets the clean sweep amplitude rounded to the nearest MHz.
+        cs_ampl = round(abs(freq_high - freq_low) * 1e3)
+        if cs_ampl &gt; 50:
+            raise Exception(&#34;This is an error specific to SpectrumLab.&#34;
+                            &#34;Our laser has a 50GHz maximum cleansweep range.&#34;
+                            &#34;You should change the limit in source for your laser.&#34;
+                            &#34;If you know a way to query the laser for this value&#34;
+                            &#34;then implementing that would be better.&#34;)
+
+        self.set_cleansweep_amplitude(cs_ampl)
+
+        cs_center = round((freq_low + freq_high) * 1e4 / 2) * 1e-4
+        self.set_frequency(cs_center)
+
+    def get_cleansweep_rate(self):
+        &#34;&#34;&#34;Gets the clean sweep rate. not sure about units.&#34;&#34;&#34;
+        response = self._csrate()
+        cs_rate = int.from_bytes(response, &#39;big&#39;)
+        return cs_rate
+
+    def set_cleansweep_rate(self, rate_MHz):
+        &#34;&#34;&#34;sets the cleansweep rate in MHz/sec
+        idk if there is a way to check if its within some bounds.
+        There is conflicting info in the pure photonics docs.&#34;&#34;&#34;
+        raise Warning(&#34;Dont use this. Need to confirm the units for the sweep rate.&#34;)
+        self._csrate(rate_MHz)
+
+    def get_cleansweep_offset(self):
+        raise Warning(&#34;This is not implemented yet.&#34;)
+
+    def set_cleansweep_offset(self, offset):
+        raise Warning(&#34;This is not implemented yet.&#34;)
+
+    def cleanjump(self):
+        &#34;&#34;&#34;Tells the laser to perform the clean jump.
+        The clean jump must be precalibrated.
+        You should have the calibration points in your lab notebook
+        or written down somewhere.
+        If not you should perform the clean jump calibration.&#34;&#34;&#34;
+        mode = self.get_mode()
+        if mode == &#39;normal&#39;:
+            raise Exception(&#34;Laser in normal mode. You must be in nodither&#34;
+                            &#34;or whisper mode to use cleanjump.&#34;)
+        self._cjstart(1)
+
+    def set_cleanjump(self, freq_jump):
+        &#39;&#39;&#39;
+        Set the size of the jump in THz to the fourth decimal place.
+        XXX.XXXX
+        &#39;&#39;&#39;
+        freq_jump = str(freq_jump * 10000)
+        self._cjthz(int(freq_jump[0:3]))
+        self._cjghz(int(freq_jump[3:]))
+
+    def cleanjump_calibration(self, fcf, grid, pwr, n_jumppoints,
+                              confirmation=None):
+        &#39;&#39;&#39;
+        This is a grid based calibration
+
+        **fcf**: the first channel frequency you would like to
+        begin calibration at. (THz)
+
+        **grid**: the grid spacing (GHz)
+
+        **pwr**: The power calibration will be at. (dBm)
+
+        **n_jumppoints**: The number of grid points to calibrate.
+
+        **confirmation**: If you would like to go ahead and confirm yes
+        and skip the user input you can set confirmation to &#39;y&#39;
+        &#39;&#39;&#39;
+
+        # calibration begins by writing the number of channels to 0xD2
+
+        calibration_points = [fcf + grid * n * 1e-3
+                              for n in range(n_jumppoints)]
+
+        print(f&#34;You are calibrating {n_jumppoints} clean jump setpoints&#34;,
+              f&#34;at frequencies:\n{calibration_points}(THz).&#34;,
+              f&#34;With power = {pwr}(dBm).&#34;)
+        print(&#34;Write these down in your lab notebook because&#34;,
+              &#34;you cannot query the device for these values later.&#34;)
+
+        if confirmation is None:
+            confirmation = input(&#34;Is the information above correct? (y/n): &#34;)
+
+        if confirmation.lower() == &#39;y&#39;:
+            # set up the first channel frequency, grid spacing, and power
+            self.set_frequency(fcf)
+            self.set_grid(grid)
+            self.set_power(pwr)
+            self._cleanjump_calibration(n_jumppoints)
+
+        elif confirmation.lower() == &#39;n&#39;:
+            print(f&#34;You answered {confirmation!r}.&#34;,
+                  &#34;Calibration will not be performed.&#34;)
+
+        else:
+            raise Exception(&#34;input not recognized&#34;)
+
+    def _cleanjump_calibration(self, n_jumppoints):
+
+        # does this return a response with bit 15 active?
+        self._cjcalibration(n_jumppoints)
+
+        is_calibrating = True
+
+        while is_calibrating:
+
+            response = self._cjcalibration()
+
+            response_bits = [bit for bit in f&#39;{response:08}&#39;].reverse()
+            is_calibrating = bool(response_bits[15])
+            sleep(1)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="itla.pplaser.PPLaser"><code class="flex name class">
+<span>class <span class="ident">PPLaser</span></span>
+<span>(</span><span>serial_port, baudrate=9600)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The pure photonics laser class implements specific features or handles particular
+quirks of the pure photonics laser. The pure photonics laser has additional
+registers for a couple of applications.</p>
+<ul>
+<li><code>set_frequency</code> and <code>set_fcf</code> had to be overridden</li>
+<li>These are overwritten because fcf3 causes some issues</li>
+<li><code>get_frequency</code> is <em>not</em> overridden because these registers can still be read without issue</li>
+</ul>
+<p>TODO describe function</p>
+<p>:param serial_port:
+:param baudrate:
+:param timeout:
+:returns:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class PPLaser(ITLA):
+    &#34;&#34;&#34;
+    The pure photonics laser class implements specific features or handles particular
+    quirks of the pure photonics laser. The pure photonics laser has additional
+    registers for a couple of applications.
+
+    * `set_frequency` and `set_fcf` had to be overridden
+      * These are overwritten because fcf3 causes some issues
+    * `get_frequency` is *not* overridden because these registers can still be read without issue
+    &#34;&#34;&#34;
+
+    # TODO re-define init to run super() and but set baudrate for you
+    def __init__(self, serial_port, baudrate=9600):
+        super().__init__(serial_port, baudrate,
+                         register_files={&#39;registers_itla.yaml&#39;, &#39;registers_pp.yaml&#39;})
+        self._frequency_max = None
+        self._frequency_min = None
+
+    def connect(self):
+        &#34;&#34;&#34;Overriden connect function with query for max and min frequency
+        &#34;&#34;&#34;
+        super().connect()
+        self._frequency_max = self.get_frequency_max()
+        self._frequency_min = self.get_frequency_min()
+
+    def set_fcf(self, freq):
+        &#39;&#39;&#39;
+        This sets the first channel frequency.
+        It does not reset the channel so this frequency will only be equal
+        to the output frequency if channel=1.
+
+        There is an issue in setting the first channel frequency for
+        the pure photonics laser as compared to the ITLA 1.3 standard.
+
+        If we set the FCF3 register it will clear the FCF2 register.
+
+        Because the `set_frequency` function calls this function this will also
+        correct the issue in setting the frequency generally.
+
+        verifies that fcf is set within the appropriate laser frequency range
+        and raises RVE error if not
+        &#39;&#39;&#39;
+        if freq &lt; self._frequency_min or freq &gt; self._frequency_max:
+            raise RVEError(&#34;The desired frequency is outside &#34;
+                           &#34;of the range for this laser.&#34;)
+
+        freq = int(freq * 1e6)
+
+        freq_str = str(freq)
+        fcf1 = int(freq_str[0:3])
+        fcf2 = int(freq_str[3:7])
+        # the final two decimal places (0-99MHz) are ignored.
+
+        try:
+            self._fcf1(fcf1)
+            self._fcf2(fcf2)
+
+        except ExecutionError:
+
+            try:
+                self.nop()
+            except RVEError as error:
+                raise error from None
+            except CIEError as error:
+                raise error from None
+
+    def set_channel(self, channel):
+        &#34;&#34;&#34;
+        It is likely not possible to reach channels in the range where
+        channelh would kick in anyway. However since the laser is built on the
+        OIF-ITLA-1.2 standard we should just avoid calling it.
+        &#34;&#34;&#34;
+        # check type and stuff
+        if not isinstance(channel, int):
+            raise TypeError(&#34;Channel must be an integer&#34;)
+        if channel &lt; 0:
+            raise ValueError(&#34;Channel must be positive.&#34;)
+        if channel &gt; 0xFFFF:
+            raise ValueError(&#34;Channel must be a 16 bit integer (&lt;=0xFFFF).&#34;)
+
+        # Split the channel choice into two options.
+        channel_hex = f&#39;{channel:08x}&#39;
+
+        channell = int(channel_hex[4:], 16)
+        self._channel(channell)
+
+    def set_grid(self, grid_freq):
+        &#34;&#34;&#34;
+        Set the grid spacing in GHz. resolution in GHz/10.
+
+        PPLaser built on 1.2 standard so we dont do grid2
+        &#34;&#34;&#34;
+        grid_freq = int(grid_freq * 10)
+
+        self._grid(grid_freq)
+
+    def get_grid_min(self):
+        &#34;&#34;&#34;get the minimum grid spacing
+        &#34;&#34;&#34;
+        try:
+            self._lgrid()
+            freq_lgrid = int(self._response[4:], 16)
+
+        except ExecutionError as ee:
+            self.nop()
+
+        return freq_lgrid * 1e-1
+
+    def get_mode(self):
+        &#34;&#34;&#34;get which low noise mode&#34;&#34;&#34;
+        modes = {0: &#39;normal&#39;,
+                 1: &#39;nodither&#39;,
+                 2: &#39;whisper&#39;}
+
+        response = self._mode()
+        response = int.from_bytes(response, &#39;big&#39;)
+
+        return modes[response]
+
+    def normalmode(self):
+        &#34;&#34;&#34;set mode to standard dither mode&#34;&#34;&#34;
+        self._mode(0)
+
+    def nodithermode(self):
+        &#34;&#34;&#34;Set mode to nodither mode
+
+        It is unclear whether this just also activates whisper mode.
+        The feature guide says &#34;a value of 1 defaults to 2&#34;.
+        &#34;&#34;&#34;
+        self._mode(1)
+
+    def whispermode(self):
+        &#34;&#34;&#34;Enables whisper mode where all control loops
+        are disabled resulting in a lower noise mode.&#34;&#34;&#34;
+        self._mode(2)
+
+    def get_cleansweep_amplitude(self):
+        &#34;&#34;&#34;get the amplitude of the clean sweep.
+
+        The clean sweep will ramp to (+0.5 to -0.5) * amplitude.
+        (Basically it will be centered at the current frequency.)
+        &#34;&#34;&#34;
+        response = self._csrange()
+        cs_amplitude = int.from_bytes(response, &#39;big&#39;)
+
+        return cs_amplitude
+
+    def set_cleansweep_amplitude(self, range_GHz):
+        &#34;&#34;&#34;Sets the amplitude of the clean sweep.
+
+        The clean sweep will ramp to (+0.5 to -0.5) * amplitude.
+        (Basically it will be centered at the current frequency.)
+        &#34;&#34;&#34;
+        self._csrange(range_GHz)
+
+    def cleansweep_enable(self):
+        &#34;&#34;&#34;Enables clean sweep mode.
+        The clean sweep will ramp to (+0.5 to -0.5) * amplitude.
+        (Basically it will be centered at the current frequency.)
+        &#34;&#34;&#34;
+        response = self.get_mode()
+        if response == &#39;normal&#39;:
+            raise Exception(&#34;Laser currently in normal mode.&#34;,
+                            &#34;please set to nodither or whisper mode&#34;)
+
+        self._csstart(1)
+
+    def cleansweep_disable(self):
+        &#34;&#34;&#34;Turn&#39;s off clean sweep mode.&#34;&#34;&#34;
+
+        self._csstart(0)
+
+    def cleansweep_setup(self, freq_low, freq_high):
+        &#34;&#34;&#34;
+        A wrapper function that takes the start and end frequencies
+        you would like to sweep over. It computes and sets the clean sweep
+        amplitude and the midpoint.
+
+        The clean sweep operation will begin in the center of the high and low.
+
+        &#34;&#34;&#34;
+
+        if freq_low &lt; self._frequency_min or freq_high &gt; self._frequency_max:
+            raise ValueError(&#39;The range you would like to sweep over&#39;,
+                             &#39;is outside of the bounds for this laser&#39;)
+
+        # sets the clean sweep amplitude rounded to the nearest MHz.
+        cs_ampl = round(abs(freq_high - freq_low) * 1e3)
+        if cs_ampl &gt; 50:
+            raise Exception(&#34;This is an error specific to SpectrumLab.&#34;
+                            &#34;Our laser has a 50GHz maximum cleansweep range.&#34;
+                            &#34;You should change the limit in source for your laser.&#34;
+                            &#34;If you know a way to query the laser for this value&#34;
+                            &#34;then implementing that would be better.&#34;)
+
+        self.set_cleansweep_amplitude(cs_ampl)
+
+        cs_center = round((freq_low + freq_high) * 1e4 / 2) * 1e-4
+        self.set_frequency(cs_center)
+
+    def get_cleansweep_rate(self):
+        &#34;&#34;&#34;Gets the clean sweep rate. not sure about units.&#34;&#34;&#34;
+        response = self._csrate()
+        cs_rate = int.from_bytes(response, &#39;big&#39;)
+        return cs_rate
+
+    def set_cleansweep_rate(self, rate_MHz):
+        &#34;&#34;&#34;sets the cleansweep rate in MHz/sec
+        idk if there is a way to check if its within some bounds.
+        There is conflicting info in the pure photonics docs.&#34;&#34;&#34;
+        raise Warning(&#34;Dont use this. Need to confirm the units for the sweep rate.&#34;)
+        self._csrate(rate_MHz)
+
+    def get_cleansweep_offset(self):
+        raise Warning(&#34;This is not implemented yet.&#34;)
+
+    def set_cleansweep_offset(self, offset):
+        raise Warning(&#34;This is not implemented yet.&#34;)
+
+    def cleanjump(self):
+        &#34;&#34;&#34;Tells the laser to perform the clean jump.
+        The clean jump must be precalibrated.
+        You should have the calibration points in your lab notebook
+        or written down somewhere.
+        If not you should perform the clean jump calibration.&#34;&#34;&#34;
+        mode = self.get_mode()
+        if mode == &#39;normal&#39;:
+            raise Exception(&#34;Laser in normal mode. You must be in nodither&#34;
+                            &#34;or whisper mode to use cleanjump.&#34;)
+        self._cjstart(1)
+
+    def set_cleanjump(self, freq_jump):
+        &#39;&#39;&#39;
+        Set the size of the jump in THz to the fourth decimal place.
+        XXX.XXXX
+        &#39;&#39;&#39;
+        freq_jump = str(freq_jump * 10000)
+        self._cjthz(int(freq_jump[0:3]))
+        self._cjghz(int(freq_jump[3:]))
+
+    def cleanjump_calibration(self, fcf, grid, pwr, n_jumppoints,
+                              confirmation=None):
+        &#39;&#39;&#39;
+        This is a grid based calibration
+
+        **fcf**: the first channel frequency you would like to
+        begin calibration at. (THz)
+
+        **grid**: the grid spacing (GHz)
+
+        **pwr**: The power calibration will be at. (dBm)
+
+        **n_jumppoints**: The number of grid points to calibrate.
+
+        **confirmation**: If you would like to go ahead and confirm yes
+        and skip the user input you can set confirmation to &#39;y&#39;
+        &#39;&#39;&#39;
+
+        # calibration begins by writing the number of channels to 0xD2
+
+        calibration_points = [fcf + grid * n * 1e-3
+                              for n in range(n_jumppoints)]
+
+        print(f&#34;You are calibrating {n_jumppoints} clean jump setpoints&#34;,
+              f&#34;at frequencies:\n{calibration_points}(THz).&#34;,
+              f&#34;With power = {pwr}(dBm).&#34;)
+        print(&#34;Write these down in your lab notebook because&#34;,
+              &#34;you cannot query the device for these values later.&#34;)
+
+        if confirmation is None:
+            confirmation = input(&#34;Is the information above correct? (y/n): &#34;)
+
+        if confirmation.lower() == &#39;y&#39;:
+            # set up the first channel frequency, grid spacing, and power
+            self.set_frequency(fcf)
+            self.set_grid(grid)
+            self.set_power(pwr)
+            self._cleanjump_calibration(n_jumppoints)
+
+        elif confirmation.lower() == &#39;n&#39;:
+            print(f&#34;You answered {confirmation!r}.&#34;,
+                  &#34;Calibration will not be performed.&#34;)
+
+        else:
+            raise Exception(&#34;input not recognized&#34;)
+
+    def _cleanjump_calibration(self, n_jumppoints):
+
+        # does this return a response with bit 15 active?
+        self._cjcalibration(n_jumppoints)
+
+        is_calibrating = True
+
+        while is_calibrating:
+
+            response = self._cjcalibration()
+
+            response_bits = [bit for bit in f&#39;{response:08}&#39;].reverse()
+            is_calibrating = bool(response_bits[15])
+            sleep(1)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="itla.itla.ITLA" href="itla.html#itla.itla.ITLA">ITLA</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="itla.pplaser.PPLaser.cleanjump"><code class="name flex">
+<span>def <span class="ident">cleanjump</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Tells the laser to perform the clean jump.
+The clean jump must be precalibrated.
+You should have the calibration points in your lab notebook
+or written down somewhere.
+If not you should perform the clean jump calibration.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def cleanjump(self):
+    &#34;&#34;&#34;Tells the laser to perform the clean jump.
+    The clean jump must be precalibrated.
+    You should have the calibration points in your lab notebook
+    or written down somewhere.
+    If not you should perform the clean jump calibration.&#34;&#34;&#34;
+    mode = self.get_mode()
+    if mode == &#39;normal&#39;:
+        raise Exception(&#34;Laser in normal mode. You must be in nodither&#34;
+                        &#34;or whisper mode to use cleanjump.&#34;)
+    self._cjstart(1)</code></pre>
+</details>
+</dd>
+<dt id="itla.pplaser.PPLaser.cleanjump_calibration"><code class="name flex">
+<span>def <span class="ident">cleanjump_calibration</span></span>(<span>self, fcf, grid, pwr, n_jumppoints, confirmation=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This is a grid based calibration</p>
+<p><strong>fcf</strong>: the first channel frequency you would like to
+begin calibration at. (THz)</p>
+<p><strong>grid</strong>: the grid spacing (GHz)</p>
+<p><strong>pwr</strong>: The power calibration will be at. (dBm)</p>
+<p><strong>n_jumppoints</strong>: The number of grid points to calibrate.</p>
+<p><strong>confirmation</strong>: If you would like to go ahead and confirm yes
+and skip the user input you can set confirmation to 'y'</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def cleanjump_calibration(self, fcf, grid, pwr, n_jumppoints,
+                          confirmation=None):
+    &#39;&#39;&#39;
+    This is a grid based calibration
+
+    **fcf**: the first channel frequency you would like to
+    begin calibration at. (THz)
+
+    **grid**: the grid spacing (GHz)
+
+    **pwr**: The power calibration will be at. (dBm)
+
+    **n_jumppoints**: The number of grid points to calibrate.
+
+    **confirmation**: If you would like to go ahead and confirm yes
+    and skip the user input you can set confirmation to &#39;y&#39;
+    &#39;&#39;&#39;
+
+    # calibration begins by writing the number of channels to 0xD2
+
+    calibration_points = [fcf + grid * n * 1e-3
+                          for n in range(n_jumppoints)]
+
+    print(f&#34;You are calibrating {n_jumppoints} clean jump setpoints&#34;,
+          f&#34;at frequencies:\n{calibration_points}(THz).&#34;,
+          f&#34;With power = {pwr}(dBm).&#34;)
+    print(&#34;Write these down in your lab notebook because&#34;,
+          &#34;you cannot query the device for these values later.&#34;)
+
+    if confirmation is None:
+        confirmation = input(&#34;Is the information above correct? (y/n): &#34;)
+
+    if confirmation.lower() == &#39;y&#39;:
+        # set up the first channel frequency, grid spacing, and power
+        self.set_frequency(fcf)
+        self.set_grid(grid)
+        self.set_power(pwr)
+        self._cleanjump_calibration(n_jumppoints)
+
+    elif confirmation.lower() == &#39;n&#39;:
+        print(f&#34;You answered {confirmation!r}.&#34;,
+              &#34;Calibration will not be performed.&#34;)
+
+    else:
+        raise Exception(&#34;input not recognized&#34;)</code></pre>
+</details>
+</dd>
+<dt id="itla.pplaser.PPLaser.cleansweep_disable"><code class="name flex">
+<span>def <span class="ident">cleansweep_disable</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Turn's off clean sweep mode.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def cleansweep_disable(self):
+    &#34;&#34;&#34;Turn&#39;s off clean sweep mode.&#34;&#34;&#34;
+
+    self._csstart(0)</code></pre>
+</details>
+</dd>
+<dt id="itla.pplaser.PPLaser.cleansweep_enable"><code class="name flex">
+<span>def <span class="ident">cleansweep_enable</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Enables clean sweep mode.
+The clean sweep will ramp to (+0.5 to -0.5) * amplitude.
+(Basically it will be centered at the current frequency.)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def cleansweep_enable(self):
+    &#34;&#34;&#34;Enables clean sweep mode.
+    The clean sweep will ramp to (+0.5 to -0.5) * amplitude.
+    (Basically it will be centered at the current frequency.)
+    &#34;&#34;&#34;
+    response = self.get_mode()
+    if response == &#39;normal&#39;:
+        raise Exception(&#34;Laser currently in normal mode.&#34;,
+                        &#34;please set to nodither or whisper mode&#34;)
+
+    self._csstart(1)</code></pre>
+</details>
+</dd>
+<dt id="itla.pplaser.PPLaser.cleansweep_setup"><code class="name flex">
+<span>def <span class="ident">cleansweep_setup</span></span>(<span>self, freq_low, freq_high)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A wrapper function that takes the start and end frequencies
+you would like to sweep over. It computes and sets the clean sweep
+amplitude and the midpoint.</p>
+<p>The clean sweep operation will begin in the center of the high and low.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def cleansweep_setup(self, freq_low, freq_high):
+    &#34;&#34;&#34;
+    A wrapper function that takes the start and end frequencies
+    you would like to sweep over. It computes and sets the clean sweep
+    amplitude and the midpoint.
+
+    The clean sweep operation will begin in the center of the high and low.
+
+    &#34;&#34;&#34;
+
+    if freq_low &lt; self._frequency_min or freq_high &gt; self._frequency_max:
+        raise ValueError(&#39;The range you would like to sweep over&#39;,
+                         &#39;is outside of the bounds for this laser&#39;)
+
+    # sets the clean sweep amplitude rounded to the nearest MHz.
+    cs_ampl = round(abs(freq_high - freq_low) * 1e3)
+    if cs_ampl &gt; 50:
+        raise Exception(&#34;This is an error specific to SpectrumLab.&#34;
+                        &#34;Our laser has a 50GHz maximum cleansweep range.&#34;
+                        &#34;You should change the limit in source for your laser.&#34;
+                        &#34;If you know a way to query the laser for this value&#34;
+                        &#34;then implementing that would be better.&#34;)
+
+    self.set_cleansweep_amplitude(cs_ampl)
+
+    cs_center = round((freq_low + freq_high) * 1e4 / 2) * 1e-4
+    self.set_frequency(cs_center)</code></pre>
+</details>
+</dd>
+<dt id="itla.pplaser.PPLaser.connect"><code class="name flex">
+<span>def <span class="ident">connect</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Overriden connect function with query for max and min frequency</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def connect(self):
+    &#34;&#34;&#34;Overriden connect function with query for max and min frequency
+    &#34;&#34;&#34;
+    super().connect()
+    self._frequency_max = self.get_frequency_max()
+    self._frequency_min = self.get_frequency_min()</code></pre>
+</details>
+</dd>
+<dt id="itla.pplaser.PPLaser.get_cleansweep_amplitude"><code class="name flex">
+<span>def <span class="ident">get_cleansweep_amplitude</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>get the amplitude of the clean sweep.</p>
+<p>The clean sweep will ramp to (+0.5 to -0.5) * amplitude.
+(Basically it will be centered at the current frequency.)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_cleansweep_amplitude(self):
+    &#34;&#34;&#34;get the amplitude of the clean sweep.
+
+    The clean sweep will ramp to (+0.5 to -0.5) * amplitude.
+    (Basically it will be centered at the current frequency.)
+    &#34;&#34;&#34;
+    response = self._csrange()
+    cs_amplitude = int.from_bytes(response, &#39;big&#39;)
+
+    return cs_amplitude</code></pre>
+</details>
+</dd>
+<dt id="itla.pplaser.PPLaser.get_cleansweep_offset"><code class="name flex">
+<span>def <span class="ident">get_cleansweep_offset</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_cleansweep_offset(self):
+    raise Warning(&#34;This is not implemented yet.&#34;)</code></pre>
+</details>
+</dd>
+<dt id="itla.pplaser.PPLaser.get_cleansweep_rate"><code class="name flex">
+<span>def <span class="ident">get_cleansweep_rate</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Gets the clean sweep rate. not sure about units.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_cleansweep_rate(self):
+    &#34;&#34;&#34;Gets the clean sweep rate. not sure about units.&#34;&#34;&#34;
+    response = self._csrate()
+    cs_rate = int.from_bytes(response, &#39;big&#39;)
+    return cs_rate</code></pre>
+</details>
+</dd>
+<dt id="itla.pplaser.PPLaser.get_grid_min"><code class="name flex">
+<span>def <span class="ident">get_grid_min</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>get the minimum grid spacing</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_grid_min(self):
+    &#34;&#34;&#34;get the minimum grid spacing
+    &#34;&#34;&#34;
+    try:
+        self._lgrid()
+        freq_lgrid = int(self._response[4:], 16)
+
+    except ExecutionError as ee:
+        self.nop()
+
+    return freq_lgrid * 1e-1</code></pre>
+</details>
+</dd>
+<dt id="itla.pplaser.PPLaser.get_mode"><code class="name flex">
+<span>def <span class="ident">get_mode</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>get which low noise mode</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_mode(self):
+    &#34;&#34;&#34;get which low noise mode&#34;&#34;&#34;
+    modes = {0: &#39;normal&#39;,
+             1: &#39;nodither&#39;,
+             2: &#39;whisper&#39;}
+
+    response = self._mode()
+    response = int.from_bytes(response, &#39;big&#39;)
+
+    return modes[response]</code></pre>
+</details>
+</dd>
+<dt id="itla.pplaser.PPLaser.nodithermode"><code class="name flex">
+<span>def <span class="ident">nodithermode</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set mode to nodither mode</p>
+<p>It is unclear whether this just also activates whisper mode.
+The feature guide says "a value of 1 defaults to 2".</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def nodithermode(self):
+    &#34;&#34;&#34;Set mode to nodither mode
+
+    It is unclear whether this just also activates whisper mode.
+    The feature guide says &#34;a value of 1 defaults to 2&#34;.
+    &#34;&#34;&#34;
+    self._mode(1)</code></pre>
+</details>
+</dd>
+<dt id="itla.pplaser.PPLaser.normalmode"><code class="name flex">
+<span>def <span class="ident">normalmode</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>set mode to standard dither mode</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def normalmode(self):
+    &#34;&#34;&#34;set mode to standard dither mode&#34;&#34;&#34;
+    self._mode(0)</code></pre>
+</details>
+</dd>
+<dt id="itla.pplaser.PPLaser.set_channel"><code class="name flex">
+<span>def <span class="ident">set_channel</span></span>(<span>self, channel)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>It is likely not possible to reach channels in the range where
+channelh would kick in anyway. However since the laser is built on the
+OIF-ITLA-1.2 standard we should just avoid calling it.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_channel(self, channel):
+    &#34;&#34;&#34;
+    It is likely not possible to reach channels in the range where
+    channelh would kick in anyway. However since the laser is built on the
+    OIF-ITLA-1.2 standard we should just avoid calling it.
+    &#34;&#34;&#34;
+    # check type and stuff
+    if not isinstance(channel, int):
+        raise TypeError(&#34;Channel must be an integer&#34;)
+    if channel &lt; 0:
+        raise ValueError(&#34;Channel must be positive.&#34;)
+    if channel &gt; 0xFFFF:
+        raise ValueError(&#34;Channel must be a 16 bit integer (&lt;=0xFFFF).&#34;)
+
+    # Split the channel choice into two options.
+    channel_hex = f&#39;{channel:08x}&#39;
+
+    channell = int(channel_hex[4:], 16)
+    self._channel(channell)</code></pre>
+</details>
+</dd>
+<dt id="itla.pplaser.PPLaser.set_cleanjump"><code class="name flex">
+<span>def <span class="ident">set_cleanjump</span></span>(<span>self, freq_jump)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set the size of the jump in THz to the fourth decimal place.
+XXX.XXXX</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_cleanjump(self, freq_jump):
+    &#39;&#39;&#39;
+    Set the size of the jump in THz to the fourth decimal place.
+    XXX.XXXX
+    &#39;&#39;&#39;
+    freq_jump = str(freq_jump * 10000)
+    self._cjthz(int(freq_jump[0:3]))
+    self._cjghz(int(freq_jump[3:]))</code></pre>
+</details>
+</dd>
+<dt id="itla.pplaser.PPLaser.set_cleansweep_amplitude"><code class="name flex">
+<span>def <span class="ident">set_cleansweep_amplitude</span></span>(<span>self, range_GHz)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Sets the amplitude of the clean sweep.</p>
+<p>The clean sweep will ramp to (+0.5 to -0.5) * amplitude.
+(Basically it will be centered at the current frequency.)</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_cleansweep_amplitude(self, range_GHz):
+    &#34;&#34;&#34;Sets the amplitude of the clean sweep.
+
+    The clean sweep will ramp to (+0.5 to -0.5) * amplitude.
+    (Basically it will be centered at the current frequency.)
+    &#34;&#34;&#34;
+    self._csrange(range_GHz)</code></pre>
+</details>
+</dd>
+<dt id="itla.pplaser.PPLaser.set_cleansweep_offset"><code class="name flex">
+<span>def <span class="ident">set_cleansweep_offset</span></span>(<span>self, offset)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_cleansweep_offset(self, offset):
+    raise Warning(&#34;This is not implemented yet.&#34;)</code></pre>
+</details>
+</dd>
+<dt id="itla.pplaser.PPLaser.set_cleansweep_rate"><code class="name flex">
+<span>def <span class="ident">set_cleansweep_rate</span></span>(<span>self, rate_MHz)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>sets the cleansweep rate in MHz/sec
+idk if there is a way to check if its within some bounds.
+There is conflicting info in the pure photonics docs.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_cleansweep_rate(self, rate_MHz):
+    &#34;&#34;&#34;sets the cleansweep rate in MHz/sec
+    idk if there is a way to check if its within some bounds.
+    There is conflicting info in the pure photonics docs.&#34;&#34;&#34;
+    raise Warning(&#34;Dont use this. Need to confirm the units for the sweep rate.&#34;)
+    self._csrate(rate_MHz)</code></pre>
+</details>
+</dd>
+<dt id="itla.pplaser.PPLaser.set_fcf"><code class="name flex">
+<span>def <span class="ident">set_fcf</span></span>(<span>self, freq)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This sets the first channel frequency.
+It does not reset the channel so this frequency will only be equal
+to the output frequency if channel=1.</p>
+<p>There is an issue in setting the first channel frequency for
+the pure photonics laser as compared to the ITLA 1.3 standard.</p>
+<p>If we set the FCF3 register it will clear the FCF2 register.</p>
+<p>Because the <code>set_frequency</code> function calls this function this will also
+correct the issue in setting the frequency generally.</p>
+<p>verifies that fcf is set within the appropriate laser frequency range
+and raises RVE error if not</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_fcf(self, freq):
+    &#39;&#39;&#39;
+    This sets the first channel frequency.
+    It does not reset the channel so this frequency will only be equal
+    to the output frequency if channel=1.
+
+    There is an issue in setting the first channel frequency for
+    the pure photonics laser as compared to the ITLA 1.3 standard.
+
+    If we set the FCF3 register it will clear the FCF2 register.
+
+    Because the `set_frequency` function calls this function this will also
+    correct the issue in setting the frequency generally.
+
+    verifies that fcf is set within the appropriate laser frequency range
+    and raises RVE error if not
+    &#39;&#39;&#39;
+    if freq &lt; self._frequency_min or freq &gt; self._frequency_max:
+        raise RVEError(&#34;The desired frequency is outside &#34;
+                       &#34;of the range for this laser.&#34;)
+
+    freq = int(freq * 1e6)
+
+    freq_str = str(freq)
+    fcf1 = int(freq_str[0:3])
+    fcf2 = int(freq_str[3:7])
+    # the final two decimal places (0-99MHz) are ignored.
+
+    try:
+        self._fcf1(fcf1)
+        self._fcf2(fcf2)
+
+    except ExecutionError:
+
+        try:
+            self.nop()
+        except RVEError as error:
+            raise error from None
+        except CIEError as error:
+            raise error from None</code></pre>
+</details>
+</dd>
+<dt id="itla.pplaser.PPLaser.set_grid"><code class="name flex">
+<span>def <span class="ident">set_grid</span></span>(<span>self, grid_freq)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set the grid spacing in GHz. resolution in GHz/10.</p>
+<p>PPLaser built on 1.2 standard so we dont do grid2</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_grid(self, grid_freq):
+    &#34;&#34;&#34;
+    Set the grid spacing in GHz. resolution in GHz/10.
+
+    PPLaser built on 1.2 standard so we dont do grid2
+    &#34;&#34;&#34;
+    grid_freq = int(grid_freq * 10)
+
+    self._grid(grid_freq)</code></pre>
+</details>
+</dd>
+<dt id="itla.pplaser.PPLaser.whispermode"><code class="name flex">
+<span>def <span class="ident">whispermode</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Enables whisper mode where all control loops
+are disabled resulting in a lower noise mode.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def whispermode(self):
+    &#34;&#34;&#34;Enables whisper mode where all control loops
+    are disabled resulting in a lower noise mode.&#34;&#34;&#34;
+    self._mode(2)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="itla.itla.ITLA" href="itla.html#itla.itla.ITLA">ITLA</a></b></code>:
+<ul class="hlist">
+<li><code><a title="itla.itla.ITLA.disable" href="itla.html#itla.itla.ITLA.disable">disable</a></code></li>
+<li><code><a title="itla.itla.ITLA.disconnect" href="itla.html#itla.itla.ITLA.disconnect">disconnect</a></code></li>
+<li><code><a title="itla.itla.ITLA.dither_disable" href="itla.html#itla.itla.ITLA.dither_disable">dither_disable</a></code></li>
+<li><code><a title="itla.itla.ITLA.enable" href="itla.html#itla.itla.ITLA.enable">enable</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_age" href="itla.html#itla.itla.ITLA.get_age">get_age</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_backwardscompatibility" href="itla.html#itla.itla.ITLA.get_backwardscompatibility">get_backwardscompatibility</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_channel" href="itla.html#itla.itla.ITLA.get_channel">get_channel</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_currents" href="itla.html#itla.itla.ITLA.get_currents">get_currents</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_device_type" href="itla.html#itla.itla.ITLA.get_device_type">get_device_type</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_dither_amplitude" href="itla.html#itla.itla.ITLA.get_dither_amplitude">get_dither_amplitude</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_dither_frequency" href="itla.html#itla.itla.ITLA.get_dither_frequency">get_dither_frequency</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_dither_rate" href="itla.html#itla.itla.ITLA.get_dither_rate">get_dither_rate</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_fcf" href="itla.html#itla.itla.ITLA.get_fcf">get_fcf</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_fine_tuning" href="itla.html#itla.itla.ITLA.get_fine_tuning">get_fine_tuning</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_firmware_release" href="itla.html#itla.itla.ITLA.get_firmware_release">get_firmware_release</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_frequency" href="itla.html#itla.itla.ITLA.get_frequency">get_frequency</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_frequency_max" href="itla.html#itla.itla.ITLA.get_frequency_max">get_frequency_max</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_frequency_min" href="itla.html#itla.itla.ITLA.get_frequency_min">get_frequency_min</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_grid" href="itla.html#itla.itla.ITLA.get_grid">get_grid</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_last_response" href="itla.html#itla.itla.ITLA.get_last_response">get_last_response</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_manufacturer" href="itla.html#itla.itla.ITLA.get_manufacturer">get_manufacturer</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_manufacturing_date" href="itla.html#itla.itla.ITLA.get_manufacturing_date">get_manufacturing_date</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_model" href="itla.html#itla.itla.ITLA.get_model">get_model</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_output_wavelength" href="itla.html#itla.itla.ITLA.get_output_wavelength">get_output_wavelength</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_power_max" href="itla.html#itla.itla.ITLA.get_power_max">get_power_max</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_power_min" href="itla.html#itla.itla.ITLA.get_power_min">get_power_min</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_power_output" href="itla.html#itla.itla.ITLA.get_power_output">get_power_output</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_power_setting" href="itla.html#itla.itla.ITLA.get_power_setting">get_power_setting</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_response" href="itla.html#itla.itla.ITLA.get_response">get_response</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_serialnumber" href="itla.html#itla.itla.ITLA.get_serialnumber">get_serialnumber</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_temp" href="itla.html#itla.itla.ITLA.get_temp">get_temp</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_temps" href="itla.html#itla.itla.ITLA.get_temps">get_temps</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_wavelength" href="itla.html#itla.itla.ITLA.get_wavelength">get_wavelength</a></code></li>
+<li><code><a title="itla.itla.ITLA.hard_reset" href="itla.html#itla.itla.ITLA.hard_reset">hard_reset</a></code></li>
+<li><code><a title="itla.itla.ITLA.nop" href="itla.html#itla.itla.ITLA.nop">nop</a></code></li>
+<li><code><a title="itla.itla.ITLA.read_aea" href="itla.html#itla.itla.ITLA.read_aea">read_aea</a></code></li>
+<li><code><a title="itla.itla.ITLA.send_command" href="itla.html#itla.itla.ITLA.send_command">send_command</a></code></li>
+<li><code><a title="itla.itla.ITLA.set_dither_amplitude" href="itla.html#itla.itla.ITLA.set_dither_amplitude">set_dither_amplitude</a></code></li>
+<li><code><a title="itla.itla.ITLA.set_dither_frequency" href="itla.html#itla.itla.ITLA.set_dither_frequency">set_dither_frequency</a></code></li>
+<li><code><a title="itla.itla.ITLA.set_dither_rate" href="itla.html#itla.itla.ITLA.set_dither_rate">set_dither_rate</a></code></li>
+<li><code><a title="itla.itla.ITLA.set_fine_tuning" href="itla.html#itla.itla.ITLA.set_fine_tuning">set_fine_tuning</a></code></li>
+<li><code><a title="itla.itla.ITLA.set_frequency" href="itla.html#itla.itla.ITLA.set_frequency">set_frequency</a></code></li>
+<li><code><a title="itla.itla.ITLA.set_power" href="itla.html#itla.itla.ITLA.set_power">set_power</a></code></li>
+<li><code><a title="itla.itla.ITLA.set_wavelength" href="itla.html#itla.itla.ITLA.set_wavelength">set_wavelength</a></code></li>
+<li><code><a title="itla.itla.ITLA.soft_reset" href="itla.html#itla.itla.ITLA.soft_reset">soft_reset</a></code></li>
+<li><code><a title="itla.itla.ITLA.upgrade_firmware" href="itla.html#itla.itla.ITLA.upgrade_firmware">upgrade_firmware</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="itla" href="index.html">itla</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="itla.pplaser.PPLaser" href="#itla.pplaser.PPLaser">PPLaser</a></code></h4>
+<ul class="">
+<li><code><a title="itla.pplaser.PPLaser.cleanjump" href="#itla.pplaser.PPLaser.cleanjump">cleanjump</a></code></li>
+<li><code><a title="itla.pplaser.PPLaser.cleanjump_calibration" href="#itla.pplaser.PPLaser.cleanjump_calibration">cleanjump_calibration</a></code></li>
+<li><code><a title="itla.pplaser.PPLaser.cleansweep_disable" href="#itla.pplaser.PPLaser.cleansweep_disable">cleansweep_disable</a></code></li>
+<li><code><a title="itla.pplaser.PPLaser.cleansweep_enable" href="#itla.pplaser.PPLaser.cleansweep_enable">cleansweep_enable</a></code></li>
+<li><code><a title="itla.pplaser.PPLaser.cleansweep_setup" href="#itla.pplaser.PPLaser.cleansweep_setup">cleansweep_setup</a></code></li>
+<li><code><a title="itla.pplaser.PPLaser.connect" href="#itla.pplaser.PPLaser.connect">connect</a></code></li>
+<li><code><a title="itla.pplaser.PPLaser.get_cleansweep_amplitude" href="#itla.pplaser.PPLaser.get_cleansweep_amplitude">get_cleansweep_amplitude</a></code></li>
+<li><code><a title="itla.pplaser.PPLaser.get_cleansweep_offset" href="#itla.pplaser.PPLaser.get_cleansweep_offset">get_cleansweep_offset</a></code></li>
+<li><code><a title="itla.pplaser.PPLaser.get_cleansweep_rate" href="#itla.pplaser.PPLaser.get_cleansweep_rate">get_cleansweep_rate</a></code></li>
+<li><code><a title="itla.pplaser.PPLaser.get_grid_min" href="#itla.pplaser.PPLaser.get_grid_min">get_grid_min</a></code></li>
+<li><code><a title="itla.pplaser.PPLaser.get_mode" href="#itla.pplaser.PPLaser.get_mode">get_mode</a></code></li>
+<li><code><a title="itla.pplaser.PPLaser.nodithermode" href="#itla.pplaser.PPLaser.nodithermode">nodithermode</a></code></li>
+<li><code><a title="itla.pplaser.PPLaser.normalmode" href="#itla.pplaser.PPLaser.normalmode">normalmode</a></code></li>
+<li><code><a title="itla.pplaser.PPLaser.set_channel" href="#itla.pplaser.PPLaser.set_channel">set_channel</a></code></li>
+<li><code><a title="itla.pplaser.PPLaser.set_cleanjump" href="#itla.pplaser.PPLaser.set_cleanjump">set_cleanjump</a></code></li>
+<li><code><a title="itla.pplaser.PPLaser.set_cleansweep_amplitude" href="#itla.pplaser.PPLaser.set_cleansweep_amplitude">set_cleansweep_amplitude</a></code></li>
+<li><code><a title="itla.pplaser.PPLaser.set_cleansweep_offset" href="#itla.pplaser.PPLaser.set_cleansweep_offset">set_cleansweep_offset</a></code></li>
+<li><code><a title="itla.pplaser.PPLaser.set_cleansweep_rate" href="#itla.pplaser.PPLaser.set_cleansweep_rate">set_cleansweep_rate</a></code></li>
+<li><code><a title="itla.pplaser.PPLaser.set_fcf" href="#itla.pplaser.PPLaser.set_fcf">set_fcf</a></code></li>
+<li><code><a title="itla.pplaser.PPLaser.set_grid" href="#itla.pplaser.PPLaser.set_grid">set_grid</a></code></li>
+<li><code><a title="itla.pplaser.PPLaser.whispermode" href="#itla.pplaser.PPLaser.whispermode">whispermode</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>
