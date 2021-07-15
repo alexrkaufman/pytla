@@ -1,1 +1,1 @@
-include ./itla/registers/*.yaml
+include itla/registers/*
