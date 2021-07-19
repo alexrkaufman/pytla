@@ -75,7 +75,10 @@ class ITLA():
         register_files = ['registers_itla.yaml', *register_files]
 
         # this function creates register functions
-        def mkfn(*, fnname, register, description, readonly, signed, AEA):
+        def mkfn(*, fnname, register, description,
+                 readonly, signed, **_):
+            # _ here to absorb unused things. This way the yaml
+            # can contain more info without causing errors here.
             if readonly:
                 def reg_fun(self):
                     self.send_command(register, signed=signed)
