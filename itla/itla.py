@@ -5,11 +5,7 @@ from scipy.constants import speed_of_light
 from serial.serialutil import SerialException
 from pkg_resources import resource_filename
 from .itla_errors import *
-from .utils import (setup_registers, form_packet,
-                    compute_checksum)
-
-
-regdoc = '**Uses register {register:#04X}.**\n\n'
+from .utils import compute_checksum
 
 
 class ITLA():
