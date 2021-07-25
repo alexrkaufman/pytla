@@ -1,7 +1,5 @@
 # pytla
 
-**Currently only the source distribution on pip works.**
-
 *pytla* the Python (Integrable) Tunable Laser Assembly library!
 
 This is meant to be an open source and relatively user friendly way to interact
@@ -28,8 +26,8 @@ for them.
 
 ```python
 # import, initialize, and connect to laser
-import pytla
-laser = pytla.ITLA('/dev/ttyUSB0', 9600)
+import itla
+laser = itla.ITLA('/dev/ttyUSB0', 9600)
 laser.connect()
 
 # Set the frequency to 193.560 THz
