@@ -937,7 +937,328 @@ class ITLA():
         # 4) send dlconfig signal
         # 5) ????
         # 6) profit
-        raise Warning(&#34;this is not implemented yet.&#34;)</code></pre>
+        raise Warning(&#34;this is not implemented yet.&#34;)
+    def get_error_fatal(self, reset=False):
+        &#34;&#34;&#34;
+        reads fatal error register statusf and checks each bit against the
+        fatal error table to determine the fault
+        
+        :param reset: resets/clears latching errors 
+
+        &#34;&#34;&#34;
+        response = self._statusf()
+        statusf = int.from_bytes(response, &#39;big&#39;)
+        statusf = f&#39;{statusf:016b}&#39;
+        status_array = [int(code) for code in statusf]
+        status_array.reverse()
+        print(status_array)
+
+        if any(status_array):
+            print(&#34;Current Status Fatal Error&#34;)
+
+            if status_array[0] == 1:
+                print(&#34;FPWRL&#34;)
+            if status_array[1] == 1:
+                print(&#34;FTHERML&#34;)
+            if status_array[2] == 1:
+                print(&#34;FFREQL&#34;)
+            if status_array[3] == 1:
+                print(&#34;FVSFL&#34;)
+            if status_array[4] == 1:
+                print(&#34;CRL&#34;)
+            if status_array[5] == 1:
+                print(&#34;MRL&#34;)
+            if status_array[6] == 1:
+                print(&#34;CEL&#34;)
+            if status_array[7] == 1:
+                print(&#34;XEL&#34;)
+            if status_array[8] == 1:
+                print(&#34;FPWR&#34;)
+            if status_array[9] == 1:
+                print(&#34;FTHERM&#34;)
+            if status_array[10] == 1:
+                print(&#34;FFREQ&#34;)
+            if status_array[11] == 1:
+                print(&#34;FVSF&#34;)
+            if status_array[12] == 1:
+                print(&#34;DIS&#34;)
+            if status_array[13] == 1:
+                print(&#34;FATAL&#34;)
+            if status_array[14] == 1:
+                print(&#34;ALM&#34;)
+            if status_array[15] == 1:
+                print(&#34;SRQ &#34;)
+            if reset == True:
+                data_reset = [0] * 16
+                data_reset = int(&#39;&#39;.join(str(x) for x in data_reset[::-1]), 2)
+                self._statusf(data_reset)
+                
+    def get_error_warning(self, reset=False):
+        &#34;&#34;&#34;
+        reads warning error register statusw and checks each bit against the
+        warning error table to determine the fault
+
+        If the laser is off then some of the latched warnings will be set on.
+        
+        :param reset: resets/clears latching errors 
+        &#34;&#34;&#34;
+        response = self._statusw()
+        statusw = int.from_bytes(response, &#39;big&#39;)
+        statusw = f&#39;{statusw:016b}&#39;
+        status_array = [int(code) for code in statusw]
+        status_array.reverse()
+        print(status_array)
+
+        if any(status_array):
+            print(&#34;Current Status Warning Error&#34;)
+
+            if status_array[0] == 1:
+                print(&#34;WPWRL&#34;)
+            if status_array[1] == 1:
+                print(&#34;WTHERML&#34;)
+            if status_array[2] == 1:
+                print(&#34;WFREQL&#34;)
+            if status_array[3] == 1:
+                print(&#34;WVSFL&#34;)
+            if status_array[4] == 1:
+                print(&#34;CRL&#34;)
+            if status_array[5] == 1:
+                print(&#34;MRL&#34;)
+            if status_array[6] == 1:
+                print(&#34;CEL&#34;)
+            if status_array[7] == 1:
+                print(&#34;XEL&#34;)
+            if status_array[8] == 1:
+                print(&#34;WPWR&#34;)
+            if status_array[9] == 1:
+                print(&#34;WTHERM&#34;)
+            if status_array[10] == 1:
+                print(&#34;WFREQ&#34;)
+            if status_array[11] == 1:
+                print(&#34;FVSF&#34;)
+            if status_array[12] == 1:
+                print(&#34;DIS&#34;)
+            if status_array[13] == 1:
+                print(&#34;FATAL&#34;)
+            if status_array[14] == 1:
+                print(&#34;ALM&#34;)
+            if status_array[15] == 1:
+                print(&#34;SRQ &#34;)
+            if reset == True:
+                data_reset = int(&#39;00ff&#39;, 16)
+                self._statusw(data_reset)
+                
+    
+    def get_fatal_power_thresh(self):
+        &#34;&#34;&#34;
+        reads maximum plus/minus power deviation in dB for which the fatal alarm is asserted
+        
+        &#34;&#34;&#34;
+        response = self._fpowth()
+        pow_fatal = int.from_bytes(response, &#39;big&#39;) / 100 
+        #correcting for proper order of magnitude
+        return pow_fatal
+        
+    def get_warning_power_thresh(self):
+        &#34;&#34;&#34;
+        reads maximum plus/minus power deviation in dB for which the warning alarm is asserted
+        
+        &#34;&#34;&#34;
+        response = self._wpowth()
+        pow_warn = int.from_bytes(response, &#39;big&#39;) / 100 
+        #correcting for proper order of magnitude
+        return pow_warn
+    
+    def get_fatal_freq_thresh(self):
+        &#34;&#34;&#34;
+        reads maximum plus/minus frequency deviation in GHz for which the fatal alarm is asserted
+        
+        &#34;&#34;&#34;
+        response = self._ffreqth()
+        freq_fatal = int.from_bytes(response, &#39;big&#39;) / 10 
+        #correcting for proper order of magnitude
+        response2 = self._ffreqth2()
+        freq_fatal2 = int.from_bytes(response2, &#39;big&#39;) / 100
+        #get frequency deviation in MHz and add to GHz value
+        return freq_fatal + freq_fatal2
+        
+    
+    def get_warning_freq_thresh(self):
+        &#34;&#34;&#34;
+        reads maximum plus/minus frequency deviation in GHz for which the warning alarm is asserted
+        
+        &#34;&#34;&#34;
+        response = self._wfreqth()
+        freq_warn = int.from_bytes(response, &#39;big&#39;) / 10 
+        #correcting for proper order of magnitude
+        response2 = self._wfreqth2()
+        freq_warn2 = int.from_bytes(response2, &#39;big&#39;) / 100
+        #get frequency deviation in MHz and add to GHz value
+        return freq_warn + freq_warn2
+
+
+    def get_fatal_therm_thresh(self):
+        &#34;&#34;&#34;
+        reads maximum plus/minus thermal deviation in degree celcius for which the fatal alarm is asserted
+        
+        &#34;&#34;&#34;
+        response = self._fthermth()
+        therm_fatal = int.from_bytes(response, &#39;big&#39;) / 100 
+        #correcting for proper order of magnitude
+        return therm_fatal
+        
+    def get_warning_therm_thresh(self):
+        &#34;&#34;&#34;
+        reads maximum plus/minus thermal deviation in degree celcius for which the warning alarm is asserted
+        &#34;&#34;&#34;
+        response = self._wthermth()
+        therm_thresh = int.from_bytes(response, &#39;big&#39;) / 100 
+        #correcting for proper order of magnitude
+        return therm_thresh
+        
+    def get_srq_trigger(self):
+        &#34;&#34;&#34;
+        Utilizes SRQT register to identify why SRQ was asserted in StatusF and StatusW registers 
+        
+        &#34;&#34;&#34;
+        response = self._srqt()
+        status = int.from_bytes(response, &#39;big&#39;)
+        status = f&#39;{status:016b}&#39;
+        status_array = [int(code) for code in status]
+        status_array.reverse()
+        print(status_array)
+
+        if any(status_array):
+            print(&#34;SRQ Status: Asserted&#34;)
+
+            if status_array[0] == 1:
+                print(&#34;FPWRL&#34;)
+            if status_array[1] == 1:
+                print(&#34;FTHERML&#34;)
+            if status_array[2] == 1:
+                print(&#34;FFREQL&#34;)
+            if status_array[3] == 1:
+                print(&#34;FVSFL&#34;)
+            if status_array[4] == 1:
+                print(&#34;CRL&#34;)
+            if status_array[5] == 1:
+                print(&#34;MRL&#34;)
+            if status_array[6] == 1:
+                print(&#34;CEL&#34;)
+            if status_array[7] == 1:
+                print(&#34;XEL&#34;)
+            if status_array[8] == 1:
+                print(&#34;WPWRL&#34;)
+            if status_array[9] == 1:
+                print(&#34;WTHERML&#34;)
+            if status_array[10] == 1:
+                print(&#34;WFREQL&#34;)
+            if status_array[11] == 1:
+                print(&#34;WVSFL&#34;)
+            if status_array[12] == 1:
+                print(&#34;DIS&#34;)
+            if status_array[13] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[14] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[15] == 1:
+                print(&#34;NONE&#34;)
+                
+    def get_fatal_trigger(self):
+            &#34;&#34;&#34;
+            Utilizes FatalT register to identify which fatal conditon was asserted in StatusF and StatusW registers 
+            
+            &#34;&#34;&#34;
+            response = self._fatalt()
+            status = int.from_bytes(response, &#39;big&#39;)
+            status = f&#39;{status:016b}&#39;
+            status_array = [int(code) for code in status]
+            status_array.reverse()
+            print(status_array)
+
+            if any(status_array):
+                print(&#34;SRQ Status: Asserted&#34;)
+
+                if status_array[0] == 1:
+                    print(&#34;FPWRL&#34;)
+                if status_array[1] == 1:
+                    print(&#34;FTHERML&#34;)
+                if status_array[2] == 1:
+                    print(&#34;FFREQL&#34;)
+                if status_array[3] == 1:
+                    print(&#34;FVSFL&#34;)
+                if status_array[4] == 1:
+                    print(&#34;NONE&#34;)
+                if status_array[5] == 1:
+                    print(&#34;MRL&#34;)
+                if status_array[6] == 1:
+                    print(&#34;NONE&#34;)
+                if status_array[7] == 1:
+                    print(&#34;NONE&#34;)
+                if status_array[8] == 1:
+                    print(&#34;WPWRL&#34;)
+                if status_array[9] == 1:
+                    print(&#34;WTHERML&#34;)
+                if status_array[10] == 1:
+                    print(&#34;WFREQL&#34;)
+                if status_array[11] == 1:
+                    print(&#34;WVSFL&#34;)
+                if status_array[12] == 1:
+                    print(&#34;NONE&#34;)
+                if status_array[13] == 1:
+                    print(&#34;NONE&#34;)
+                if status_array[14] == 1:
+                    print(&#34;NONE&#34;)
+                if status_array[15] == 1:
+                    print(&#34;NONE&#34;)
+
+    def get_alm_trigger(self):
+            &#34;&#34;&#34;
+            Utilizes ALMT register to identify why ALM was asserted in StatusF and StatusW registers 
+            
+            &#34;&#34;&#34;
+            response = self._almt()
+            status = int.from_bytes(response, &#39;big&#39;)
+            status = f&#39;{status:016b}&#39;
+            status_array = [int(code) for code in status]
+            status_array.reverse()
+            print(status_array)
+
+            if any(status_array):
+                print(&#34;SRQ Status: Asserted&#34;)
+
+                if status_array[0] == 1:
+                    print(&#34;FPWR&#34;)
+                if status_array[1] == 1:
+                    print(&#34;FTHERM&#34;)
+                if status_array[2] == 1:
+                    print(&#34;FFREQ&#34;)
+                if status_array[3] == 1:
+                    print(&#34;FVSF&#34;)
+                if status_array[4] == 1:
+                    print(&#34;NONE&#34;)
+                if status_array[5] == 1:
+                    print(&#34;NONE&#34;)
+                if status_array[6] == 1:
+                    print(&#34;NONE&#34;)
+                if status_array[7] == 1:
+                    print(&#34;NONE&#34;)
+                if status_array[8] == 1:
+                    print(&#34;WPWR&#34;)
+                if status_array[9] == 1:
+                    print(&#34;WTHERM&#34;)
+                if status_array[10] == 1:
+                    print(&#34;WFREQ&#34;)
+                if status_array[11] == 1:
+                    print(&#34;WVSF&#34;)
+                if status_array[12] == 1:
+                    print(&#34;NONE&#34;)
+                if status_array[13] == 1:
+                    print(&#34;NONE&#34;)
+                if status_array[14] == 1:
+                    print(&#34;NONE&#34;)
+                if status_array[15] == 1:
+                    print(&#34;NONE&#34;)             </code></pre>
 </details>
 </section>
 <section>
@@ -1875,7 +2196,328 @@ I think this is probably a bad idea even though it isnt write only.</p>
         # 4) send dlconfig signal
         # 5) ????
         # 6) profit
-        raise Warning(&#34;this is not implemented yet.&#34;)</code></pre>
+        raise Warning(&#34;this is not implemented yet.&#34;)
+    def get_error_fatal(self, reset=False):
+        &#34;&#34;&#34;
+        reads fatal error register statusf and checks each bit against the
+        fatal error table to determine the fault
+        
+        :param reset: resets/clears latching errors 
+
+        &#34;&#34;&#34;
+        response = self._statusf()
+        statusf = int.from_bytes(response, &#39;big&#39;)
+        statusf = f&#39;{statusf:016b}&#39;
+        status_array = [int(code) for code in statusf]
+        status_array.reverse()
+        print(status_array)
+
+        if any(status_array):
+            print(&#34;Current Status Fatal Error&#34;)
+
+            if status_array[0] == 1:
+                print(&#34;FPWRL&#34;)
+            if status_array[1] == 1:
+                print(&#34;FTHERML&#34;)
+            if status_array[2] == 1:
+                print(&#34;FFREQL&#34;)
+            if status_array[3] == 1:
+                print(&#34;FVSFL&#34;)
+            if status_array[4] == 1:
+                print(&#34;CRL&#34;)
+            if status_array[5] == 1:
+                print(&#34;MRL&#34;)
+            if status_array[6] == 1:
+                print(&#34;CEL&#34;)
+            if status_array[7] == 1:
+                print(&#34;XEL&#34;)
+            if status_array[8] == 1:
+                print(&#34;FPWR&#34;)
+            if status_array[9] == 1:
+                print(&#34;FTHERM&#34;)
+            if status_array[10] == 1:
+                print(&#34;FFREQ&#34;)
+            if status_array[11] == 1:
+                print(&#34;FVSF&#34;)
+            if status_array[12] == 1:
+                print(&#34;DIS&#34;)
+            if status_array[13] == 1:
+                print(&#34;FATAL&#34;)
+            if status_array[14] == 1:
+                print(&#34;ALM&#34;)
+            if status_array[15] == 1:
+                print(&#34;SRQ &#34;)
+            if reset == True:
+                data_reset = [0] * 16
+                data_reset = int(&#39;&#39;.join(str(x) for x in data_reset[::-1]), 2)
+                self._statusf(data_reset)
+                
+    def get_error_warning(self, reset=False):
+        &#34;&#34;&#34;
+        reads warning error register statusw and checks each bit against the
+        warning error table to determine the fault
+
+        If the laser is off then some of the latched warnings will be set on.
+        
+        :param reset: resets/clears latching errors 
+        &#34;&#34;&#34;
+        response = self._statusw()
+        statusw = int.from_bytes(response, &#39;big&#39;)
+        statusw = f&#39;{statusw:016b}&#39;
+        status_array = [int(code) for code in statusw]
+        status_array.reverse()
+        print(status_array)
+
+        if any(status_array):
+            print(&#34;Current Status Warning Error&#34;)
+
+            if status_array[0] == 1:
+                print(&#34;WPWRL&#34;)
+            if status_array[1] == 1:
+                print(&#34;WTHERML&#34;)
+            if status_array[2] == 1:
+                print(&#34;WFREQL&#34;)
+            if status_array[3] == 1:
+                print(&#34;WVSFL&#34;)
+            if status_array[4] == 1:
+                print(&#34;CRL&#34;)
+            if status_array[5] == 1:
+                print(&#34;MRL&#34;)
+            if status_array[6] == 1:
+                print(&#34;CEL&#34;)
+            if status_array[7] == 1:
+                print(&#34;XEL&#34;)
+            if status_array[8] == 1:
+                print(&#34;WPWR&#34;)
+            if status_array[9] == 1:
+                print(&#34;WTHERM&#34;)
+            if status_array[10] == 1:
+                print(&#34;WFREQ&#34;)
+            if status_array[11] == 1:
+                print(&#34;FVSF&#34;)
+            if status_array[12] == 1:
+                print(&#34;DIS&#34;)
+            if status_array[13] == 1:
+                print(&#34;FATAL&#34;)
+            if status_array[14] == 1:
+                print(&#34;ALM&#34;)
+            if status_array[15] == 1:
+                print(&#34;SRQ &#34;)
+            if reset == True:
+                data_reset = int(&#39;00ff&#39;, 16)
+                self._statusw(data_reset)
+                
+    
+    def get_fatal_power_thresh(self):
+        &#34;&#34;&#34;
+        reads maximum plus/minus power deviation in dB for which the fatal alarm is asserted
+        
+        &#34;&#34;&#34;
+        response = self._fpowth()
+        pow_fatal = int.from_bytes(response, &#39;big&#39;) / 100 
+        #correcting for proper order of magnitude
+        return pow_fatal
+        
+    def get_warning_power_thresh(self):
+        &#34;&#34;&#34;
+        reads maximum plus/minus power deviation in dB for which the warning alarm is asserted
+        
+        &#34;&#34;&#34;
+        response = self._wpowth()
+        pow_warn = int.from_bytes(response, &#39;big&#39;) / 100 
+        #correcting for proper order of magnitude
+        return pow_warn
+    
+    def get_fatal_freq_thresh(self):
+        &#34;&#34;&#34;
+        reads maximum plus/minus frequency deviation in GHz for which the fatal alarm is asserted
+        
+        &#34;&#34;&#34;
+        response = self._ffreqth()
+        freq_fatal = int.from_bytes(response, &#39;big&#39;) / 10 
+        #correcting for proper order of magnitude
+        response2 = self._ffreqth2()
+        freq_fatal2 = int.from_bytes(response2, &#39;big&#39;) / 100
+        #get frequency deviation in MHz and add to GHz value
+        return freq_fatal + freq_fatal2
+        
+    
+    def get_warning_freq_thresh(self):
+        &#34;&#34;&#34;
+        reads maximum plus/minus frequency deviation in GHz for which the warning alarm is asserted
+        
+        &#34;&#34;&#34;
+        response = self._wfreqth()
+        freq_warn = int.from_bytes(response, &#39;big&#39;) / 10 
+        #correcting for proper order of magnitude
+        response2 = self._wfreqth2()
+        freq_warn2 = int.from_bytes(response2, &#39;big&#39;) / 100
+        #get frequency deviation in MHz and add to GHz value
+        return freq_warn + freq_warn2
+
+
+    def get_fatal_therm_thresh(self):
+        &#34;&#34;&#34;
+        reads maximum plus/minus thermal deviation in degree celcius for which the fatal alarm is asserted
+        
+        &#34;&#34;&#34;
+        response = self._fthermth()
+        therm_fatal = int.from_bytes(response, &#39;big&#39;) / 100 
+        #correcting for proper order of magnitude
+        return therm_fatal
+        
+    def get_warning_therm_thresh(self):
+        &#34;&#34;&#34;
+        reads maximum plus/minus thermal deviation in degree celcius for which the warning alarm is asserted
+        &#34;&#34;&#34;
+        response = self._wthermth()
+        therm_thresh = int.from_bytes(response, &#39;big&#39;) / 100 
+        #correcting for proper order of magnitude
+        return therm_thresh
+        
+    def get_srq_trigger(self):
+        &#34;&#34;&#34;
+        Utilizes SRQT register to identify why SRQ was asserted in StatusF and StatusW registers 
+        
+        &#34;&#34;&#34;
+        response = self._srqt()
+        status = int.from_bytes(response, &#39;big&#39;)
+        status = f&#39;{status:016b}&#39;
+        status_array = [int(code) for code in status]
+        status_array.reverse()
+        print(status_array)
+
+        if any(status_array):
+            print(&#34;SRQ Status: Asserted&#34;)
+
+            if status_array[0] == 1:
+                print(&#34;FPWRL&#34;)
+            if status_array[1] == 1:
+                print(&#34;FTHERML&#34;)
+            if status_array[2] == 1:
+                print(&#34;FFREQL&#34;)
+            if status_array[3] == 1:
+                print(&#34;FVSFL&#34;)
+            if status_array[4] == 1:
+                print(&#34;CRL&#34;)
+            if status_array[5] == 1:
+                print(&#34;MRL&#34;)
+            if status_array[6] == 1:
+                print(&#34;CEL&#34;)
+            if status_array[7] == 1:
+                print(&#34;XEL&#34;)
+            if status_array[8] == 1:
+                print(&#34;WPWRL&#34;)
+            if status_array[9] == 1:
+                print(&#34;WTHERML&#34;)
+            if status_array[10] == 1:
+                print(&#34;WFREQL&#34;)
+            if status_array[11] == 1:
+                print(&#34;WVSFL&#34;)
+            if status_array[12] == 1:
+                print(&#34;DIS&#34;)
+            if status_array[13] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[14] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[15] == 1:
+                print(&#34;NONE&#34;)
+                
+    def get_fatal_trigger(self):
+            &#34;&#34;&#34;
+            Utilizes FatalT register to identify which fatal conditon was asserted in StatusF and StatusW registers 
+            
+            &#34;&#34;&#34;
+            response = self._fatalt()
+            status = int.from_bytes(response, &#39;big&#39;)
+            status = f&#39;{status:016b}&#39;
+            status_array = [int(code) for code in status]
+            status_array.reverse()
+            print(status_array)
+
+            if any(status_array):
+                print(&#34;SRQ Status: Asserted&#34;)
+
+                if status_array[0] == 1:
+                    print(&#34;FPWRL&#34;)
+                if status_array[1] == 1:
+                    print(&#34;FTHERML&#34;)
+                if status_array[2] == 1:
+                    print(&#34;FFREQL&#34;)
+                if status_array[3] == 1:
+                    print(&#34;FVSFL&#34;)
+                if status_array[4] == 1:
+                    print(&#34;NONE&#34;)
+                if status_array[5] == 1:
+                    print(&#34;MRL&#34;)
+                if status_array[6] == 1:
+                    print(&#34;NONE&#34;)
+                if status_array[7] == 1:
+                    print(&#34;NONE&#34;)
+                if status_array[8] == 1:
+                    print(&#34;WPWRL&#34;)
+                if status_array[9] == 1:
+                    print(&#34;WTHERML&#34;)
+                if status_array[10] == 1:
+                    print(&#34;WFREQL&#34;)
+                if status_array[11] == 1:
+                    print(&#34;WVSFL&#34;)
+                if status_array[12] == 1:
+                    print(&#34;NONE&#34;)
+                if status_array[13] == 1:
+                    print(&#34;NONE&#34;)
+                if status_array[14] == 1:
+                    print(&#34;NONE&#34;)
+                if status_array[15] == 1:
+                    print(&#34;NONE&#34;)
+
+    def get_alm_trigger(self):
+            &#34;&#34;&#34;
+            Utilizes ALMT register to identify why ALM was asserted in StatusF and StatusW registers 
+            
+            &#34;&#34;&#34;
+            response = self._almt()
+            status = int.from_bytes(response, &#39;big&#39;)
+            status = f&#39;{status:016b}&#39;
+            status_array = [int(code) for code in status]
+            status_array.reverse()
+            print(status_array)
+
+            if any(status_array):
+                print(&#34;SRQ Status: Asserted&#34;)
+
+                if status_array[0] == 1:
+                    print(&#34;FPWR&#34;)
+                if status_array[1] == 1:
+                    print(&#34;FTHERM&#34;)
+                if status_array[2] == 1:
+                    print(&#34;FFREQ&#34;)
+                if status_array[3] == 1:
+                    print(&#34;FVSF&#34;)
+                if status_array[4] == 1:
+                    print(&#34;NONE&#34;)
+                if status_array[5] == 1:
+                    print(&#34;NONE&#34;)
+                if status_array[6] == 1:
+                    print(&#34;NONE&#34;)
+                if status_array[7] == 1:
+                    print(&#34;NONE&#34;)
+                if status_array[8] == 1:
+                    print(&#34;WPWR&#34;)
+                if status_array[9] == 1:
+                    print(&#34;WTHERM&#34;)
+                if status_array[10] == 1:
+                    print(&#34;WFREQ&#34;)
+                if status_array[11] == 1:
+                    print(&#34;WVSF&#34;)
+                if status_array[12] == 1:
+                    print(&#34;NONE&#34;)
+                if status_array[13] == 1:
+                    print(&#34;NONE&#34;)
+                if status_array[14] == 1:
+                    print(&#34;NONE&#34;)
+                if status_array[15] == 1:
+                    print(&#34;NONE&#34;)             </code></pre>
 </details>
 <h3>Subclasses</h3>
 <ul class="hlist">
@@ -2042,7 +2684,8 @@ does not occur on Windows.</strong></p></div>
     try:
         self._resena(data)
     except CPException:
-        print(&#39;Waiting for laser to power on and stabilize.&#39;)</code></pre>
+        print(&#39;Waiting for laser to power on and stabilize.&#39;)
+        # This would be a good place for a waiting function</code></pre>
 </details>
 </dd>
 <dt id="itla.itla.ITLA.get_age"><code class="name flex">
@@ -2065,6 +2708,64 @@ does not occur on Windows.</strong></p></div>
     age = int.from_bytes(response, &#39;big&#39;)
 
     return f&#39;Age: {age} / 100%&#39;</code></pre>
+</details>
+</dd>
+<dt id="itla.itla.ITLA.get_alm_trigger"><code class="name flex">
+<span>def <span class="ident">get_alm_trigger</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Utilizes ALMT register to identify why ALM was asserted in StatusF and StatusW registers</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_alm_trigger(self):
+        &#34;&#34;&#34;
+        Utilizes ALMT register to identify why ALM was asserted in StatusF and StatusW registers 
+        
+        &#34;&#34;&#34;
+        response = self._almt()
+        status = int.from_bytes(response, &#39;big&#39;)
+        status = f&#39;{status:016b}&#39;
+        status_array = [int(code) for code in status]
+        status_array.reverse()
+        print(status_array)
+
+        if any(status_array):
+            print(&#34;SRQ Status: Asserted&#34;)
+
+            if status_array[0] == 1:
+                print(&#34;FPWR&#34;)
+            if status_array[1] == 1:
+                print(&#34;FTHERM&#34;)
+            if status_array[2] == 1:
+                print(&#34;FFREQ&#34;)
+            if status_array[3] == 1:
+                print(&#34;FVSF&#34;)
+            if status_array[4] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[5] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[6] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[7] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[8] == 1:
+                print(&#34;WPWR&#34;)
+            if status_array[9] == 1:
+                print(&#34;WTHERM&#34;)
+            if status_array[10] == 1:
+                print(&#34;WFREQ&#34;)
+            if status_array[11] == 1:
+                print(&#34;WVSF&#34;)
+            if status_array[12] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[13] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[14] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[15] == 1:
+                print(&#34;NONE&#34;)             </code></pre>
 </details>
 </dd>
 <dt id="itla.itla.ITLA.get_backwardscompatibility"><code class="name flex">
@@ -2209,6 +2910,262 @@ Technology 3: [TEC, Diode 1, tbd, tbd, tbd, &hellip;]</p></div>
     &#34;&#34;&#34;
     response = self._ditherr()
     return int.from_bytes(response, &#39;big&#39;)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla.ITLA.get_error_fatal"><code class="name flex">
+<span>def <span class="ident">get_error_fatal</span></span>(<span>self, reset=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>reads fatal error register statusf and checks each bit against the
+fatal error table to determine the fault</p>
+<p>:param reset: resets/clears latching errors</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_error_fatal(self, reset=False):
+    &#34;&#34;&#34;
+    reads fatal error register statusf and checks each bit against the
+    fatal error table to determine the fault
+    
+    :param reset: resets/clears latching errors 
+
+    &#34;&#34;&#34;
+    response = self._statusf()
+    statusf = int.from_bytes(response, &#39;big&#39;)
+    statusf = f&#39;{statusf:016b}&#39;
+    status_array = [int(code) for code in statusf]
+    status_array.reverse()
+    print(status_array)
+
+    if any(status_array):
+        print(&#34;Current Status Fatal Error&#34;)
+
+        if status_array[0] == 1:
+            print(&#34;FPWRL&#34;)
+        if status_array[1] == 1:
+            print(&#34;FTHERML&#34;)
+        if status_array[2] == 1:
+            print(&#34;FFREQL&#34;)
+        if status_array[3] == 1:
+            print(&#34;FVSFL&#34;)
+        if status_array[4] == 1:
+            print(&#34;CRL&#34;)
+        if status_array[5] == 1:
+            print(&#34;MRL&#34;)
+        if status_array[6] == 1:
+            print(&#34;CEL&#34;)
+        if status_array[7] == 1:
+            print(&#34;XEL&#34;)
+        if status_array[8] == 1:
+            print(&#34;FPWR&#34;)
+        if status_array[9] == 1:
+            print(&#34;FTHERM&#34;)
+        if status_array[10] == 1:
+            print(&#34;FFREQ&#34;)
+        if status_array[11] == 1:
+            print(&#34;FVSF&#34;)
+        if status_array[12] == 1:
+            print(&#34;DIS&#34;)
+        if status_array[13] == 1:
+            print(&#34;FATAL&#34;)
+        if status_array[14] == 1:
+            print(&#34;ALM&#34;)
+        if status_array[15] == 1:
+            print(&#34;SRQ &#34;)
+        if reset == True:
+            data_reset = [0] * 16
+            data_reset = int(&#39;&#39;.join(str(x) for x in data_reset[::-1]), 2)
+            self._statusf(data_reset)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla.ITLA.get_error_warning"><code class="name flex">
+<span>def <span class="ident">get_error_warning</span></span>(<span>self, reset=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>reads warning error register statusw and checks each bit against the
+warning error table to determine the fault</p>
+<p>If the laser is off then some of the latched warnings will be set on.</p>
+<p>:param reset: resets/clears latching errors</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_error_warning(self, reset=False):
+    &#34;&#34;&#34;
+    reads warning error register statusw and checks each bit against the
+    warning error table to determine the fault
+
+    If the laser is off then some of the latched warnings will be set on.
+    
+    :param reset: resets/clears latching errors 
+    &#34;&#34;&#34;
+    response = self._statusw()
+    statusw = int.from_bytes(response, &#39;big&#39;)
+    statusw = f&#39;{statusw:016b}&#39;
+    status_array = [int(code) for code in statusw]
+    status_array.reverse()
+    print(status_array)
+
+    if any(status_array):
+        print(&#34;Current Status Warning Error&#34;)
+
+        if status_array[0] == 1:
+            print(&#34;WPWRL&#34;)
+        if status_array[1] == 1:
+            print(&#34;WTHERML&#34;)
+        if status_array[2] == 1:
+            print(&#34;WFREQL&#34;)
+        if status_array[3] == 1:
+            print(&#34;WVSFL&#34;)
+        if status_array[4] == 1:
+            print(&#34;CRL&#34;)
+        if status_array[5] == 1:
+            print(&#34;MRL&#34;)
+        if status_array[6] == 1:
+            print(&#34;CEL&#34;)
+        if status_array[7] == 1:
+            print(&#34;XEL&#34;)
+        if status_array[8] == 1:
+            print(&#34;WPWR&#34;)
+        if status_array[9] == 1:
+            print(&#34;WTHERM&#34;)
+        if status_array[10] == 1:
+            print(&#34;WFREQ&#34;)
+        if status_array[11] == 1:
+            print(&#34;FVSF&#34;)
+        if status_array[12] == 1:
+            print(&#34;DIS&#34;)
+        if status_array[13] == 1:
+            print(&#34;FATAL&#34;)
+        if status_array[14] == 1:
+            print(&#34;ALM&#34;)
+        if status_array[15] == 1:
+            print(&#34;SRQ &#34;)
+        if reset == True:
+            data_reset = int(&#39;00ff&#39;, 16)
+            self._statusw(data_reset)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla.ITLA.get_fatal_freq_thresh"><code class="name flex">
+<span>def <span class="ident">get_fatal_freq_thresh</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>reads maximum plus/minus frequency deviation in GHz for which the fatal alarm is asserted</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_fatal_freq_thresh(self):
+    &#34;&#34;&#34;
+    reads maximum plus/minus frequency deviation in GHz for which the fatal alarm is asserted
+    
+    &#34;&#34;&#34;
+    response = self._ffreqth()
+    freq_fatal = int.from_bytes(response, &#39;big&#39;) / 10 
+    #correcting for proper order of magnitude
+    response2 = self._ffreqth2()
+    freq_fatal2 = int.from_bytes(response2, &#39;big&#39;) / 100
+    #get frequency deviation in MHz and add to GHz value
+    return freq_fatal + freq_fatal2</code></pre>
+</details>
+</dd>
+<dt id="itla.itla.ITLA.get_fatal_power_thresh"><code class="name flex">
+<span>def <span class="ident">get_fatal_power_thresh</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>reads maximum plus/minus power deviation in dB for which the fatal alarm is asserted</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_fatal_power_thresh(self):
+    &#34;&#34;&#34;
+    reads maximum plus/minus power deviation in dB for which the fatal alarm is asserted
+    
+    &#34;&#34;&#34;
+    response = self._fpowth()
+    pow_fatal = int.from_bytes(response, &#39;big&#39;) / 100 
+    #correcting for proper order of magnitude
+    return pow_fatal</code></pre>
+</details>
+</dd>
+<dt id="itla.itla.ITLA.get_fatal_therm_thresh"><code class="name flex">
+<span>def <span class="ident">get_fatal_therm_thresh</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>reads maximum plus/minus thermal deviation in degree celcius for which the fatal alarm is asserted</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_fatal_therm_thresh(self):
+    &#34;&#34;&#34;
+    reads maximum plus/minus thermal deviation in degree celcius for which the fatal alarm is asserted
+    
+    &#34;&#34;&#34;
+    response = self._fthermth()
+    therm_fatal = int.from_bytes(response, &#39;big&#39;) / 100 
+    #correcting for proper order of magnitude
+    return therm_fatal</code></pre>
+</details>
+</dd>
+<dt id="itla.itla.ITLA.get_fatal_trigger"><code class="name flex">
+<span>def <span class="ident">get_fatal_trigger</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Utilizes FatalT register to identify which fatal conditon was asserted in StatusF and StatusW registers</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_fatal_trigger(self):
+        &#34;&#34;&#34;
+        Utilizes FatalT register to identify which fatal conditon was asserted in StatusF and StatusW registers 
+        
+        &#34;&#34;&#34;
+        response = self._fatalt()
+        status = int.from_bytes(response, &#39;big&#39;)
+        status = f&#39;{status:016b}&#39;
+        status_array = [int(code) for code in status]
+        status_array.reverse()
+        print(status_array)
+
+        if any(status_array):
+            print(&#34;SRQ Status: Asserted&#34;)
+
+            if status_array[0] == 1:
+                print(&#34;FPWRL&#34;)
+            if status_array[1] == 1:
+                print(&#34;FTHERML&#34;)
+            if status_array[2] == 1:
+                print(&#34;FFREQL&#34;)
+            if status_array[3] == 1:
+                print(&#34;FVSFL&#34;)
+            if status_array[4] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[5] == 1:
+                print(&#34;MRL&#34;)
+            if status_array[6] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[7] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[8] == 1:
+                print(&#34;WPWRL&#34;)
+            if status_array[9] == 1:
+                print(&#34;WTHERML&#34;)
+            if status_array[10] == 1:
+                print(&#34;WFREQL&#34;)
+            if status_array[11] == 1:
+                print(&#34;WVSFL&#34;)
+            if status_array[12] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[13] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[14] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[15] == 1:
+                print(&#34;NONE&#34;)</code></pre>
 </details>
 </dd>
 <dt id="itla.itla.ITLA.get_fcf"><code class="name flex">
@@ -2667,6 +3624,64 @@ Only an approximation, apparently. Units dBm.</p>
     return response_bytes.decode(&#39;utf-8&#39;)</code></pre>
 </details>
 </dd>
+<dt id="itla.itla.ITLA.get_srq_trigger"><code class="name flex">
+<span>def <span class="ident">get_srq_trigger</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Utilizes SRQT register to identify why SRQ was asserted in StatusF and StatusW registers</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_srq_trigger(self):
+    &#34;&#34;&#34;
+    Utilizes SRQT register to identify why SRQ was asserted in StatusF and StatusW registers 
+    
+    &#34;&#34;&#34;
+    response = self._srqt()
+    status = int.from_bytes(response, &#39;big&#39;)
+    status = f&#39;{status:016b}&#39;
+    status_array = [int(code) for code in status]
+    status_array.reverse()
+    print(status_array)
+
+    if any(status_array):
+        print(&#34;SRQ Status: Asserted&#34;)
+
+        if status_array[0] == 1:
+            print(&#34;FPWRL&#34;)
+        if status_array[1] == 1:
+            print(&#34;FTHERML&#34;)
+        if status_array[2] == 1:
+            print(&#34;FFREQL&#34;)
+        if status_array[3] == 1:
+            print(&#34;FVSFL&#34;)
+        if status_array[4] == 1:
+            print(&#34;CRL&#34;)
+        if status_array[5] == 1:
+            print(&#34;MRL&#34;)
+        if status_array[6] == 1:
+            print(&#34;CEL&#34;)
+        if status_array[7] == 1:
+            print(&#34;XEL&#34;)
+        if status_array[8] == 1:
+            print(&#34;WPWRL&#34;)
+        if status_array[9] == 1:
+            print(&#34;WTHERML&#34;)
+        if status_array[10] == 1:
+            print(&#34;WFREQL&#34;)
+        if status_array[11] == 1:
+            print(&#34;WVSFL&#34;)
+        if status_array[12] == 1:
+            print(&#34;DIS&#34;)
+        if status_array[13] == 1:
+            print(&#34;NONE&#34;)
+        if status_array[14] == 1:
+            print(&#34;NONE&#34;)
+        if status_array[15] == 1:
+            print(&#34;NONE&#34;)</code></pre>
+</details>
+</dd>
 <dt id="itla.itla.ITLA.get_temp"><code class="name flex">
 <span>def <span class="ident">get_temp</span></span>(<span>self)</span>
 </code></dt>
@@ -2714,6 +3729,68 @@ In the following order:</p>
             for i in range(0, len(response), 2)]
 
     return data</code></pre>
+</details>
+</dd>
+<dt id="itla.itla.ITLA.get_warning_freq_thresh"><code class="name flex">
+<span>def <span class="ident">get_warning_freq_thresh</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>reads maximum plus/minus frequency deviation in GHz for which the warning alarm is asserted</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_warning_freq_thresh(self):
+    &#34;&#34;&#34;
+    reads maximum plus/minus frequency deviation in GHz for which the warning alarm is asserted
+    
+    &#34;&#34;&#34;
+    response = self._wfreqth()
+    freq_warn = int.from_bytes(response, &#39;big&#39;) / 10 
+    #correcting for proper order of magnitude
+    response2 = self._wfreqth2()
+    freq_warn2 = int.from_bytes(response2, &#39;big&#39;) / 100
+    #get frequency deviation in MHz and add to GHz value
+    return freq_warn + freq_warn2</code></pre>
+</details>
+</dd>
+<dt id="itla.itla.ITLA.get_warning_power_thresh"><code class="name flex">
+<span>def <span class="ident">get_warning_power_thresh</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>reads maximum plus/minus power deviation in dB for which the warning alarm is asserted</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_warning_power_thresh(self):
+    &#34;&#34;&#34;
+    reads maximum plus/minus power deviation in dB for which the warning alarm is asserted
+    
+    &#34;&#34;&#34;
+    response = self._wpowth()
+    pow_warn = int.from_bytes(response, &#39;big&#39;) / 100 
+    #correcting for proper order of magnitude
+    return pow_warn</code></pre>
+</details>
+</dd>
+<dt id="itla.itla.ITLA.get_warning_therm_thresh"><code class="name flex">
+<span>def <span class="ident">get_warning_therm_thresh</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>reads maximum plus/minus thermal deviation in degree celcius for which the warning alarm is asserted</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_warning_therm_thresh(self):
+    &#34;&#34;&#34;
+    reads maximum plus/minus thermal deviation in degree celcius for which the warning alarm is asserted
+    &#34;&#34;&#34;
+    response = self._wthermth()
+    therm_thresh = int.from_bytes(response, &#39;big&#39;) / 100 
+    #correcting for proper order of magnitude
+    return therm_thresh</code></pre>
 </details>
 </dd>
 <dt id="itla.itla.ITLA.get_wavelength"><code class="name flex">
@@ -3283,6 +4360,7 @@ the function <code>set_fcf</code>.</p>
 <li><code><a title="itla.itla.ITLA.dither_enable" href="#itla.itla.ITLA.dither_enable">dither_enable</a></code></li>
 <li><code><a title="itla.itla.ITLA.enable" href="#itla.itla.ITLA.enable">enable</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_age" href="#itla.itla.ITLA.get_age">get_age</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_alm_trigger" href="#itla.itla.ITLA.get_alm_trigger">get_alm_trigger</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_backwardscompatibility" href="#itla.itla.ITLA.get_backwardscompatibility">get_backwardscompatibility</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_channel" href="#itla.itla.ITLA.get_channel">get_channel</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_currents" href="#itla.itla.ITLA.get_currents">get_currents</a></code></li>
@@ -3290,6 +4368,12 @@ the function <code>set_fcf</code>.</p>
 <li><code><a title="itla.itla.ITLA.get_dither_amplitude" href="#itla.itla.ITLA.get_dither_amplitude">get_dither_amplitude</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_dither_frequency" href="#itla.itla.ITLA.get_dither_frequency">get_dither_frequency</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_dither_rate" href="#itla.itla.ITLA.get_dither_rate">get_dither_rate</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_error_fatal" href="#itla.itla.ITLA.get_error_fatal">get_error_fatal</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_error_warning" href="#itla.itla.ITLA.get_error_warning">get_error_warning</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_fatal_freq_thresh" href="#itla.itla.ITLA.get_fatal_freq_thresh">get_fatal_freq_thresh</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_fatal_power_thresh" href="#itla.itla.ITLA.get_fatal_power_thresh">get_fatal_power_thresh</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_fatal_therm_thresh" href="#itla.itla.ITLA.get_fatal_therm_thresh">get_fatal_therm_thresh</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_fatal_trigger" href="#itla.itla.ITLA.get_fatal_trigger">get_fatal_trigger</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_fcf" href="#itla.itla.ITLA.get_fcf">get_fcf</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_fine_tuning" href="#itla.itla.ITLA.get_fine_tuning">get_fine_tuning</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_firmware_release" href="#itla.itla.ITLA.get_firmware_release">get_firmware_release</a></code></li>
@@ -3309,8 +4393,12 @@ the function <code>set_fcf</code>.</p>
 <li><code><a title="itla.itla.ITLA.get_power_setting" href="#itla.itla.ITLA.get_power_setting">get_power_setting</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_response" href="#itla.itla.ITLA.get_response">get_response</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_serialnumber" href="#itla.itla.ITLA.get_serialnumber">get_serialnumber</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_srq_trigger" href="#itla.itla.ITLA.get_srq_trigger">get_srq_trigger</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_temp" href="#itla.itla.ITLA.get_temp">get_temp</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_temps" href="#itla.itla.ITLA.get_temps">get_temps</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_warning_freq_thresh" href="#itla.itla.ITLA.get_warning_freq_thresh">get_warning_freq_thresh</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_warning_power_thresh" href="#itla.itla.ITLA.get_warning_power_thresh">get_warning_power_thresh</a></code></li>
+<li><code><a title="itla.itla.ITLA.get_warning_therm_thresh" href="#itla.itla.ITLA.get_warning_therm_thresh">get_warning_therm_thresh</a></code></li>
 <li><code><a title="itla.itla.ITLA.get_wavelength" href="#itla.itla.ITLA.get_wavelength">get_wavelength</a></code></li>
 <li><code><a title="itla.itla.ITLA.hard_reset" href="#itla.itla.ITLA.hard_reset">hard_reset</a></code></li>
 <li><code><a title="itla.itla.ITLA.nop" href="#itla.itla.ITLA.nop">nop</a></code></li>
