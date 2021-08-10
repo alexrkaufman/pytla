@@ -910,3 +910,325 @@ class ITLA():
         # 5) ????
         # 6) profit
         raise Warning("this is not implemented yet.")
+    def get_error_fatal(self, reset=False):
+        """
+        reads fatal error register statusf and checks each bit against the
+        fatal error table to determine the fault
+        
+        :param reset: resets/clears latching errors 
+
+        """
+        response = self._statusf()
+        statusf = int.from_bytes(response, 'big')
+        statusf = f'{statusf:016b}'
+        status_array = [int(code) for code in statusf]
+        status_array.reverse()
+        print(status_array)
+
+        if any(status_array):
+            print("Current Status Fatal Error")
+
+            if status_array[0] == 1:
+                print("FPWRL")
+            if status_array[1] == 1:
+                print("FTHERML")
+            if status_array[2] == 1:
+                print("FFREQL")
+            if status_array[3] == 1:
+                print("FVSFL")
+            if status_array[4] == 1:
+                print("CRL")
+            if status_array[5] == 1:
+                print("MRL")
+            if status_array[6] == 1:
+                print("CEL")
+            if status_array[7] == 1:
+                print("XEL")
+            if status_array[8] == 1:
+                print("FPWR")
+            if status_array[9] == 1:
+                print("FTHERM")
+            if status_array[10] == 1:
+                print("FFREQ")
+            if status_array[11] == 1:
+                print("FVSF")
+            if status_array[12] == 1:
+                print("DIS")
+            if status_array[13] == 1:
+                print("FATAL")
+            if status_array[14] == 1:
+                print("ALM")
+            if status_array[15] == 1:
+                print("SRQ ")
+            if reset == True:
+                data_reset = [0] * 16
+                data_reset = int(''.join(str(x) for x in data_reset[::-1]), 2)
+                self._statusf(data_reset)
+                
+    def get_error_warning(self, reset=False):
+        """
+        reads warning error register statusw and checks each bit against the
+        warning error table to determine the fault
+
+        If the laser is off then some of the latched warnings will be set on.
+        
+        :param reset: resets/clears latching errors 
+        """
+        response = self._statusw()
+        statusw = int.from_bytes(response, 'big')
+        statusw = f'{statusw:016b}'
+        status_array = [int(code) for code in statusw]
+        status_array.reverse()
+        print(status_array)
+
+        if any(status_array):
+            print("Current Status Warning Error")
+
+            if status_array[0] == 1:
+                print("WPWRL")
+            if status_array[1] == 1:
+                print("WTHERML")
+            if status_array[2] == 1:
+                print("WFREQL")
+            if status_array[3] == 1:
+                print("WVSFL")
+            if status_array[4] == 1:
+                print("CRL")
+            if status_array[5] == 1:
+                print("MRL")
+            if status_array[6] == 1:
+                print("CEL")
+            if status_array[7] == 1:
+                print("XEL")
+            if status_array[8] == 1:
+                print("WPWR")
+            if status_array[9] == 1:
+                print("WTHERM")
+            if status_array[10] == 1:
+                print("WFREQ")
+            if status_array[11] == 1:
+                print("FVSF")
+            if status_array[12] == 1:
+                print("DIS")
+            if status_array[13] == 1:
+                print("FATAL")
+            if status_array[14] == 1:
+                print("ALM")
+            if status_array[15] == 1:
+                print("SRQ ")
+            if reset == True:
+                data_reset = int('00ff', 16)
+                self._statusw(data_reset)
+                
+    
+    def get_fatal_power_thresh(self):
+        """
+        reads maximum plus/minus power deviation in dB for which the fatal alarm is asserted
+        
+        """
+        response = self._fpowth()
+        pow_fatal = int.from_bytes(response, 'big') / 100 
+        #correcting for proper order of magnitude
+        return pow_fatal
+        
+    def get_warning_power_thresh(self):
+        """
+        reads maximum plus/minus power deviation in dB for which the warning alarm is asserted
+        
+        """
+        response = self._wpowth()
+        pow_warn = int.from_bytes(response, 'big') / 100 
+        #correcting for proper order of magnitude
+        return pow_warn
+    
+    def get_fatal_freq_thresh(self):
+        """
+        reads maximum plus/minus frequency deviation in GHz for which the fatal alarm is asserted
+        
+        """
+        response = self._ffreqth()
+        freq_fatal = int.from_bytes(response, 'big') / 10 
+        #correcting for proper order of magnitude
+        response2 = self._ffreqth2()
+        freq_fatal2 = int.from_bytes(response2, 'big') / 100
+        #get frequency deviation in MHz and add to GHz value
+        return freq_fatal + freq_fatal2
+        
+    
+    def get_warning_freq_thresh(self):
+        """
+        reads maximum plus/minus frequency deviation in GHz for which the warning alarm is asserted
+        
+        """
+        response = self._wfreqth()
+        freq_warn = int.from_bytes(response, 'big') / 10 
+        #correcting for proper order of magnitude
+        response2 = self._wfreqth2()
+        freq_warn2 = int.from_bytes(response2, 'big') / 100
+        #get frequency deviation in MHz and add to GHz value
+        return freq_warn + freq_warn2
+
+
+    def get_fatal_therm_thresh(self):
+        """
+        reads maximum plus/minus thermal deviation in degree celcius for which the fatal alarm is asserted
+        
+        """
+        response = self._fthermth()
+        therm_fatal = int.from_bytes(response, 'big') / 100 
+        #correcting for proper order of magnitude
+        return therm_fatal
+        
+    def get_warning_therm_thresh(self):
+        """
+        reads maximum plus/minus thermal deviation in degree celcius for which the warning alarm is asserted
+        """
+        response = self._wthermth()
+        therm_thresh = int.from_bytes(response, 'big') / 100 
+        #correcting for proper order of magnitude
+        return therm_thresh
+        
+    def get_srq_trigger(self):
+        """
+        Utilizes SRQT register to identify why SRQ was asserted in StatusF and StatusW registers 
+        
+        """
+        response = self._srqt()
+        status = int.from_bytes(response, 'big')
+        status = f'{status:016b}'
+        status_array = [int(code) for code in status]
+        status_array.reverse()
+        print(status_array)
+
+        if any(status_array):
+            print("SRQ Status: Asserted")
+
+            if status_array[0] == 1:
+                print("FPWRL")
+            if status_array[1] == 1:
+                print("FTHERML")
+            if status_array[2] == 1:
+                print("FFREQL")
+            if status_array[3] == 1:
+                print("FVSFL")
+            if status_array[4] == 1:
+                print("CRL")
+            if status_array[5] == 1:
+                print("MRL")
+            if status_array[6] == 1:
+                print("CEL")
+            if status_array[7] == 1:
+                print("XEL")
+            if status_array[8] == 1:
+                print("WPWRL")
+            if status_array[9] == 1:
+                print("WTHERML")
+            if status_array[10] == 1:
+                print("WFREQL")
+            if status_array[11] == 1:
+                print("WVSFL")
+            if status_array[12] == 1:
+                print("DIS")
+            if status_array[13] == 1:
+                print("NONE")
+            if status_array[14] == 1:
+                print("NONE")
+            if status_array[15] == 1:
+                print("NONE")
+                
+    def get_fatal_trigger(self):
+            """
+            Utilizes FatalT register to identify which fatal conditon was asserted in StatusF and StatusW registers 
+            
+            """
+            response = self._fatalt()
+            status = int.from_bytes(response, 'big')
+            status = f'{status:016b}'
+            status_array = [int(code) for code in status]
+            status_array.reverse()
+            print(status_array)
+
+            if any(status_array):
+                print("SRQ Status: Asserted")
+
+                if status_array[0] == 1:
+                    print("FPWRL")
+                if status_array[1] == 1:
+                    print("FTHERML")
+                if status_array[2] == 1:
+                    print("FFREQL")
+                if status_array[3] == 1:
+                    print("FVSFL")
+                if status_array[4] == 1:
+                    print("NONE")
+                if status_array[5] == 1:
+                    print("MRL")
+                if status_array[6] == 1:
+                    print("NONE")
+                if status_array[7] == 1:
+                    print("NONE")
+                if status_array[8] == 1:
+                    print("WPWRL")
+                if status_array[9] == 1:
+                    print("WTHERML")
+                if status_array[10] == 1:
+                    print("WFREQL")
+                if status_array[11] == 1:
+                    print("WVSFL")
+                if status_array[12] == 1:
+                    print("NONE")
+                if status_array[13] == 1:
+                    print("NONE")
+                if status_array[14] == 1:
+                    print("NONE")
+                if status_array[15] == 1:
+                    print("NONE")
+
+    def get_alm_trigger(self):
+            """
+            Utilizes ALMT register to identify why ALM was asserted in StatusF and StatusW registers 
+            
+            """
+            response = self._almt()
+            status = int.from_bytes(response, 'big')
+            status = f'{status:016b}'
+            status_array = [int(code) for code in status]
+            status_array.reverse()
+            print(status_array)
+
+            if any(status_array):
+                print("SRQ Status: Asserted")
+
+                if status_array[0] == 1:
+                    print("FPWR")
+                if status_array[1] == 1:
+                    print("FTHERM")
+                if status_array[2] == 1:
+                    print("FFREQ")
+                if status_array[3] == 1:
+                    print("FVSF")
+                if status_array[4] == 1:
+                    print("NONE")
+                if status_array[5] == 1:
+                    print("NONE")
+                if status_array[6] == 1:
+                    print("NONE")
+                if status_array[7] == 1:
+                    print("NONE")
+                if status_array[8] == 1:
+                    print("WPWR")
+                if status_array[9] == 1:
+                    print("WTHERM")
+                if status_array[10] == 1:
+                    print("WFREQ")
+                if status_array[11] == 1:
+                    print("WVSF")
+                if status_array[12] == 1:
+                    print("NONE")
+                if status_array[13] == 1:
+                    print("NONE")
+                if status_array[14] == 1:
+                    print("NONE")
+                if status_array[15] == 1:
+                    print("NONE")             
+
