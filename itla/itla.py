@@ -644,17 +644,14 @@ class ITLA():
         return fcf1 + fcf2 * 1e-4 + fcf3 * 1e-6
 
     def get_grid_min(self):
-        """TODO describe function
+        """command to read minimum grid supported by the module
 
-        :returns:
+        :returns: The minimum grid supported by the module in GHz
 
         """
         try:
-            self._lgrid()
-            freq_lgrid = int(self._response[4:], 16)
-
-            self._lgrid2()
-            freq_lgrid2 = int(self._response[4:], 16)
+            freq_lgrid  = int.from_bytes(self._lgrid(),  'big', signed=False)
+            freq_lgrid2 = int.from_bytes(self._lgrid2(), 'big', signed=False)
 
         except ExecutionError as ee:
             self.nop()
