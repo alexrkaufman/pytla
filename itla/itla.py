@@ -784,7 +784,7 @@ class ITLA():
         # get response this should be a long byte string
         response = self._temps()
 
-        data = [int.from_bytes(response[i: i+2], 'big', signed=True) / 10
+        data = [int.from_bytes(response[i: i+2], 'big', signed=True) / 100
                 for i in range(0, len(response), 2)]
 
         return data
