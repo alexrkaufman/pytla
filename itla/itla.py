@@ -869,7 +869,12 @@ class ITLA():
 
         status = int(f'{response[0]:08b}'[-2:], 2)
         print(f'status: {status}')
-
+  
+        #When access some  'Manufacturer specific' register, the ExecutionError raise, for example get_channel() get_frequency() etc. 
+        #To avoid that, when status = 1, but not an AEA operation, and response data bytes are [0x00,0x00] ,ignor ExecutionError, while the [0x00,0x00] still be returned
+        if status==1 and int.from_bytes(response[2:4]) == 0 and register != 0x0B:
+            status = 0
+            
         try:
             raise self._response_status[status]
 
