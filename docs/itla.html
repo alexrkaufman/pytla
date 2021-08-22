@@ -33,11 +33,7 @@ from scipy.constants import speed_of_light
 from serial.serialutil import SerialException
 from pkg_resources import resource_filename
 from .itla_errors import *
-from .utils import (setup_registers, form_packet,
-                    compute_checksum)
-
-
-regdoc = &#39;**Uses register {register:#04X}.**\n\n&#39;
+from .utils import compute_checksum
 
 
 class ITLA():
@@ -107,7 +103,10 @@ class ITLA():
         register_files = [&#39;registers_itla.yaml&#39;, *register_files]
 
         # this function creates register functions
-        def mkfn(*, fnname, register, description, readonly, signed, AEA):
+        def mkfn(*, fnname, register, description,
+                 readonly, signed, **_):
+            # _ here to absorb unused things. This way the yaml
+            # can contain more info without causing errors here.
             if readonly:
                 def reg_fun(self):
                     self.send_command(register, signed=signed)
@@ -673,17 +672,14 @@ class ITLA():
         return fcf1 + fcf2 * 1e-4 + fcf3 * 1e-6
 
     def get_grid_min(self):
-        &#34;&#34;&#34;TODO describe function
+        &#34;&#34;&#34;command to read minimum grid supported by the module
 
-        :returns:
+        :returns: The minimum grid supported by the module in GHz
 
         &#34;&#34;&#34;
         try:
-            self._lgrid()
-            freq_lgrid = int(self._response[4:], 16)
-
-            self._lgrid2()
-            freq_lgrid2 = int(self._response[4:], 16)
+            freq_lgrid  = int.from_bytes(self._lgrid(),  &#39;big&#39;, signed=False)
+            freq_lgrid2 = int.from_bytes(self._lgrid2(), &#39;big&#39;, signed=False)
 
         except ExecutionError as ee:
             self.nop()
@@ -816,7 +812,7 @@ class ITLA():
         # get response this should be a long byte string
         response = self._temps()
 
-        data = [int.from_bytes(response[i: i+2], &#39;big&#39;, signed=True) / 10
+        data = [int.from_bytes(response[i: i+2], &#39;big&#39;, signed=True) / 100
                 for i in range(0, len(response), 2)]
 
         return data
@@ -1366,7 +1362,10 @@ I think this is probably a bad idea even though it isnt write only.</p>
         register_files = [&#39;registers_itla.yaml&#39;, *register_files]
 
         # this function creates register functions
-        def mkfn(*, fnname, register, description, readonly, signed, AEA):
+        def mkfn(*, fnname, register, description,
+                 readonly, signed, **_):
+            # _ here to absorb unused things. This way the yaml
+            # can contain more info without causing errors here.
             if readonly:
                 def reg_fun(self):
                     self.send_command(register, signed=signed)
@@ -1932,17 +1931,14 @@ I think this is probably a bad idea even though it isnt write only.</p>
         return fcf1 + fcf2 * 1e-4 + fcf3 * 1e-6
 
     def get_grid_min(self):
-        &#34;&#34;&#34;TODO describe function
+        &#34;&#34;&#34;command to read minimum grid supported by the module
 
-        :returns:
+        :returns: The minimum grid supported by the module in GHz
 
         &#34;&#34;&#34;
         try:
-            self._lgrid()
-            freq_lgrid = int(self._response[4:], 16)
-
-            self._lgrid2()
-            freq_lgrid2 = int(self._response[4:], 16)
+            freq_lgrid  = int.from_bytes(self._lgrid(),  &#39;big&#39;, signed=False)
+            freq_lgrid2 = int.from_bytes(self._lgrid2(), &#39;big&#39;, signed=False)
 
         except ExecutionError as ee:
             self.nop()
@@ -2075,7 +2071,7 @@ I think this is probably a bad idea even though it isnt write only.</p>
         # get response this should be a long byte string
         response = self._temps()
 
-        data = [int.from_bytes(response[i: i+2], &#39;big&#39;, signed=True) / 10
+        data = [int.from_bytes(response[i: i+2], &#39;big&#39;, signed=True) / 100
                 for i in range(0, len(response), 2)]
 
         return data
@@ -3350,24 +3346,21 @@ and everything accounted for.</p>
 <span>def <span class="ident">get_grid_min</span></span>(<span>self)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>TODO describe function</p>
-<p>:returns:</p></div>
+<div class="desc"><p>command to read minimum grid supported by the module</p>
+<p>:returns: The minimum grid supported by the module in GHz</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">def get_grid_min(self):
-    &#34;&#34;&#34;TODO describe function
+    &#34;&#34;&#34;command to read minimum grid supported by the module
 
-    :returns:
+    :returns: The minimum grid supported by the module in GHz
 
     &#34;&#34;&#34;
     try:
-        self._lgrid()
-        freq_lgrid = int(self._response[4:], 16)
-
-        self._lgrid2()
-        freq_lgrid2 = int(self._response[4:], 16)
+        freq_lgrid  = int.from_bytes(self._lgrid(),  &#39;big&#39;, signed=False)
+        freq_lgrid2 = int.from_bytes(self._lgrid2(), &#39;big&#39;, signed=False)
 
     except ExecutionError as ee:
         self.nop()
@@ -3725,7 +3718,7 @@ In the following order:</p>
     # get response this should be a long byte string
     response = self._temps()
 
-    data = [int.from_bytes(response[i: i+2], &#39;big&#39;, signed=True) / 10
+    data = [int.from_bytes(response[i: i+2], &#39;big&#39;, signed=True) / 100
             for i in range(0, len(response), 2)]
 
     return data</code></pre>
