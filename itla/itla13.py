@@ -1,11 +1,5 @@
 from time import sleep
-import yaml
-import serial
-from scipy.constants import speed_of_light
-from serial.serialutil import SerialException
-from pkg_resources import resource_filename
 from .itla_errors import *
-from .utils import compute_checksum
 from .itla import ITLABase
 
 

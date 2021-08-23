@@ -270,4 +270,4 @@ class ITLA():
             'pplaser': PPLaser
         }
 
-        return class_dict[version](cls, *args, **kwargs)
+        return class_dict[version](*args, **kwargs)

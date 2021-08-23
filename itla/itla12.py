@@ -1,12 +1,6 @@
 from time import sleep
-import yaml
-import serial
-from scipy.constants import speed_of_light
-from serial.serialutil import SerialException
-from pkg_resources import resource_filename
 from .itla import ITLABase
 from .itla_errors import *
-from .utils import compute_checksum
 
 
 class ITLA12(ITLABase):
@@ -45,76 +39,18 @@ class ITLA12(ITLABase):
         super().__init__(serial_port, baudrate, timeout=timeout,
                          register_files=register_files)
 
-    def __enter__(self):
-        """TODO describe function
-
-        :returns:
-
-        """
-        self.connect()
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        """TODO describe function
-
-        :param exc_type:
-        :param exc_value:
-        :param traceback:
-        :returns:
-
-        """
-        self.disconnect()
-
-    def __del__(self):
-        """TODO describe function
-
-        :returns:
-
-        """
-        if self._device is not None:
-            self.disconnect()
-
-    def connect(self):
-        """Establishes a serial connection with the port provided
-
-        **For some reason on Linux opening the serial port causes some
-        power output from the laser before it has been activated. This behavior
-        does not occur on Windows.**
-
-        """
-        try:
-            self._device = serial.Serial(self._port, self._baudrate,
-                                         timeout=self._timeout)
-        except SerialException:
-            raise SerialException("Connection to " + self._port + " unsuccessful.")
-
-    def disconnect(self, leave_on=False):
-        """Ends the serial connection to the laser
-
-        :param leave_on:
-        :returns:
-
-        """
-        if not self._device.is_open:
-            return
-
-        if not leave_on:
-            self.disable()
-
-        try:
-            self._device.close()
-        except AttributeError:
-            # When does this error occur?
-            # There are a few ways disconnect can be called.
-            # 1) It can be called purposefully.
-            # 2) It can be called by ending a `with` (ie __exit__)
-            # 3) It can be called by exiting a repl or a script ending (ie. __del__).
-            pass
-
     def nop(self, data=None):
-        """TODO describe function
+        """The No-Op operation.
 
-        :param data:
-        :returns:
+        This is a good test to see if your laser is communicating properly.
+        It should read 0000 data or echo whatever data you send it if you send it something.
+        The data you write to nop gets overwritten as soon as you read it back.
+
+        `nop()` also returns more informative errors following an ExecutionError.
+        This is not called by default so you must do this explicitly if you want
+        to see more informative error information.
+
+        :param data: Data to write
 
         """
         # pretty sure the data does nothing
@@ -553,10 +489,7 @@ class ITLA12(ITLABase):
         response = self._lfl2()
         lfl2 = int.from_bytes(response, 'big')
 
-        response = self._lfl3()
-        lfl3 = int.from_bytes(response, 'big')
-
-        return lfl1 + lfl2 * 1e-4 + lfl3 * 1e-6
+        return lfl1 + lfl2 * 1e-4
 
     def get_frequency_max(self):
         """command to read maximum frequency supported by the module
