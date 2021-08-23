@@ -260,14 +260,26 @@ class ITLA():
     '''
 
     def __new__(cls, *args, version='1.3', **kwargs):
+        '''
+        this function is executed on initialization of an object before
+        __init__ here we divert the initialization process to initialize
+        one of the subclasses of ITLABase.
+
+        I would love it if there were a way to make everything a
+        subclass of ITLA and merge the ITLA and ITLABase classes.
+        This would streamline some things and make it easier to do type
+        checking since it only makes sense that all ITLA laser objects would
+        be subclasses of ITLA not some random arbitrary ITLABase.
+
+        The current issue in doing this is that we end up with a circular
+        import I think.
+        '''
         from .itla12 import ITLA12
         from .itla13 import ITLA13
-        from .pplaser import PPLaser
 
         class_dict = {
             '1.3': ITLA13,
             '1.2': ITLA12,
-            'pplaser': PPLaser
         }
 
         return class_dict[version](*args, **kwargs)

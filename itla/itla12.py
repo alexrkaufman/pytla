@@ -23,13 +23,17 @@ class ITLA12(ITLABase):
 
     def __init__(self, serial_port, baudrate, timeout=0.5,
                  register_files=None):
-        """TODO describe function
+        """ Initializes the ITLA12 object.
 
-        :param serial_port:
-        :param baudrate:
-        :param timeout:
-        :returns:
-
+        :param serial_port: The serial port to connect to.
+        Can either be linux/mac type such as '/dev/ttyUSBX' or windows type 'comX'
+        :param baudrate: The baudrate for communication. I have primarily seen
+        lasers using 9600 as the default and then higher for firmware upgrades.
+        This may be laser specific.
+        :param timeout: How long should we wait to receive a response from the laser
+        :param register_files: Any additional register files you would like to include
+        beyond the default MSA-01.2 defined registers. These must be in a yaml format as
+        described in the project's README.
         """
         if register_files is None:
             register_files = []
@@ -64,9 +68,11 @@ class ITLA12(ITLABase):
             raise self._nop_errors[error_field]
 
     def enable(self):
-        """TODO describe function
+        """Enables laser optical output.
+        There is a time delay after execution of this function to
+        proper stable laser output.
 
-        :returns:
+        :returns: None
 
         """
         # I'm writing this out partially for transparency
@@ -82,11 +88,10 @@ class ITLA12(ITLABase):
             print('Waiting for laser to power on and stabilize.')
             # This would be a good place for a waiting function
 
-
     def disable(self):
-        """TODO describe function
+        """Tells the laser to stop lasing.
 
-        :returns:
+        :returns: None
 
         """
         # set SENA bit (bit 3) to zero
@@ -451,7 +456,8 @@ class ITLA12(ITLABase):
         return int.from_bytes(response, 'big')
 
     def get_wavelength(self):
-        """TODO describe function
+        """
+        Query's the laser for frequency setting and convert to wavelength.
 
         :returns:
 
@@ -459,7 +465,9 @@ class ITLA12(ITLABase):
         raise Warning("this is not implemented yet.")
 
     def get_output_wavelength(self):
-        """TODO describe function
+        """
+        Query's the laser for current frequency output (as this is
+        sometimes different from the set frequency) and then converts to wavelength.
 
         :returns:
 
@@ -467,7 +475,7 @@ class ITLA12(ITLABase):
         raise Warning("this is not implemented yet.")
 
     def get_temp(self):
-        """TODO describe function
+        """Returns the current primary control temperature in deg C.
 
         :returns:
 
@@ -545,7 +553,9 @@ class ITLA12(ITLABase):
         return grid_freq * 1e-1
 
     def get_age(self):
-        """TODO describe function
+        """Returns a string representing the percentage of aging of the laser.
+        0% indicated a brand new laser
+        100% indicates the laser should be replaces.
 
         :returns:
 
@@ -556,7 +566,12 @@ class ITLA12(ITLABase):
         return f'Age: {age} / 100%'
 
     def set_channel(self, channel):
-        """TODO describe function
+        """Sets the laser's operating channel.
+
+        MSA-01.2 lasers support a 16 bit channel value.
+
+        This defines how many spaces along the grid
+        the laser's frequency is displaced from the first channel frequency.
 
         :param channel:
         :returns:
@@ -579,9 +594,12 @@ class ITLA12(ITLABase):
         self._channel(channell)
 
     def get_channel(self):
-        """TODO describe function
+        """gets the current channel setting
 
-        :returns:
+        The channel defines how many spaces along the grid
+        the laser's frequency is displaced from the first channel frequency.
+
+        :returns: channel as an integer.
 
         """
         # This concatenates the data bytestrings

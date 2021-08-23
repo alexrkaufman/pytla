@@ -27,7 +27,12 @@ Hidden functions for each register (names the same as each register but in lower
 are available. Some registers still don't have user friendly functions defined
 for them.
 
-## Example Usage (default)
+It would be nice if we could include documentation for the
+hidden register functions for each class in the pytla docs.
+
+## Examples
+
+### default use (with MSA-01.3 lasers)
 
 ```python3
 # import, initialize, and connect to laser
@@ -44,7 +49,7 @@ laser.set_power(10)
 
 More info about features available currently can be found in [pytla docs](https://alexrkaufman.github.io/pytla).
 
-## Example Usage (version selection)
+### version selection
 
 You can also select the 1.2 spec if your laser does not yet support 1.3.
 This is as simple as setting `version` in initialization of your `ITLA` object.
@@ -65,10 +70,29 @@ laser.set_power(10)
 #### Currently supported options under version
 
 - [x] `version='1.3'` (OIF-ITLA-MSA-01.3)
-- [x] `version='1.2'` (OIF-ITlA-MSA-01.2)
-- [x]  (`version='pplaser'`) (for Pure Photonics lasers)
-- [ ] others? Please feel free to suggest or add a pull request for
-implementations of your favorite laser
+- [x] `version='1.2'` (OIF-ITLA-MSA-01.2)
+
+### Pure Photonics
+
+We have also implemented a class for PurePhotonics lasers as an example of how
+easy it can be for manufacturers to extend this library to control their own
+ITLA based lasers.
+
+```python3
+# import, initialize, and connect to laser
+import itla
+pplaser = itla.PPLaser('/dev/ttyUSB0')
+pplaser.connect()
+
+# Set the frequency to 193.560 THz
+laser.set_frequency(193.560)
+
+# Set the power to 10 dBm
+laser.set_power(10)
+
+laser.enable()
+laser.whispermode()
+```
 
 
 ## Paradigm
@@ -105,6 +129,15 @@ RegisterName:
   readonly: [true/false]
   AEA: [true/false]
   signed: [true/false]
+
+MYREGISTER:
+  register: 0xFE
+  fnname: myregister
+  description: >
+  This is my very own register. I can write a signed integer to it or read it back.
+  readonly: true
+  AEA: false
+  signed: true
 ```
 
 You can name your register whatever you'd like and name the function for
@@ -118,15 +151,37 @@ file is in the same folder as the file with the `MyLaser` class you can create a
 class with hidden functions for your registers implemented in addition to
 the basic ITLA1.3 registers and wrapper functions.
 
-```python
-from itla import ITLA
+Realistically, unless you are OIF and you are defining a 1.4 or 2.0 spec,
+you should not need to write a class that depends directly on `ITLABase`.
+Instead, you are likely adding functionality to the 1.3 (or older) standard.
 
-class MyLaser(ITLA):
+
+```python3
+from itla.itla13 import ITLA13
+
+class MyLaser(ITLA13):
 
     def __init__(self, port, baudrate=9600):
         register_files = ['myregisters.yaml']
         super().__init__(port, baudrate=baudrate, register_files=register_files)
+
+    def myfunction(self, data=None):
+        '''This function either writes an integer to register 0xFE or reads an
+            integer from 0xFE
+        '''
+
+        if data is not None:
+            response = self._myregister()
+
+        elif type(data) is int:
+            response = self._myregister(data)
+
+        else
+           raise TypeError("Must be an int!")
+
+        return int.from_bytes(response, 'big', signed=True)
 ```
+
 ## Acknowlegements
 
 This work was done as a part of projects for
