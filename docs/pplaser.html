@@ -26,13 +26,12 @@
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">from .itla import ITLA
+<pre><code class="python">from time import sleep
+from .itla12 import ITLA12
 from .itla_errors import *
-from time import sleep
-import yaml
 
 
-class PPLaser(ITLA):
+class PPLaser(ITLA12):
     &#34;&#34;&#34;
     The pure photonics laser class implements specific features or handles particular
     quirks of the pure photonics laser. The pure photonics laser has additional
@@ -43,12 +42,20 @@ class PPLaser(ITLA):
     * `get_frequency` is *not* overridden because these registers can still be read without issue
     &#34;&#34;&#34;
 
-    # TODO re-define init to run super() and but set baudrate for you
     def __init__(self, serial_port, baudrate=9600):
-        super().__init__(serial_port, baudrate,
-                         register_files={&#39;registers_itla.yaml&#39;, &#39;registers_pp.yaml&#39;})
+        &#39;&#39;&#39; sets up the additional frequency max and min variables which will be set upon
+        connecting to the laser. We have found that Pure Photonics lasers do not
+        return the RVEError when setting the frequency out of spec.
+
+        This sets up the additional register yaml file for pure photonics specific functions.
+        &#39;&#39;&#39;
+        register_files = [&#39;registers_pp.yaml&#39;]
+
         self._frequency_max = None
         self._frequency_min = None
+
+        super().__init__(serial_port, baudrate,
+                         register_files=register_files)
 
     def connect(self):
         &#34;&#34;&#34;Overriden connect function with query for max and min frequency
@@ -78,67 +85,7 @@ class PPLaser(ITLA):
             raise RVEError(&#34;The desired frequency is outside &#34;
                            &#34;of the range for this laser.&#34;)
 
-        freq = int(freq * 1e6)
-
-        freq_str = str(freq)
-        fcf1 = int(freq_str[0:3])
-        fcf2 = int(freq_str[3:7])
-        # the final two decimal places (0-99MHz) are ignored.
-
-        try:
-            self._fcf1(fcf1)
-            self._fcf2(fcf2)
-
-        except ExecutionError:
-
-            try:
-                self.nop()
-            except RVEError as error:
-                raise error from None
-            except CIEError as error:
-                raise error from None
-
-    def set_channel(self, channel):
-        &#34;&#34;&#34;
-        It is likely not possible to reach channels in the range where
-        channelh would kick in anyway. However since the laser is built on the
-        OIF-ITLA-1.2 standard we should just avoid calling it.
-        &#34;&#34;&#34;
-        # check type and stuff
-        if not isinstance(channel, int):
-            raise TypeError(&#34;Channel must be an integer&#34;)
-        if channel &lt; 0:
-            raise ValueError(&#34;Channel must be positive.&#34;)
-        if channel &gt; 0xFFFF:
-            raise ValueError(&#34;Channel must be a 16 bit integer (&lt;=0xFFFF).&#34;)
-
-        # Split the channel choice into two options.
-        channel_hex = f&#39;{channel:08x}&#39;
-
-        channell = int(channel_hex[4:], 16)
-        self._channel(channell)
-
-    def set_grid(self, grid_freq):
-        &#34;&#34;&#34;
-        Set the grid spacing in GHz. resolution in GHz/10.
-
-        PPLaser built on 1.2 standard so we dont do grid2
-        &#34;&#34;&#34;
-        grid_freq = int(grid_freq * 10)
-
-        self._grid(grid_freq)
-
-    def get_grid_min(self):
-        &#34;&#34;&#34;get the minimum grid spacing
-        &#34;&#34;&#34;
-        try:
-            self._lgrid()
-            freq_lgrid = int(self._response[4:], 16)
-
-        except ExecutionError as ee:
-            self.nop()
-
-        return freq_lgrid * 1e-1
+        super().set_fcf(freq)
 
     def get_mode(self):
         &#34;&#34;&#34;get which low noise mode&#34;&#34;&#34;
@@ -356,16 +303,15 @@ registers for a couple of applications.</p>
 <li>These are overwritten because fcf3 causes some issues</li>
 <li><code>get_frequency</code> is <em>not</em> overridden because these registers can still be read without issue</li>
 </ul>
-<p>TODO describe function</p>
-<p>:param serial_port:
-:param baudrate:
-:param timeout:
-:returns:</p></div>
+<p>sets up the additional frequency max and min variables which will be set upon
+connecting to the laser. We have found that Pure Photonics lasers do not
+return the RVEError when setting the frequency out of spec.</p>
+<p>This sets up the additional register yaml file for pure photonics specific functions.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class PPLaser(ITLA):
+<pre><code class="python">class PPLaser(ITLA12):
     &#34;&#34;&#34;
     The pure photonics laser class implements specific features or handles particular
     quirks of the pure photonics laser. The pure photonics laser has additional
@@ -376,12 +322,20 @@ registers for a couple of applications.</p>
     * `get_frequency` is *not* overridden because these registers can still be read without issue
     &#34;&#34;&#34;
 
-    # TODO re-define init to run super() and but set baudrate for you
     def __init__(self, serial_port, baudrate=9600):
-        super().__init__(serial_port, baudrate,
-                         register_files={&#39;registers_itla.yaml&#39;, &#39;registers_pp.yaml&#39;})
+        &#39;&#39;&#39; sets up the additional frequency max and min variables which will be set upon
+        connecting to the laser. We have found that Pure Photonics lasers do not
+        return the RVEError when setting the frequency out of spec.
+
+        This sets up the additional register yaml file for pure photonics specific functions.
+        &#39;&#39;&#39;
+        register_files = [&#39;registers_pp.yaml&#39;]
+
         self._frequency_max = None
         self._frequency_min = None
+
+        super().__init__(serial_port, baudrate,
+                         register_files=register_files)
 
     def connect(self):
         &#34;&#34;&#34;Overriden connect function with query for max and min frequency
@@ -411,67 +365,7 @@ registers for a couple of applications.</p>
             raise RVEError(&#34;The desired frequency is outside &#34;
                            &#34;of the range for this laser.&#34;)
 
-        freq = int(freq * 1e6)
-
-        freq_str = str(freq)
-        fcf1 = int(freq_str[0:3])
-        fcf2 = int(freq_str[3:7])
-        # the final two decimal places (0-99MHz) are ignored.
-
-        try:
-            self._fcf1(fcf1)
-            self._fcf2(fcf2)
-
-        except ExecutionError:
-
-            try:
-                self.nop()
-            except RVEError as error:
-                raise error from None
-            except CIEError as error:
-                raise error from None
-
-    def set_channel(self, channel):
-        &#34;&#34;&#34;
-        It is likely not possible to reach channels in the range where
-        channelh would kick in anyway. However since the laser is built on the
-        OIF-ITLA-1.2 standard we should just avoid calling it.
-        &#34;&#34;&#34;
-        # check type and stuff
-        if not isinstance(channel, int):
-            raise TypeError(&#34;Channel must be an integer&#34;)
-        if channel &lt; 0:
-            raise ValueError(&#34;Channel must be positive.&#34;)
-        if channel &gt; 0xFFFF:
-            raise ValueError(&#34;Channel must be a 16 bit integer (&lt;=0xFFFF).&#34;)
-
-        # Split the channel choice into two options.
-        channel_hex = f&#39;{channel:08x}&#39;
-
-        channell = int(channel_hex[4:], 16)
-        self._channel(channell)
-
-    def set_grid(self, grid_freq):
-        &#34;&#34;&#34;
-        Set the grid spacing in GHz. resolution in GHz/10.
-
-        PPLaser built on 1.2 standard so we dont do grid2
-        &#34;&#34;&#34;
-        grid_freq = int(grid_freq * 10)
-
-        self._grid(grid_freq)
-
-    def get_grid_min(self):
-        &#34;&#34;&#34;get the minimum grid spacing
-        &#34;&#34;&#34;
-        try:
-            self._lgrid()
-            freq_lgrid = int(self._response[4:], 16)
-
-        except ExecutionError as ee:
-            self.nop()
-
-        return freq_lgrid * 1e-1
+        super().set_fcf(freq)
 
     def get_mode(self):
         &#34;&#34;&#34;get which low noise mode&#34;&#34;&#34;
@@ -668,7 +562,8 @@ registers for a couple of applications.</p>
 </details>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="itla.itla.ITLA" href="itla.html#itla.itla.ITLA">ITLA</a></li>
+<li><a title="itla.itla12.ITLA12" href="itla12.html#itla.itla12.ITLA12">ITLA12</a></li>
+<li><a title="itla.itla.ITLABase" href="itla.html#itla.itla.ITLABase">ITLABase</a></li>
 </ul>
 <h3>Methods</h3>
 <dl>
@@ -910,28 +805,6 @@ amplitude and the midpoint.</p>
     return cs_rate</code></pre>
 </details>
 </dd>
-<dt id="itla.pplaser.PPLaser.get_grid_min"><code class="name flex">
-<span>def <span class="ident">get_grid_min</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>get the minimum grid spacing</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def get_grid_min(self):
-    &#34;&#34;&#34;get the minimum grid spacing
-    &#34;&#34;&#34;
-    try:
-        self._lgrid()
-        freq_lgrid = int(self._response[4:], 16)
-
-    except ExecutionError as ee:
-        self.nop()
-
-    return freq_lgrid * 1e-1</code></pre>
-</details>
-</dd>
 <dt id="itla.pplaser.PPLaser.get_mode"><code class="name flex">
 <span>def <span class="ident">get_mode</span></span>(<span>self)</span>
 </code></dt>
@@ -985,38 +858,6 @@ The feature guide says "a value of 1 defaults to 2".</p></div>
 <pre><code class="python">def normalmode(self):
     &#34;&#34;&#34;set mode to standard dither mode&#34;&#34;&#34;
     self._mode(0)</code></pre>
-</details>
-</dd>
-<dt id="itla.pplaser.PPLaser.set_channel"><code class="name flex">
-<span>def <span class="ident">set_channel</span></span>(<span>self, channel)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>It is likely not possible to reach channels in the range where
-channelh would kick in anyway. However since the laser is built on the
-OIF-ITLA-1.2 standard we should just avoid calling it.</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_channel(self, channel):
-    &#34;&#34;&#34;
-    It is likely not possible to reach channels in the range where
-    channelh would kick in anyway. However since the laser is built on the
-    OIF-ITLA-1.2 standard we should just avoid calling it.
-    &#34;&#34;&#34;
-    # check type and stuff
-    if not isinstance(channel, int):
-        raise TypeError(&#34;Channel must be an integer&#34;)
-    if channel &lt; 0:
-        raise ValueError(&#34;Channel must be positive.&#34;)
-    if channel &gt; 0xFFFF:
-        raise ValueError(&#34;Channel must be a 16 bit integer (&lt;=0xFFFF).&#34;)
-
-    # Split the channel choice into two options.
-    channel_hex = f&#39;{channel:08x}&#39;
-
-    channell = int(channel_hex[4:], 16)
-    self._channel(channell)</code></pre>
 </details>
 </dd>
 <dt id="itla.pplaser.PPLaser.set_cleanjump"><code class="name flex">
@@ -1130,46 +971,7 @@ and raises RVE error if not</p></div>
         raise RVEError(&#34;The desired frequency is outside &#34;
                        &#34;of the range for this laser.&#34;)
 
-    freq = int(freq * 1e6)
-
-    freq_str = str(freq)
-    fcf1 = int(freq_str[0:3])
-    fcf2 = int(freq_str[3:7])
-    # the final two decimal places (0-99MHz) are ignored.
-
-    try:
-        self._fcf1(fcf1)
-        self._fcf2(fcf2)
-
-    except ExecutionError:
-
-        try:
-            self.nop()
-        except RVEError as error:
-            raise error from None
-        except CIEError as error:
-            raise error from None</code></pre>
-</details>
-</dd>
-<dt id="itla.pplaser.PPLaser.set_grid"><code class="name flex">
-<span>def <span class="ident">set_grid</span></span>(<span>self, grid_freq)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Set the grid spacing in GHz. resolution in GHz/10.</p>
-<p>PPLaser built on 1.2 standard so we dont do grid2</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def set_grid(self, grid_freq):
-    &#34;&#34;&#34;
-    Set the grid spacing in GHz. resolution in GHz/10.
-
-    PPLaser built on 1.2 standard so we dont do grid2
-    &#34;&#34;&#34;
-    grid_freq = int(grid_freq * 10)
-
-    self._grid(grid_freq)</code></pre>
+    super().set_fcf(freq)</code></pre>
 </details>
 </dd>
 <dt id="itla.pplaser.PPLaser.whispermode"><code class="name flex">
@@ -1191,65 +993,68 @@ are disabled resulting in a lower noise mode.</p></div>
 </dl>
 <h3>Inherited members</h3>
 <ul class="hlist">
-<li><code><b><a title="itla.itla.ITLA" href="itla.html#itla.itla.ITLA">ITLA</a></b></code>:
+<li><code><b><a title="itla.itla12.ITLA12" href="itla12.html#itla.itla12.ITLA12">ITLA12</a></b></code>:
 <ul class="hlist">
-<li><code><a title="itla.itla.ITLA.disable" href="itla.html#itla.itla.ITLA.disable">disable</a></code></li>
-<li><code><a title="itla.itla.ITLA.disconnect" href="itla.html#itla.itla.ITLA.disconnect">disconnect</a></code></li>
-<li><code><a title="itla.itla.ITLA.dither_disable" href="itla.html#itla.itla.ITLA.dither_disable">dither_disable</a></code></li>
-<li><code><a title="itla.itla.ITLA.enable" href="itla.html#itla.itla.ITLA.enable">enable</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_age" href="itla.html#itla.itla.ITLA.get_age">get_age</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_alm_trigger" href="itla.html#itla.itla.ITLA.get_alm_trigger">get_alm_trigger</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_backwardscompatibility" href="itla.html#itla.itla.ITLA.get_backwardscompatibility">get_backwardscompatibility</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_channel" href="itla.html#itla.itla.ITLA.get_channel">get_channel</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_currents" href="itla.html#itla.itla.ITLA.get_currents">get_currents</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_device_type" href="itla.html#itla.itla.ITLA.get_device_type">get_device_type</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_dither_amplitude" href="itla.html#itla.itla.ITLA.get_dither_amplitude">get_dither_amplitude</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_dither_frequency" href="itla.html#itla.itla.ITLA.get_dither_frequency">get_dither_frequency</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_dither_rate" href="itla.html#itla.itla.ITLA.get_dither_rate">get_dither_rate</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_error_fatal" href="itla.html#itla.itla.ITLA.get_error_fatal">get_error_fatal</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_error_warning" href="itla.html#itla.itla.ITLA.get_error_warning">get_error_warning</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_fatal_freq_thresh" href="itla.html#itla.itla.ITLA.get_fatal_freq_thresh">get_fatal_freq_thresh</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_fatal_power_thresh" href="itla.html#itla.itla.ITLA.get_fatal_power_thresh">get_fatal_power_thresh</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_fatal_therm_thresh" href="itla.html#itla.itla.ITLA.get_fatal_therm_thresh">get_fatal_therm_thresh</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_fatal_trigger" href="itla.html#itla.itla.ITLA.get_fatal_trigger">get_fatal_trigger</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_fcf" href="itla.html#itla.itla.ITLA.get_fcf">get_fcf</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_fine_tuning" href="itla.html#itla.itla.ITLA.get_fine_tuning">get_fine_tuning</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_firmware_release" href="itla.html#itla.itla.ITLA.get_firmware_release">get_firmware_release</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_frequency" href="itla.html#itla.itla.ITLA.get_frequency">get_frequency</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_frequency_max" href="itla.html#itla.itla.ITLA.get_frequency_max">get_frequency_max</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_frequency_min" href="itla.html#itla.itla.ITLA.get_frequency_min">get_frequency_min</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_grid" href="itla.html#itla.itla.ITLA.get_grid">get_grid</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_last_response" href="itla.html#itla.itla.ITLA.get_last_response">get_last_response</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_manufacturer" href="itla.html#itla.itla.ITLA.get_manufacturer">get_manufacturer</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_manufacturing_date" href="itla.html#itla.itla.ITLA.get_manufacturing_date">get_manufacturing_date</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_model" href="itla.html#itla.itla.ITLA.get_model">get_model</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_output_wavelength" href="itla.html#itla.itla.ITLA.get_output_wavelength">get_output_wavelength</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_power_max" href="itla.html#itla.itla.ITLA.get_power_max">get_power_max</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_power_min" href="itla.html#itla.itla.ITLA.get_power_min">get_power_min</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_power_output" href="itla.html#itla.itla.ITLA.get_power_output">get_power_output</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_power_setting" href="itla.html#itla.itla.ITLA.get_power_setting">get_power_setting</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_response" href="itla.html#itla.itla.ITLA.get_response">get_response</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_serialnumber" href="itla.html#itla.itla.ITLA.get_serialnumber">get_serialnumber</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_srq_trigger" href="itla.html#itla.itla.ITLA.get_srq_trigger">get_srq_trigger</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_temp" href="itla.html#itla.itla.ITLA.get_temp">get_temp</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_temps" href="itla.html#itla.itla.ITLA.get_temps">get_temps</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_warning_freq_thresh" href="itla.html#itla.itla.ITLA.get_warning_freq_thresh">get_warning_freq_thresh</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_warning_power_thresh" href="itla.html#itla.itla.ITLA.get_warning_power_thresh">get_warning_power_thresh</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_warning_therm_thresh" href="itla.html#itla.itla.ITLA.get_warning_therm_thresh">get_warning_therm_thresh</a></code></li>
-<li><code><a title="itla.itla.ITLA.get_wavelength" href="itla.html#itla.itla.ITLA.get_wavelength">get_wavelength</a></code></li>
-<li><code><a title="itla.itla.ITLA.hard_reset" href="itla.html#itla.itla.ITLA.hard_reset">hard_reset</a></code></li>
-<li><code><a title="itla.itla.ITLA.nop" href="itla.html#itla.itla.ITLA.nop">nop</a></code></li>
-<li><code><a title="itla.itla.ITLA.read_aea" href="itla.html#itla.itla.ITLA.read_aea">read_aea</a></code></li>
-<li><code><a title="itla.itla.ITLA.send_command" href="itla.html#itla.itla.ITLA.send_command">send_command</a></code></li>
-<li><code><a title="itla.itla.ITLA.set_dither_amplitude" href="itla.html#itla.itla.ITLA.set_dither_amplitude">set_dither_amplitude</a></code></li>
-<li><code><a title="itla.itla.ITLA.set_dither_frequency" href="itla.html#itla.itla.ITLA.set_dither_frequency">set_dither_frequency</a></code></li>
-<li><code><a title="itla.itla.ITLA.set_dither_rate" href="itla.html#itla.itla.ITLA.set_dither_rate">set_dither_rate</a></code></li>
-<li><code><a title="itla.itla.ITLA.set_fine_tuning" href="itla.html#itla.itla.ITLA.set_fine_tuning">set_fine_tuning</a></code></li>
-<li><code><a title="itla.itla.ITLA.set_frequency" href="itla.html#itla.itla.ITLA.set_frequency">set_frequency</a></code></li>
-<li><code><a title="itla.itla.ITLA.set_power" href="itla.html#itla.itla.ITLA.set_power">set_power</a></code></li>
-<li><code><a title="itla.itla.ITLA.set_wavelength" href="itla.html#itla.itla.ITLA.set_wavelength">set_wavelength</a></code></li>
-<li><code><a title="itla.itla.ITLA.soft_reset" href="itla.html#itla.itla.ITLA.soft_reset">soft_reset</a></code></li>
-<li><code><a title="itla.itla.ITLA.upgrade_firmware" href="itla.html#itla.itla.ITLA.upgrade_firmware">upgrade_firmware</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.disable" href="itla12.html#itla.itla12.ITLA12.disable">disable</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.disconnect" href="itla.html#itla.itla.ITLABase.disconnect">disconnect</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.dither_disable" href="itla12.html#itla.itla12.ITLA12.dither_disable">dither_disable</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.enable" href="itla12.html#itla.itla12.ITLA12.enable">enable</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_age" href="itla12.html#itla.itla12.ITLA12.get_age">get_age</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_alm_trigger" href="itla12.html#itla.itla12.ITLA12.get_alm_trigger">get_alm_trigger</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_backwardscompatibility" href="itla12.html#itla.itla12.ITLA12.get_backwardscompatibility">get_backwardscompatibility</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_channel" href="itla12.html#itla.itla12.ITLA12.get_channel">get_channel</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_currents" href="itla12.html#itla.itla12.ITLA12.get_currents">get_currents</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_device_type" href="itla12.html#itla.itla12.ITLA12.get_device_type">get_device_type</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_dither_amplitude" href="itla12.html#itla.itla12.ITLA12.get_dither_amplitude">get_dither_amplitude</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_dither_frequency" href="itla12.html#itla.itla12.ITLA12.get_dither_frequency">get_dither_frequency</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_dither_rate" href="itla12.html#itla.itla12.ITLA12.get_dither_rate">get_dither_rate</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_error_fatal" href="itla12.html#itla.itla12.ITLA12.get_error_fatal">get_error_fatal</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_error_warning" href="itla12.html#itla.itla12.ITLA12.get_error_warning">get_error_warning</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_fatal_freq_thresh" href="itla12.html#itla.itla12.ITLA12.get_fatal_freq_thresh">get_fatal_freq_thresh</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_fatal_power_thresh" href="itla12.html#itla.itla12.ITLA12.get_fatal_power_thresh">get_fatal_power_thresh</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_fatal_therm_thresh" href="itla12.html#itla.itla12.ITLA12.get_fatal_therm_thresh">get_fatal_therm_thresh</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_fatal_trigger" href="itla12.html#itla.itla12.ITLA12.get_fatal_trigger">get_fatal_trigger</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_fcf" href="itla12.html#itla.itla12.ITLA12.get_fcf">get_fcf</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_fine_tuning" href="itla12.html#itla.itla12.ITLA12.get_fine_tuning">get_fine_tuning</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_firmware_release" href="itla12.html#itla.itla12.ITLA12.get_firmware_release">get_firmware_release</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_frequency" href="itla12.html#itla.itla12.ITLA12.get_frequency">get_frequency</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_frequency_max" href="itla12.html#itla.itla12.ITLA12.get_frequency_max">get_frequency_max</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_frequency_min" href="itla12.html#itla.itla12.ITLA12.get_frequency_min">get_frequency_min</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_grid" href="itla12.html#itla.itla12.ITLA12.get_grid">get_grid</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_grid_min" href="itla12.html#itla.itla12.ITLA12.get_grid_min">get_grid_min</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_last_response" href="itla12.html#itla.itla12.ITLA12.get_last_response">get_last_response</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_manufacturer" href="itla12.html#itla.itla12.ITLA12.get_manufacturer">get_manufacturer</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_manufacturing_date" href="itla12.html#itla.itla12.ITLA12.get_manufacturing_date">get_manufacturing_date</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_model" href="itla12.html#itla.itla12.ITLA12.get_model">get_model</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_output_wavelength" href="itla12.html#itla.itla12.ITLA12.get_output_wavelength">get_output_wavelength</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_power_max" href="itla12.html#itla.itla12.ITLA12.get_power_max">get_power_max</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_power_min" href="itla12.html#itla.itla12.ITLA12.get_power_min">get_power_min</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_power_output" href="itla12.html#itla.itla12.ITLA12.get_power_output">get_power_output</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_power_setting" href="itla12.html#itla.itla12.ITLA12.get_power_setting">get_power_setting</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_response" href="itla.html#itla.itla.ITLABase.get_response">get_response</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_serialnumber" href="itla12.html#itla.itla12.ITLA12.get_serialnumber">get_serialnumber</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_srq_trigger" href="itla12.html#itla.itla12.ITLA12.get_srq_trigger">get_srq_trigger</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_temp" href="itla12.html#itla.itla12.ITLA12.get_temp">get_temp</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_temps" href="itla12.html#itla.itla12.ITLA12.get_temps">get_temps</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_warning_freq_thresh" href="itla12.html#itla.itla12.ITLA12.get_warning_freq_thresh">get_warning_freq_thresh</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_warning_power_thresh" href="itla12.html#itla.itla12.ITLA12.get_warning_power_thresh">get_warning_power_thresh</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_warning_therm_thresh" href="itla12.html#itla.itla12.ITLA12.get_warning_therm_thresh">get_warning_therm_thresh</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_wavelength" href="itla12.html#itla.itla12.ITLA12.get_wavelength">get_wavelength</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.hard_reset" href="itla12.html#itla.itla12.ITLA12.hard_reset">hard_reset</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.nop" href="itla12.html#itla.itla12.ITLA12.nop">nop</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.read_aea" href="itla12.html#itla.itla12.ITLA12.read_aea">read_aea</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.send_command" href="itla.html#itla.itla.ITLABase.send_command">send_command</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.set_channel" href="itla12.html#itla.itla12.ITLA12.set_channel">set_channel</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.set_dither_amplitude" href="itla12.html#itla.itla12.ITLA12.set_dither_amplitude">set_dither_amplitude</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.set_dither_frequency" href="itla12.html#itla.itla12.ITLA12.set_dither_frequency">set_dither_frequency</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.set_dither_rate" href="itla12.html#itla.itla12.ITLA12.set_dither_rate">set_dither_rate</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.set_fine_tuning" href="itla12.html#itla.itla12.ITLA12.set_fine_tuning">set_fine_tuning</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.set_frequency" href="itla12.html#itla.itla12.ITLA12.set_frequency">set_frequency</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.set_grid" href="itla12.html#itla.itla12.ITLA12.set_grid">set_grid</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.set_power" href="itla12.html#itla.itla12.ITLA12.set_power">set_power</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.set_wavelength" href="itla12.html#itla.itla12.ITLA12.set_wavelength">set_wavelength</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.soft_reset" href="itla12.html#itla.itla12.ITLA12.soft_reset">soft_reset</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.upgrade_firmware" href="itla.html#itla.itla.ITLABase.upgrade_firmware">upgrade_firmware</a></code></li>
 </ul>
 </li>
 </ul>
@@ -1282,17 +1087,14 @@ are disabled resulting in a lower noise mode.</p></div>
 <li><code><a title="itla.pplaser.PPLaser.get_cleansweep_amplitude" href="#itla.pplaser.PPLaser.get_cleansweep_amplitude">get_cleansweep_amplitude</a></code></li>
 <li><code><a title="itla.pplaser.PPLaser.get_cleansweep_offset" href="#itla.pplaser.PPLaser.get_cleansweep_offset">get_cleansweep_offset</a></code></li>
 <li><code><a title="itla.pplaser.PPLaser.get_cleansweep_rate" href="#itla.pplaser.PPLaser.get_cleansweep_rate">get_cleansweep_rate</a></code></li>
-<li><code><a title="itla.pplaser.PPLaser.get_grid_min" href="#itla.pplaser.PPLaser.get_grid_min">get_grid_min</a></code></li>
 <li><code><a title="itla.pplaser.PPLaser.get_mode" href="#itla.pplaser.PPLaser.get_mode">get_mode</a></code></li>
 <li><code><a title="itla.pplaser.PPLaser.nodithermode" href="#itla.pplaser.PPLaser.nodithermode">nodithermode</a></code></li>
 <li><code><a title="itla.pplaser.PPLaser.normalmode" href="#itla.pplaser.PPLaser.normalmode">normalmode</a></code></li>
-<li><code><a title="itla.pplaser.PPLaser.set_channel" href="#itla.pplaser.PPLaser.set_channel">set_channel</a></code></li>
 <li><code><a title="itla.pplaser.PPLaser.set_cleanjump" href="#itla.pplaser.PPLaser.set_cleanjump">set_cleanjump</a></code></li>
 <li><code><a title="itla.pplaser.PPLaser.set_cleansweep_amplitude" href="#itla.pplaser.PPLaser.set_cleansweep_amplitude">set_cleansweep_amplitude</a></code></li>
 <li><code><a title="itla.pplaser.PPLaser.set_cleansweep_offset" href="#itla.pplaser.PPLaser.set_cleansweep_offset">set_cleansweep_offset</a></code></li>
 <li><code><a title="itla.pplaser.PPLaser.set_cleansweep_rate" href="#itla.pplaser.PPLaser.set_cleansweep_rate">set_cleansweep_rate</a></code></li>
 <li><code><a title="itla.pplaser.PPLaser.set_fcf" href="#itla.pplaser.PPLaser.set_fcf">set_fcf</a></code></li>
-<li><code><a title="itla.pplaser.PPLaser.set_grid" href="#itla.pplaser.PPLaser.set_grid">set_grid</a></code></li>
 <li><code><a title="itla.pplaser.PPLaser.whispermode" href="#itla.pplaser.PPLaser.whispermode">whispermode</a></code></li>
 </ul>
 </li>

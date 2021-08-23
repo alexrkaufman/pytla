@@ -1,0 +1,3784 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.9.2" />
+<title>itla.itla12 API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>itla.itla12</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from time import sleep
+from .itla import ITLABase
+from .itla_errors import *
+
+
+class ITLA12(ITLABase):
+    &#39;&#39;&#39;
+    A class that represents the an ITLA
+    and exposes a user friendly API for controlling functionality.
+
+    Things to figure out
+
+      * What should be exposed to the user?
+      * Can we abstract away the concept of registers and stuff
+        in here so you don&#39;t have to deal with it.
+
+   There are some functions that could be implemented like set_fatalstatus.
+   I think this is probably a bad idea even though it isnt write only.
+
+   Set Frequency is my platonic ideal for the higher level functions.
+
+    &#39;&#39;&#39;
+
+    def __init__(self, serial_port, baudrate, timeout=0.5,
+                 register_files=None):
+        &#34;&#34;&#34; Initializes the ITLA12 object.
+
+        :param serial_port: The serial port to connect to.
+        Can either be linux/mac type such as &#39;/dev/ttyUSBX&#39; or windows type &#39;comX&#39;
+        :param baudrate: The baudrate for communication. I have primarily seen
+        lasers using 9600 as the default and then higher for firmware upgrades.
+        This may be laser specific.
+        :param timeout: How long should we wait to receive a response from the laser
+        :param register_files: Any additional register files you would like to include
+        beyond the default MSA-01.2 defined registers. These must be in a yaml format as
+        described in the project&#39;s README.
+        &#34;&#34;&#34;
+        if register_files is None:
+            register_files = []
+
+        register_files = [&#39;registers_itla12.yaml&#39;, *register_files]
+
+        super().__init__(serial_port, baudrate, timeout=timeout,
+                         register_files=register_files)
+
+    def nop(self, data=None):
+        &#34;&#34;&#34;The No-Op operation.
+
+        This is a good test to see if your laser is communicating properly.
+        It should read 0000 data or echo whatever data you send it if you send it something.
+        The data you write to nop gets overwritten as soon as you read it back.
+
+        `nop()` also returns more informative errors following an ExecutionError.
+        This is not called by default so you must do this explicitly if you want
+        to see more informative error information.
+
+        :param data: Data to write
+
+        &#34;&#34;&#34;
+        # pretty sure the data does nothing
+        if data is not None:
+            response = self._nop(data)
+        else:
+            response = self._nop()
+
+        error_field = int(response.hex()[-1], 16)
+        if bool(error_field):
+            raise self._nop_errors[error_field]
+
+    def enable(self):
+        &#34;&#34;&#34;Enables laser optical output.
+        There is a time delay after execution of this function to
+        proper stable laser output.
+
+        :returns: None
+
+        &#34;&#34;&#34;
+        # I&#39;m writing this out partially for transparency
+        # Maybe unnecessary or non-optimal
+        data = [0] * 16
+        # bit 3 SENA bit
+        data[3] = 1
+        data = int(&#39;&#39;.join(str(x) for x in data[::-1]), 2)
+
+        self._resena(data)
+
+    def disable(self):
+        &#34;&#34;&#34;Tells the laser to stop lasing.
+
+        :returns: None
+
+        &#34;&#34;&#34;
+        # set SENA bit (bit 3) to zero
+        data = [0] * 16
+        data = int(&#39;&#39;.join(str(x) for x in data[::-1]), 2)
+        self._resena(data)
+
+    def hard_reset(self):
+        &#34;&#34;&#34;TODO describe function
+
+        :returns:
+
+        &#34;&#34;&#34;
+        # I&#39;m writing this out partially for transparency
+        # Maybe unnecessary or non-optimal
+        data = [0] * 16
+        # bit 0: Module Reset
+        data[0] = 1
+        data = int(&#39;&#39;.join(str(x) for x in data[::-1]), 2)
+
+        self._resena(data)
+
+    def soft_reset(self):
+        &#34;&#34;&#34;TODO describe function
+
+        :returns:
+
+        &#34;&#34;&#34;
+        # I&#39;m writing this out partially for transparency
+        # Maybe unnecessary or non-optimal
+        data = [0] * 16
+        # bit 1: Soft Reset
+        data[1] = 1
+        data = int(&#39;&#39;.join(str(x) for x in data[::-1]), 2)
+
+        self._resena(data)
+
+    def get_device_type(self):
+        &#34;&#34;&#34;
+        returns a string containing the device type.
+        &#34;&#34;&#34;
+        response_bytes = self._devtyp()
+
+        return response_bytes.decode(&#39;utf-8&#39;)
+
+    def get_manufacturer(self):
+        &#34;&#34;&#34;
+        Return&#39;s a string containing the manufacturer&#39;s name.
+        &#34;&#34;&#34;
+        response_bytes = self._mfgr()
+
+        return response_bytes.decode(&#39;utf-8&#39;)
+
+    def get_model(self):
+        &#34;&#34;&#34;
+        return&#39;s the model as a string
+        &#34;&#34;&#34;
+        response_bytes = self._model()
+
+        return response_bytes.decode(&#39;utf-8&#39;)
+
+    def get_serialnumber(self):
+        &#34;&#34;&#34;
+        returns the serial number
+        &#34;&#34;&#34;
+        response_bytes = self._serno()
+
+        return response_bytes.decode(&#39;utf-8&#39;)
+
+    def get_manufacturing_date(self):
+        &#34;&#34;&#34;returns the manufacturing date&#34;&#34;&#34;
+        response_bytes = self._mfgdate()
+
+        return response_bytes.decode(&#39;utf-8&#39;)
+
+    def get_firmware_release(self):
+        &#34;&#34;&#34;
+        returns a manufacturer specific firmware release
+        &#34;&#34;&#34;
+        response_bytes = self._release()
+
+        return response_bytes.decode(&#39;utf-8&#39;)
+
+    def get_backwardscompatibility(self):
+        &#34;&#34;&#34;
+        returns a manufacturer specific firmware backwards compatibility
+        as a null terminated string
+        &#34;&#34;&#34;
+        response_bytes = self._relback()
+
+        return response_bytes.decode(&#39;utf-8&#39;)
+
+    def read_aea(self):
+        &#34;&#34;&#34;
+        reads the AEA register data until an execution error is thrown.
+        &#34;&#34;&#34;
+        aea_response = b&#39;&#39;
+        try:
+            while True:
+                aea_response += self._aea_ear()
+
+        except ExecutionError as ee:
+
+            try:
+                self.nop()
+
+            except EREError as eree:
+                # If this throws an ERE error then we have completed reading AEA
+                pass
+
+            except NOPException as nop_e:
+                raise nop_e
+
+        return aea_response
+
+    def set_power(self, pwr_dBm):
+        &#34;&#34;&#34;Sets the power of the ITLA laser. Units of dBm.
+
+        :param pwr_dBm: The power setting for the laser in dBm. Has precision XX.XX.
+        :returns: None
+
+        &#34;&#34;&#34;
+        try:
+            self._pwr(int(pwr_dBm * 100))
+
+        except ExecutionError:
+
+            try:
+                self.nop()
+
+            except RVEError as rvee:
+                print(&#34;The provided power &#34; + str(pwr_dBm)
+                      + &#34; is outside of the range for this device.&#34;)
+                print(&#34;The power is currently set to: &#34;
+                      + str(self.get_power_setting()))
+                raise rvee
+
+    def get_power_setting(self):
+        &#34;&#34;&#34;Gets current power setting set by set_power. Should be in dBm.
+
+        :returns:
+
+        &#34;&#34;&#34;
+        # Gets power setting, not actual optical output power.
+        response = self._pwr()
+        return int.from_bytes(response, &#39;big&#39;, signed=True) / 100
+
+    def get_power_output(self):
+        &#34;&#34;&#34;Gets the actual optical output power of the laser.
+        Only an approximation, apparently. Units dBm.
+
+        :returns:
+
+        &#34;&#34;&#34;
+        response = self._oop()
+
+        return int.from_bytes(response, &#39;big&#39;, signed=True) / 100
+
+    def get_power_min(self):
+        &#34;&#34;&#34;Gets the minimum optical power output of the module. Units dBm.
+
+        :returns:
+
+        &#34;&#34;&#34;
+        response = self._opsl()
+        return int.from_bytes(response, &#39;big&#39;, signed=True) / 100
+
+    def get_power_max(self):
+        &#34;&#34;&#34;Gets the maximum optical power output of the module. Units dBm.
+
+        :returns:
+
+        &#34;&#34;&#34;
+        response = self._opsh()
+        return int.from_bytes(response, &#39;big&#39;, signed=True) / 100
+
+    def set_fcf(self, freq):
+        &#39;&#39;&#39;
+        This sets the first channel frequency.
+        It does not reset the channel so this frequency will only be equal
+        to the output frequency if channel=1.
+
+        &#39;&#39;&#39;
+        # convert frequency to MHz
+        freq = int(freq * 1e6)
+
+        freq_str = str(freq)
+        fcf1 = int(freq_str[0:3])
+        fcf2 = int(freq_str[3:7])
+
+        try:
+            # is it better to split these into their own try/except blocks?
+            self._fcf1(fcf1)
+            self._fcf2(fcf2)
+
+        except ExecutionError:
+            try:
+                self.nop()
+            except RVEError as error:
+                print(int(fcf1) + &#39;THz is out of bounds for this laser. &#39;)
+                print(&#39;The frequency must be within the range, &#39;
+                      + self.get_frequency_min() + &#39; - &#39;
+                      + self.get_frequency_max() + &#39; THz.&#39;)
+                raise error from None
+
+            except CIEError as error:
+                print(&#34;You cannot change the first channel frequency &#34;
+                      + &#34;while the laser is enabled.&#34;)
+                print(&#39;The current frequency is: &#39; + self.get_frequency() + &#39; THz&#39;)
+                raise error from None
+
+    def set_frequency(self, freq):
+        &#34;&#34;&#34;Sets the frequency of the laser in TerraHertz.
+
+        Has MHz resolution. Will round down.
+
+        This function sets the first channel frequency and then sets the
+        channel to 1 so that the frequency output when the laser is enabled
+        will be the frequency given to this function.
+
+        If you would like to only change the first channel frequency use
+        the function `set_fcf`.
+
+        :param freq: The desired frequency setting in THz.
+        :returns: None
+
+        &#34;&#34;&#34;
+
+        self.set_fcf(freq)
+        self.set_channel(1)
+
+        # This does a check so this only runs if fine tuning has been turned on.
+        if self.get_fine_tuning() != 0:
+
+            # There needs to be some delay between this and setting channel.
+            # even with some delay the CII error occurs from time to time. Fix.
+            # This delay is way longer than i would like.
+            # It would be ideal to have no sleeping necessary conditions.
+            sleep(1)
+            try:
+                self.set_fine_tuning(0)
+
+            except ExecutionError as ee:
+
+                try:
+                    self.nop()
+
+                except NOPException as nop_e:
+                    raise nop_e
+
+                except CPException as cpe:
+                    print(&#39;Fine tuning takes some time. Waiting 5s.&#39;)
+                    sleep(5)
+
+    def get_fcf(self):
+        &#34;&#34;&#34; Get the currently set first channel frequency.
+        &#34;&#34;&#34;
+        response = self._fcf1()
+        fcf1 = int.from_bytes(response, &#39;big&#39;)
+
+        response = self._fcf2()
+        fcf2 = int.from_bytes(response, &#39;big&#39;)
+
+        return fcf1 + fcf2 * 1e-4
+
+    def get_frequency(self):
+        &#34;&#34;&#34;gets the current laser operating frequency with channels
+        and everything accounted for.
+
+        :returns:
+
+        &#34;&#34;&#34;
+        response = self._lf1()
+        lf1 = int.from_bytes(response, &#39;big&#39;)
+
+        response = self._lf2()
+        lf2 = int.from_bytes(response, &#39;big&#39;)
+
+        return lf1 + lf2 * 1e-4
+
+    def set_wavelength(self, wvl):
+        &#34;&#34;&#34;Set the wavelength in nm. Converts wavelength to freq and calls set_frequency.
+
+        :param wvl: The desired wavelength in nm.
+
+        &#34;&#34;&#34;
+        freq = (speed_of_light / (wvl * 1e-9)) * 1e-12  # get frequency in THz
+        self.set_frequency(freq)
+        raise Warning(&#39;There seems to be some roundoff error here. best to avoid this for now.&#39;)
+
+    def dither_enable(self, waveform=&#39;sinusoidal&#39;):
+        &#34;&#34;&#34;
+        &#34;&#34;&#34;
+        if (waveform.lower() != &#39;sinusoid&#39;
+            or waveform.lower() != &#39;triangular&#39;
+              or waveform.lower() != &#39;sin&#39; or waveform.lower() != &#39;tri&#39;):
+
+            raise ValueError(&#39;waveform must be \&#39;sinusoidal\&#39;, or \&#39;triangular\&#39;&#39;)
+
+        data = [0] * 16
+        # bit 1 Digital Dither Enable bit
+        data[1] = 1
+        data = int(&#39;&#39;.join(str(x) for x in data[::-1]), 2)
+
+        self._dithere(data)
+
+    def dither_disable(self):
+        &#34;&#34;&#34;
+        disables digital dither
+        &#34;&#34;&#34;
+        # i think that we should try to preserve other bits rather than setting all
+        # data to zero across the board
+        data = [0] * 16
+        data = int(&#39;&#39;.join(str(x) for x in data[::-1]), 2)
+        self._dithere(data)
+
+    def set_dither_rate(self, rate):
+        &#34;&#34;&#34;
+        set dither rate in kHz, utilizes DitherR register
+        :param rate: an unsigned short integer specifying dither rate in kHz
+        &#34;&#34;&#34;
+        self._ditherr(rate)
+
+    def get_dither_rate(self):
+        &#34;&#34;&#34;
+        get dither rate, utilizes DitherR register
+        &#34;&#34;&#34;
+        response = self._ditherr()
+        return int.from_bytes(response, &#39;big&#39;)
+
+    def set_dither_frequency(self, rate):
+        &#34;&#34;&#34;
+        set dither modulation frequency, utilizes DitherF register
+        :param rate: an unsigned short integer encoded as the FM peak-to-peak frequency
+        deviation as Ghz*10
+        &#34;&#34;&#34;
+        self._ditherf(rate)
+
+    def get_dither_frequency(self):
+        &#34;&#34;&#34;
+        get dither modulation frequency, utilizes DitherF register
+        &#34;&#34;&#34;
+        response = self._ditherf()
+        return int.from_bytes(response, &#39;big&#39;)
+
+    def set_dither_amplitude(self, amplitude):
+        &#34;&#34;&#34;
+        set dither modulation amplitude, utilizes DitherA register
+        :param amplitude: an unsigned short integer encoded as the AM peak-to-peak amplitude
+        deviation as 10*percentage of the optical power
+        &#34;&#34;&#34;
+        self._dithera(amplitude)
+
+    def get_dither_amplitude(self):
+        &#34;&#34;&#34;
+        get dither modulation amplitude, utilizes DitherA register
+        &#34;&#34;&#34;
+        response = self._dithera()
+        return int.from_bytes(response, &#39;big&#39;)
+
+    def get_wavelength(self):
+        &#34;&#34;&#34;
+        Query&#39;s the laser for frequency setting and convert to wavelength.
+
+        :returns:
+
+        &#34;&#34;&#34;
+        raise Warning(&#34;this is not implemented yet.&#34;)
+
+    def get_output_wavelength(self):
+        &#34;&#34;&#34;
+        Query&#39;s the laser for current frequency output (as this is
+        sometimes different from the set frequency) and then converts to wavelength.
+
+        :returns:
+
+        &#34;&#34;&#34;
+        raise Warning(&#34;this is not implemented yet.&#34;)
+
+    def get_temp(self):
+        &#34;&#34;&#34;Returns the current primary control temperature in deg C.
+
+        :returns:
+
+        &#34;&#34;&#34;
+        response = self._ctemp()
+        temp_100 = int.from_bytes(response, &#39;big&#39;)
+
+        return temp_100 / 100
+
+    def get_frequency_min(self):
+        &#34;&#34;&#34;command to read minimum frequency supported by the module
+
+        :returns:
+
+        &#34;&#34;&#34;
+        response = self._lfl1()
+        lfl1 = int.from_bytes(response, &#39;big&#39;)
+
+        response = self._lfl2()
+        lfl2 = int.from_bytes(response, &#39;big&#39;)
+
+        response = self._lfl3()
+        lfl3 = int.from_bytes(response, &#39;big&#39;)
+
+        return lfl1 + lfl2 * 1e-4 + lfl3 * 1e-6
+
+    def get_frequency_max(self):
+        &#34;&#34;&#34;command to read maximum frequency supported by the module
+
+        :returns:
+
+        &#34;&#34;&#34;
+        response = self._lfh1()
+        fcf1 = int.from_bytes(response, &#39;big&#39;)
+
+        response = self._lfh2()
+        fcf2 = int.from_bytes(response, &#39;big&#39;)
+
+        return fcf1 + fcf2 * 1e-4
+
+    def get_grid_min(self):
+        &#34;&#34;&#34;command to read minimum grid supported by the module
+
+        :returns: The minimum grid supported by the module in GHz
+
+        &#34;&#34;&#34;
+        try:
+            freq_lgrid = int.from_bytes(self._lgrid(),  &#39;big&#39;, signed=False)
+
+        except ExecutionError as ee:
+            self.nop()
+
+        return freq_lgrid * 1e-1
+
+    def set_grid(self, grid_freq):
+        &#34;&#34;&#34;Set the grid spacing in GHz.
+
+        MHz resolution.
+
+        :param grid_freq: the grid frequency spacing in GHz
+        :returns:
+
+        &#34;&#34;&#34;
+        grid_freq = str(int(grid_freq * 1000))
+        data = int(grid_freq[0:4])
+
+        self._grid(data)
+
+    def get_grid(self):
+        &#34;&#34;&#34;get the grid spacing in GHz
+
+        :returns: The grid spacing in GHz.
+
+        &#34;&#34;&#34;
+        response = self._grid()
+        grid_freq = int.from_bytes(response, &#39;big&#39;, signed=True)
+
+        return grid_freq * 1e-1
+
+    def get_age(self):
+        &#34;&#34;&#34;Returns a string representing the percentage of aging of the laser.
+        0% indicated a brand new laser
+        100% indicates the laser should be replaces.
+
+        :returns:
+
+        &#34;&#34;&#34;
+        response = self._age()
+        age = int.from_bytes(response, &#39;big&#39;)
+
+        return f&#39;Age: {age} / 100%&#39;
+
+    def set_channel(self, channel):
+        &#34;&#34;&#34;Sets the laser&#39;s operating channel.
+
+        MSA-01.2 lasers support a 16 bit channel value.
+
+        This defines how many spaces along the grid
+        the laser&#39;s frequency is displaced from the first channel frequency.
+
+        :param channel:
+        :returns:
+
+        &#34;&#34;&#34;
+        # check type and stuff
+        if not isinstance(channel, int):
+            raise TypeError(&#34;Channel must be an integer&#34;)
+        if channel &lt; 0:
+            raise ValueError(&#34;Channel must be positive.&#34;)
+        if channel &gt; 0xFFFF:
+            raise ValueError(&#34;Channel must be a 16 bit integer (&lt;=0xFFFF).&#34;)
+
+        # Split the channel choice into two options.
+        channel_hex = f&#39;{channel:08x}&#39;
+
+        channell = int(channel_hex[4:], 16)
+
+        # Set the channel registers.
+        self._channel(channell)
+
+    def get_channel(self):
+        &#34;&#34;&#34;gets the current channel setting
+
+        The channel defines how many spaces along the grid
+        the laser&#39;s frequency is displaced from the first channel frequency.
+
+        :returns: channel as an integer.
+
+        &#34;&#34;&#34;
+        # This concatenates the data bytestrings
+        response = self._channel()
+
+        channel = int.from_bytes(response, &#39;big&#39;)
+
+        return channel
+
+    def set_fine_tuning(self, ftf):
+        &#34;&#34;&#34;
+        This function provides off grid tuning for the laser&#39;s frequency.
+        The adjustment applies to all channels uniformly.
+        This is typically used after the laser if locked and minor adjustments
+        are required to the frequency.
+
+        The command may be pending in the event that the laser output is
+        enabled. The pending bit is cleared once the fine tune frequency
+        has been achieved.
+
+        **???** It seems like this can be done with the laser running.
+
+        :param ftf: The fine tune frequency adjustment in GHz
+        &#34;&#34;&#34;
+
+        ftf = int(ftf * 1e3)
+
+        # We will leave this bare. This way the user can set and handle
+        # their own timing and check to make sure the laser has reached the
+        # desired fine tuning frequency.
+        # It WILL throw a &#34;pending&#34; error if the laser is on when setting.
+        self._ftf(ftf)
+
+    def get_fine_tuning(self):
+        &#34;&#34;&#34;
+        This function returns the setting for the
+        off grid tuning for the laser&#39;s frequency.
+
+        :return ftf: The fine tune frequency adjustment in GHz
+        &#34;&#34;&#34;
+
+        response = self._ftf()
+        ftf = int.from_bytes(response, &#39;big&#39;, signed=True)
+
+        return ftf * 1e-3
+
+    def get_temps(self):
+        &#39;&#39;&#39;
+        Returns a list of currents in degrees Celcius.
+        In the following order:
+
+        Technology 1: [Diode Temp, Case Temp]
+        &#39;&#39;&#39;
+        # get response this should be a long byte string
+        response = self._temps()
+
+        data = [int.from_bytes(response[i: i+2], &#39;big&#39;, signed=True) / 100
+                for i in range(0, len(response), 2)]
+
+        return data
+
+    def get_currents(self):
+        &#39;&#39;&#39;
+        Returns a list of currents in mA.
+        In the following order:
+
+        Technology 1: [TEC, Diode]
+        Technology 2: [TED, Diode 1, Diode 2, Diode 3, Diode 4, SOA]
+        Technology 3: [TEC, Diode 1, tbd, tbd, tbd, ...]
+        &#39;&#39;&#39;
+        # get response this should be a long byte string
+        response = self._currents()
+
+        data = [int.from_bytes(response[i: i+2], &#39;big&#39;, signed=True) / 10
+                for i in range(0, len(response), 2)]
+
+        return data
+
+    def get_last_response(self):
+        &#39;&#39;&#39;This function gets the most recent response sent from the laser.
+        The response is parsed for errors and stuff the way any normal response
+        would be. The variable `self._response` is set to the last response again.
+
+        I dont know why you would need to do this.
+        &#39;&#39;&#39;
+        return self._lstresp()
+
+    def get_error_fatal(self, reset=False):
+        &#34;&#34;&#34;
+        reads fatal error register statusf and checks each bit against the
+        fatal error table to determine the fault
+
+        :param reset: resets/clears latching errors
+
+        &#34;&#34;&#34;
+        response = self._statusf()
+        statusf = int.from_bytes(response, &#39;big&#39;)
+        statusf = f&#39;{statusf:016b}&#39;
+        status_array = [int(code) for code in statusf]
+        status_array.reverse()
+        print(status_array)
+
+        if any(status_array):
+            print(&#34;Current Status Fatal Error&#34;)
+
+            if status_array[0] == 1:
+                print(&#34;FPWRL&#34;)
+            if status_array[1] == 1:
+                print(&#34;FTHERML&#34;)
+            if status_array[2] == 1:
+                print(&#34;FFREQL&#34;)
+            if status_array[3] == 1:
+                print(&#34;FVSFL&#34;)
+            if status_array[4] == 1:
+                print(&#34;CRL&#34;)
+            if status_array[5] == 1:
+                print(&#34;MRL&#34;)
+            if status_array[6] == 1:
+                print(&#34;CEL&#34;)
+            if status_array[7] == 1:
+                print(&#34;XEL&#34;)
+            if status_array[8] == 1:
+                print(&#34;FPWR&#34;)
+            if status_array[9] == 1:
+                print(&#34;FTHERM&#34;)
+            if status_array[10] == 1:
+                print(&#34;FFREQ&#34;)
+            if status_array[11] == 1:
+                print(&#34;FVSF&#34;)
+            if status_array[12] == 1:
+                print(&#34;DIS&#34;)
+            if status_array[13] == 1:
+                print(&#34;FATAL&#34;)
+            if status_array[14] == 1:
+                print(&#34;ALM&#34;)
+            if status_array[15] == 1:
+                print(&#34;SRQ &#34;)
+            if reset is True:
+                data_reset = [0] * 16
+                data_reset = int(&#39;&#39;.join(str(x) for x in data_reset[::-1]), 2)
+                self._statusf(data_reset)
+
+    def get_error_warning(self, reset=False):
+        &#34;&#34;&#34;
+        reads warning error register statusw and checks each bit against the
+        warning error table to determine the fault
+
+        If the laser is off then some of the latched warnings will be set on.
+
+        :param reset: resets/clears latching errors
+        &#34;&#34;&#34;
+        response = self._statusw()
+        statusw = int.from_bytes(response, &#39;big&#39;)
+        statusw = f&#39;{statusw:016b}&#39;
+        status_array = [int(code) for code in statusw]
+        status_array.reverse()
+        print(status_array)
+
+        if any(status_array):
+            print(&#34;Current Status Warning Error&#34;)
+
+            if status_array[0] == 1:
+                print(&#34;WPWRL&#34;)
+            if status_array[1] == 1:
+                print(&#34;WTHERML&#34;)
+            if status_array[2] == 1:
+                print(&#34;WFREQL&#34;)
+            if status_array[3] == 1:
+                print(&#34;WVSFL&#34;)
+            if status_array[4] == 1:
+                print(&#34;CRL&#34;)
+            if status_array[5] == 1:
+                print(&#34;MRL&#34;)
+            if status_array[6] == 1:
+                print(&#34;CEL&#34;)
+            if status_array[7] == 1:
+                print(&#34;XEL&#34;)
+            if status_array[8] == 1:
+                print(&#34;WPWR&#34;)
+            if status_array[9] == 1:
+                print(&#34;WTHERM&#34;)
+            if status_array[10] == 1:
+                print(&#34;WFREQ&#34;)
+            if status_array[11] == 1:
+                print(&#34;FVSF&#34;)
+            if status_array[12] == 1:
+                print(&#34;DIS&#34;)
+            if status_array[13] == 1:
+                print(&#34;FATAL&#34;)
+            if status_array[14] == 1:
+                print(&#34;ALM&#34;)
+            if status_array[15] == 1:
+                print(&#34;SRQ &#34;)
+            if reset is True:
+                data_reset = int(&#39;00ff&#39;, 16)
+                self._statusw(data_reset)
+
+    def get_fatal_power_thresh(self):
+        &#34;&#34;&#34;
+        reads maximum plus/minus power deviation in dB for which the fatal alarm is asserted
+
+        &#34;&#34;&#34;
+        response = self._fpowth()
+        pow_fatal = int.from_bytes(response, &#39;big&#39;) / 100
+        # correcting for proper order of magnitude
+        return pow_fatal
+
+    def get_warning_power_thresh(self):
+        &#34;&#34;&#34;
+        reads maximum plus/minus power deviation in dB for which the warning alarm is asserted
+
+        &#34;&#34;&#34;
+        response = self._wpowth()
+        pow_warn = int.from_bytes(response, &#39;big&#39;) / 100
+        # correcting for proper order of magnitude
+        return pow_warn
+
+    def get_fatal_freq_thresh(self):
+        &#34;&#34;&#34;
+        reads maximum plus/minus frequency deviation in GHz for which the fatal alarm is asserted
+
+        &#34;&#34;&#34;
+        response = self._ffreqth()
+        freq_fatal = int.from_bytes(response, &#39;big&#39;) / 10
+        return freq_fatal
+
+    def get_warning_freq_thresh(self):
+        &#34;&#34;&#34;
+        reads maximum plus/minus frequency deviation in GHz for which the warning alarm is asserted
+
+        &#34;&#34;&#34;
+        response = self._wfreqth()
+        freq_warn = int.from_bytes(response, &#39;big&#39;) / 10
+        return freq_warn
+
+    def get_fatal_therm_thresh(self):
+        &#34;&#34;&#34;
+        reads maximum plus/minus thermal deviation in degree celcius for which the fatal alarm is asserted
+
+        &#34;&#34;&#34;
+        response = self._fthermth()
+        therm_fatal = int.from_bytes(response, &#39;big&#39;) / 100
+        # correcting for proper order of magnitude
+        return therm_fatal
+
+    def get_warning_therm_thresh(self):
+        &#34;&#34;&#34;
+        reads maximum plus/minus thermal deviation in degree celcius for which the warning alarm is asserted
+        &#34;&#34;&#34;
+        response = self._wthermth()
+        therm_thresh = int.from_bytes(response, &#39;big&#39;) / 100
+        # correcting for proper order of magnitude
+        return therm_thresh
+
+    def get_srq_trigger(self):
+        &#34;&#34;&#34;
+        Utilizes SRQT register to identify why SRQ was asserted in StatusF and StatusW registers
+
+        &#34;&#34;&#34;
+        response = self._srqt()
+        status = int.from_bytes(response, &#39;big&#39;)
+        status = f&#39;{status:016b}&#39;
+        status_array = [int(code) for code in status]
+        status_array.reverse()
+        print(status_array)
+
+        if any(status_array):
+            print(&#34;SRQ Status: Asserted&#34;)
+
+            if status_array[0] == 1:
+                print(&#34;FPWRL&#34;)
+            if status_array[1] == 1:
+                print(&#34;FTHERML&#34;)
+            if status_array[2] == 1:
+                print(&#34;FFREQL&#34;)
+            if status_array[3] == 1:
+                print(&#34;FVSFL&#34;)
+            if status_array[4] == 1:
+                print(&#34;CRL&#34;)
+            if status_array[5] == 1:
+                print(&#34;MRL&#34;)
+            if status_array[6] == 1:
+                print(&#34;CEL&#34;)
+            if status_array[7] == 1:
+                print(&#34;XEL&#34;)
+            if status_array[8] == 1:
+                print(&#34;WPWRL&#34;)
+            if status_array[9] == 1:
+                print(&#34;WTHERML&#34;)
+            if status_array[10] == 1:
+                print(&#34;WFREQL&#34;)
+            if status_array[11] == 1:
+                print(&#34;WVSFL&#34;)
+            if status_array[12] == 1:
+                print(&#34;DIS&#34;)
+            if status_array[13] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[14] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[15] == 1:
+                print(&#34;NONE&#34;)
+
+    def get_fatal_trigger(self):
+        &#34;&#34;&#34;
+        Utilizes FatalT register to identify which fatal conditon was asserted in StatusF and StatusW registers
+
+        &#34;&#34;&#34;
+        response = self._fatalt()
+        status = int.from_bytes(response, &#39;big&#39;)
+        status = f&#39;{status:016b}&#39;
+        status_array = [int(code) for code in status]
+        status_array.reverse()
+        print(status_array)
+
+        if any(status_array):
+            print(&#34;SRQ Status: Asserted&#34;)
+
+            if status_array[0] == 1:
+                print(&#34;FPWRL&#34;)
+            if status_array[1] == 1:
+                print(&#34;FTHERML&#34;)
+            if status_array[2] == 1:
+                print(&#34;FFREQL&#34;)
+            if status_array[3] == 1:
+                print(&#34;FVSFL&#34;)
+            if status_array[4] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[5] == 1:
+                print(&#34;MRL&#34;)
+            if status_array[6] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[7] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[8] == 1:
+                print(&#34;WPWRL&#34;)
+            if status_array[9] == 1:
+                print(&#34;WTHERML&#34;)
+            if status_array[10] == 1:
+                print(&#34;WFREQL&#34;)
+            if status_array[11] == 1:
+                print(&#34;WVSFL&#34;)
+            if status_array[12] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[13] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[14] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[15] == 1:
+                print(&#34;NONE&#34;)
+
+    def get_alm_trigger(self):
+        &#34;&#34;&#34;
+        Utilizes ALMT register to identify why ALM was asserted in StatusF and StatusW registers
+
+        &#34;&#34;&#34;
+        response = self._almt()
+        status = int.from_bytes(response, &#39;big&#39;)
+        status = f&#39;{status:016b}&#39;
+        status_array = [int(code) for code in status]
+        status_array.reverse()
+        print(status_array)
+
+        if any(status_array):
+            print(&#34;SRQ Status: Asserted&#34;)
+
+        if status_array[0] == 1:
+            print(&#34;FPWR&#34;)
+        if status_array[1] == 1:
+            print(&#34;FTHERM&#34;)
+        if status_array[2] == 1:
+            print(&#34;FFREQ&#34;)
+        if status_array[3] == 1:
+            print(&#34;FVSF&#34;)
+        if status_array[4] == 1:
+            print(&#34;NONE&#34;)
+        if status_array[5] == 1:
+            print(&#34;NONE&#34;)
+        if status_array[6] == 1:
+            print(&#34;NONE&#34;)
+        if status_array[7] == 1:
+            print(&#34;NONE&#34;)
+        if status_array[8] == 1:
+            print(&#34;WPWR&#34;)
+        if status_array[9] == 1:
+            print(&#34;WTHERM&#34;)
+        if status_array[10] == 1:
+            print(&#34;WFREQ&#34;)
+        if status_array[11] == 1:
+            print(&#34;WVSF&#34;)
+        if status_array[12] == 1:
+            print(&#34;NONE&#34;)
+        if status_array[13] == 1:
+            print(&#34;NONE&#34;)
+        if status_array[14] == 1:
+            print(&#34;NONE&#34;)
+        if status_array[15] == 1:
+            print(&#34;NONE&#34;)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="itla.itla12.ITLA12"><code class="flex name class">
+<span>class <span class="ident">ITLA12</span></span>
+<span>(</span><span>serial_port, baudrate, timeout=0.5, register_files=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A class that represents the an ITLA
+and exposes a user friendly API for controlling functionality.</p>
+<p>Things to figure out</p>
+<ul>
+<li>What should be exposed to the user?</li>
+<li>Can we abstract away the concept of registers and stuff
+in here so you don't have to deal with it.</li>
+</ul>
+<p>There are some functions that could be implemented like set_fatalstatus.
+I think this is probably a bad idea even though it isnt write only.</p>
+<p>Set Frequency is my platonic ideal for the higher level functions.</p>
+<p>Initializes the ITLA12 object.</p>
+<p>:param serial_port: The serial port to connect to.
+Can either be linux/mac type such as '/dev/ttyUSBX' or windows type 'comX'
+:param baudrate: The baudrate for communication. I have primarily seen
+lasers using 9600 as the default and then higher for firmware upgrades.
+This may be laser specific.
+:param timeout: How long should we wait to receive a response from the laser
+:param register_files: Any additional register files you would like to include
+beyond the default MSA-01.2 defined registers. These must be in a yaml format as
+described in the project's README.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class ITLA12(ITLABase):
+    &#39;&#39;&#39;
+    A class that represents the an ITLA
+    and exposes a user friendly API for controlling functionality.
+
+    Things to figure out
+
+      * What should be exposed to the user?
+      * Can we abstract away the concept of registers and stuff
+        in here so you don&#39;t have to deal with it.
+
+   There are some functions that could be implemented like set_fatalstatus.
+   I think this is probably a bad idea even though it isnt write only.
+
+   Set Frequency is my platonic ideal for the higher level functions.
+
+    &#39;&#39;&#39;
+
+    def __init__(self, serial_port, baudrate, timeout=0.5,
+                 register_files=None):
+        &#34;&#34;&#34; Initializes the ITLA12 object.
+
+        :param serial_port: The serial port to connect to.
+        Can either be linux/mac type such as &#39;/dev/ttyUSBX&#39; or windows type &#39;comX&#39;
+        :param baudrate: The baudrate for communication. I have primarily seen
+        lasers using 9600 as the default and then higher for firmware upgrades.
+        This may be laser specific.
+        :param timeout: How long should we wait to receive a response from the laser
+        :param register_files: Any additional register files you would like to include
+        beyond the default MSA-01.2 defined registers. These must be in a yaml format as
+        described in the project&#39;s README.
+        &#34;&#34;&#34;
+        if register_files is None:
+            register_files = []
+
+        register_files = [&#39;registers_itla12.yaml&#39;, *register_files]
+
+        super().__init__(serial_port, baudrate, timeout=timeout,
+                         register_files=register_files)
+
+    def nop(self, data=None):
+        &#34;&#34;&#34;The No-Op operation.
+
+        This is a good test to see if your laser is communicating properly.
+        It should read 0000 data or echo whatever data you send it if you send it something.
+        The data you write to nop gets overwritten as soon as you read it back.
+
+        `nop()` also returns more informative errors following an ExecutionError.
+        This is not called by default so you must do this explicitly if you want
+        to see more informative error information.
+
+        :param data: Data to write
+
+        &#34;&#34;&#34;
+        # pretty sure the data does nothing
+        if data is not None:
+            response = self._nop(data)
+        else:
+            response = self._nop()
+
+        error_field = int(response.hex()[-1], 16)
+        if bool(error_field):
+            raise self._nop_errors[error_field]
+
+    def enable(self):
+        &#34;&#34;&#34;Enables laser optical output.
+        There is a time delay after execution of this function to
+        proper stable laser output.
+
+        :returns: None
+
+        &#34;&#34;&#34;
+        # I&#39;m writing this out partially for transparency
+        # Maybe unnecessary or non-optimal
+        data = [0] * 16
+        # bit 3 SENA bit
+        data[3] = 1
+        data = int(&#39;&#39;.join(str(x) for x in data[::-1]), 2)
+
+        self._resena(data)
+
+    def disable(self):
+        &#34;&#34;&#34;Tells the laser to stop lasing.
+
+        :returns: None
+
+        &#34;&#34;&#34;
+        # set SENA bit (bit 3) to zero
+        data = [0] * 16
+        data = int(&#39;&#39;.join(str(x) for x in data[::-1]), 2)
+        self._resena(data)
+
+    def hard_reset(self):
+        &#34;&#34;&#34;TODO describe function
+
+        :returns:
+
+        &#34;&#34;&#34;
+        # I&#39;m writing this out partially for transparency
+        # Maybe unnecessary or non-optimal
+        data = [0] * 16
+        # bit 0: Module Reset
+        data[0] = 1
+        data = int(&#39;&#39;.join(str(x) for x in data[::-1]), 2)
+
+        self._resena(data)
+
+    def soft_reset(self):
+        &#34;&#34;&#34;TODO describe function
+
+        :returns:
+
+        &#34;&#34;&#34;
+        # I&#39;m writing this out partially for transparency
+        # Maybe unnecessary or non-optimal
+        data = [0] * 16
+        # bit 1: Soft Reset
+        data[1] = 1
+        data = int(&#39;&#39;.join(str(x) for x in data[::-1]), 2)
+
+        self._resena(data)
+
+    def get_device_type(self):
+        &#34;&#34;&#34;
+        returns a string containing the device type.
+        &#34;&#34;&#34;
+        response_bytes = self._devtyp()
+
+        return response_bytes.decode(&#39;utf-8&#39;)
+
+    def get_manufacturer(self):
+        &#34;&#34;&#34;
+        Return&#39;s a string containing the manufacturer&#39;s name.
+        &#34;&#34;&#34;
+        response_bytes = self._mfgr()
+
+        return response_bytes.decode(&#39;utf-8&#39;)
+
+    def get_model(self):
+        &#34;&#34;&#34;
+        return&#39;s the model as a string
+        &#34;&#34;&#34;
+        response_bytes = self._model()
+
+        return response_bytes.decode(&#39;utf-8&#39;)
+
+    def get_serialnumber(self):
+        &#34;&#34;&#34;
+        returns the serial number
+        &#34;&#34;&#34;
+        response_bytes = self._serno()
+
+        return response_bytes.decode(&#39;utf-8&#39;)
+
+    def get_manufacturing_date(self):
+        &#34;&#34;&#34;returns the manufacturing date&#34;&#34;&#34;
+        response_bytes = self._mfgdate()
+
+        return response_bytes.decode(&#39;utf-8&#39;)
+
+    def get_firmware_release(self):
+        &#34;&#34;&#34;
+        returns a manufacturer specific firmware release
+        &#34;&#34;&#34;
+        response_bytes = self._release()
+
+        return response_bytes.decode(&#39;utf-8&#39;)
+
+    def get_backwardscompatibility(self):
+        &#34;&#34;&#34;
+        returns a manufacturer specific firmware backwards compatibility
+        as a null terminated string
+        &#34;&#34;&#34;
+        response_bytes = self._relback()
+
+        return response_bytes.decode(&#39;utf-8&#39;)
+
+    def read_aea(self):
+        &#34;&#34;&#34;
+        reads the AEA register data until an execution error is thrown.
+        &#34;&#34;&#34;
+        aea_response = b&#39;&#39;
+        try:
+            while True:
+                aea_response += self._aea_ear()
+
+        except ExecutionError as ee:
+
+            try:
+                self.nop()
+
+            except EREError as eree:
+                # If this throws an ERE error then we have completed reading AEA
+                pass
+
+            except NOPException as nop_e:
+                raise nop_e
+
+        return aea_response
+
+    def set_power(self, pwr_dBm):
+        &#34;&#34;&#34;Sets the power of the ITLA laser. Units of dBm.
+
+        :param pwr_dBm: The power setting for the laser in dBm. Has precision XX.XX.
+        :returns: None
+
+        &#34;&#34;&#34;
+        try:
+            self._pwr(int(pwr_dBm * 100))
+
+        except ExecutionError:
+
+            try:
+                self.nop()
+
+            except RVEError as rvee:
+                print(&#34;The provided power &#34; + str(pwr_dBm)
+                      + &#34; is outside of the range for this device.&#34;)
+                print(&#34;The power is currently set to: &#34;
+                      + str(self.get_power_setting()))
+                raise rvee
+
+    def get_power_setting(self):
+        &#34;&#34;&#34;Gets current power setting set by set_power. Should be in dBm.
+
+        :returns:
+
+        &#34;&#34;&#34;
+        # Gets power setting, not actual optical output power.
+        response = self._pwr()
+        return int.from_bytes(response, &#39;big&#39;, signed=True) / 100
+
+    def get_power_output(self):
+        &#34;&#34;&#34;Gets the actual optical output power of the laser.
+        Only an approximation, apparently. Units dBm.
+
+        :returns:
+
+        &#34;&#34;&#34;
+        response = self._oop()
+
+        return int.from_bytes(response, &#39;big&#39;, signed=True) / 100
+
+    def get_power_min(self):
+        &#34;&#34;&#34;Gets the minimum optical power output of the module. Units dBm.
+
+        :returns:
+
+        &#34;&#34;&#34;
+        response = self._opsl()
+        return int.from_bytes(response, &#39;big&#39;, signed=True) / 100
+
+    def get_power_max(self):
+        &#34;&#34;&#34;Gets the maximum optical power output of the module. Units dBm.
+
+        :returns:
+
+        &#34;&#34;&#34;
+        response = self._opsh()
+        return int.from_bytes(response, &#39;big&#39;, signed=True) / 100
+
+    def set_fcf(self, freq):
+        &#39;&#39;&#39;
+        This sets the first channel frequency.
+        It does not reset the channel so this frequency will only be equal
+        to the output frequency if channel=1.
+
+        &#39;&#39;&#39;
+        # convert frequency to MHz
+        freq = int(freq * 1e6)
+
+        freq_str = str(freq)
+        fcf1 = int(freq_str[0:3])
+        fcf2 = int(freq_str[3:7])
+
+        try:
+            # is it better to split these into their own try/except blocks?
+            self._fcf1(fcf1)
+            self._fcf2(fcf2)
+
+        except ExecutionError:
+            try:
+                self.nop()
+            except RVEError as error:
+                print(int(fcf1) + &#39;THz is out of bounds for this laser. &#39;)
+                print(&#39;The frequency must be within the range, &#39;
+                      + self.get_frequency_min() + &#39; - &#39;
+                      + self.get_frequency_max() + &#39; THz.&#39;)
+                raise error from None
+
+            except CIEError as error:
+                print(&#34;You cannot change the first channel frequency &#34;
+                      + &#34;while the laser is enabled.&#34;)
+                print(&#39;The current frequency is: &#39; + self.get_frequency() + &#39; THz&#39;)
+                raise error from None
+
+    def set_frequency(self, freq):
+        &#34;&#34;&#34;Sets the frequency of the laser in TerraHertz.
+
+        Has MHz resolution. Will round down.
+
+        This function sets the first channel frequency and then sets the
+        channel to 1 so that the frequency output when the laser is enabled
+        will be the frequency given to this function.
+
+        If you would like to only change the first channel frequency use
+        the function `set_fcf`.
+
+        :param freq: The desired frequency setting in THz.
+        :returns: None
+
+        &#34;&#34;&#34;
+
+        self.set_fcf(freq)
+        self.set_channel(1)
+
+        # This does a check so this only runs if fine tuning has been turned on.
+        if self.get_fine_tuning() != 0:
+
+            # There needs to be some delay between this and setting channel.
+            # even with some delay the CII error occurs from time to time. Fix.
+            # This delay is way longer than i would like.
+            # It would be ideal to have no sleeping necessary conditions.
+            sleep(1)
+            try:
+                self.set_fine_tuning(0)
+
+            except ExecutionError as ee:
+
+                try:
+                    self.nop()
+
+                except NOPException as nop_e:
+                    raise nop_e
+
+                except CPException as cpe:
+                    print(&#39;Fine tuning takes some time. Waiting 5s.&#39;)
+                    sleep(5)
+
+    def get_fcf(self):
+        &#34;&#34;&#34; Get the currently set first channel frequency.
+        &#34;&#34;&#34;
+        response = self._fcf1()
+        fcf1 = int.from_bytes(response, &#39;big&#39;)
+
+        response = self._fcf2()
+        fcf2 = int.from_bytes(response, &#39;big&#39;)
+
+        return fcf1 + fcf2 * 1e-4
+
+    def get_frequency(self):
+        &#34;&#34;&#34;gets the current laser operating frequency with channels
+        and everything accounted for.
+
+        :returns:
+
+        &#34;&#34;&#34;
+        response = self._lf1()
+        lf1 = int.from_bytes(response, &#39;big&#39;)
+
+        response = self._lf2()
+        lf2 = int.from_bytes(response, &#39;big&#39;)
+
+        return lf1 + lf2 * 1e-4
+
+    def set_wavelength(self, wvl):
+        &#34;&#34;&#34;Set the wavelength in nm. Converts wavelength to freq and calls set_frequency.
+
+        :param wvl: The desired wavelength in nm.
+
+        &#34;&#34;&#34;
+        freq = (speed_of_light / (wvl * 1e-9)) * 1e-12  # get frequency in THz
+        self.set_frequency(freq)
+        raise Warning(&#39;There seems to be some roundoff error here. best to avoid this for now.&#39;)
+
+    def dither_enable(self, waveform=&#39;sinusoidal&#39;):
+        &#34;&#34;&#34;
+        &#34;&#34;&#34;
+        if (waveform.lower() != &#39;sinusoid&#39;
+            or waveform.lower() != &#39;triangular&#39;
+              or waveform.lower() != &#39;sin&#39; or waveform.lower() != &#39;tri&#39;):
+
+            raise ValueError(&#39;waveform must be \&#39;sinusoidal\&#39;, or \&#39;triangular\&#39;&#39;)
+
+        data = [0] * 16
+        # bit 1 Digital Dither Enable bit
+        data[1] = 1
+        data = int(&#39;&#39;.join(str(x) for x in data[::-1]), 2)
+
+        self._dithere(data)
+
+    def dither_disable(self):
+        &#34;&#34;&#34;
+        disables digital dither
+        &#34;&#34;&#34;
+        # i think that we should try to preserve other bits rather than setting all
+        # data to zero across the board
+        data = [0] * 16
+        data = int(&#39;&#39;.join(str(x) for x in data[::-1]), 2)
+        self._dithere(data)
+
+    def set_dither_rate(self, rate):
+        &#34;&#34;&#34;
+        set dither rate in kHz, utilizes DitherR register
+        :param rate: an unsigned short integer specifying dither rate in kHz
+        &#34;&#34;&#34;
+        self._ditherr(rate)
+
+    def get_dither_rate(self):
+        &#34;&#34;&#34;
+        get dither rate, utilizes DitherR register
+        &#34;&#34;&#34;
+        response = self._ditherr()
+        return int.from_bytes(response, &#39;big&#39;)
+
+    def set_dither_frequency(self, rate):
+        &#34;&#34;&#34;
+        set dither modulation frequency, utilizes DitherF register
+        :param rate: an unsigned short integer encoded as the FM peak-to-peak frequency
+        deviation as Ghz*10
+        &#34;&#34;&#34;
+        self._ditherf(rate)
+
+    def get_dither_frequency(self):
+        &#34;&#34;&#34;
+        get dither modulation frequency, utilizes DitherF register
+        &#34;&#34;&#34;
+        response = self._ditherf()
+        return int.from_bytes(response, &#39;big&#39;)
+
+    def set_dither_amplitude(self, amplitude):
+        &#34;&#34;&#34;
+        set dither modulation amplitude, utilizes DitherA register
+        :param amplitude: an unsigned short integer encoded as the AM peak-to-peak amplitude
+        deviation as 10*percentage of the optical power
+        &#34;&#34;&#34;
+        self._dithera(amplitude)
+
+    def get_dither_amplitude(self):
+        &#34;&#34;&#34;
+        get dither modulation amplitude, utilizes DitherA register
+        &#34;&#34;&#34;
+        response = self._dithera()
+        return int.from_bytes(response, &#39;big&#39;)
+
+    def get_wavelength(self):
+        &#34;&#34;&#34;
+        Query&#39;s the laser for frequency setting and convert to wavelength.
+
+        :returns:
+
+        &#34;&#34;&#34;
+        raise Warning(&#34;this is not implemented yet.&#34;)
+
+    def get_output_wavelength(self):
+        &#34;&#34;&#34;
+        Query&#39;s the laser for current frequency output (as this is
+        sometimes different from the set frequency) and then converts to wavelength.
+
+        :returns:
+
+        &#34;&#34;&#34;
+        raise Warning(&#34;this is not implemented yet.&#34;)
+
+    def get_temp(self):
+        &#34;&#34;&#34;Returns the current primary control temperature in deg C.
+
+        :returns:
+
+        &#34;&#34;&#34;
+        response = self._ctemp()
+        temp_100 = int.from_bytes(response, &#39;big&#39;)
+
+        return temp_100 / 100
+
+    def get_frequency_min(self):
+        &#34;&#34;&#34;command to read minimum frequency supported by the module
+
+        :returns:
+
+        &#34;&#34;&#34;
+        response = self._lfl1()
+        lfl1 = int.from_bytes(response, &#39;big&#39;)
+
+        response = self._lfl2()
+        lfl2 = int.from_bytes(response, &#39;big&#39;)
+
+        response = self._lfl3()
+        lfl3 = int.from_bytes(response, &#39;big&#39;)
+
+        return lfl1 + lfl2 * 1e-4 + lfl3 * 1e-6
+
+    def get_frequency_max(self):
+        &#34;&#34;&#34;command to read maximum frequency supported by the module
+
+        :returns:
+
+        &#34;&#34;&#34;
+        response = self._lfh1()
+        fcf1 = int.from_bytes(response, &#39;big&#39;)
+
+        response = self._lfh2()
+        fcf2 = int.from_bytes(response, &#39;big&#39;)
+
+        return fcf1 + fcf2 * 1e-4
+
+    def get_grid_min(self):
+        &#34;&#34;&#34;command to read minimum grid supported by the module
+
+        :returns: The minimum grid supported by the module in GHz
+
+        &#34;&#34;&#34;
+        try:
+            freq_lgrid = int.from_bytes(self._lgrid(),  &#39;big&#39;, signed=False)
+
+        except ExecutionError as ee:
+            self.nop()
+
+        return freq_lgrid * 1e-1
+
+    def set_grid(self, grid_freq):
+        &#34;&#34;&#34;Set the grid spacing in GHz.
+
+        MHz resolution.
+
+        :param grid_freq: the grid frequency spacing in GHz
+        :returns:
+
+        &#34;&#34;&#34;
+        grid_freq = str(int(grid_freq * 1000))
+        data = int(grid_freq[0:4])
+
+        self._grid(data)
+
+    def get_grid(self):
+        &#34;&#34;&#34;get the grid spacing in GHz
+
+        :returns: The grid spacing in GHz.
+
+        &#34;&#34;&#34;
+        response = self._grid()
+        grid_freq = int.from_bytes(response, &#39;big&#39;, signed=True)
+
+        return grid_freq * 1e-1
+
+    def get_age(self):
+        &#34;&#34;&#34;Returns a string representing the percentage of aging of the laser.
+        0% indicated a brand new laser
+        100% indicates the laser should be replaces.
+
+        :returns:
+
+        &#34;&#34;&#34;
+        response = self._age()
+        age = int.from_bytes(response, &#39;big&#39;)
+
+        return f&#39;Age: {age} / 100%&#39;
+
+    def set_channel(self, channel):
+        &#34;&#34;&#34;Sets the laser&#39;s operating channel.
+
+        MSA-01.2 lasers support a 16 bit channel value.
+
+        This defines how many spaces along the grid
+        the laser&#39;s frequency is displaced from the first channel frequency.
+
+        :param channel:
+        :returns:
+
+        &#34;&#34;&#34;
+        # check type and stuff
+        if not isinstance(channel, int):
+            raise TypeError(&#34;Channel must be an integer&#34;)
+        if channel &lt; 0:
+            raise ValueError(&#34;Channel must be positive.&#34;)
+        if channel &gt; 0xFFFF:
+            raise ValueError(&#34;Channel must be a 16 bit integer (&lt;=0xFFFF).&#34;)
+
+        # Split the channel choice into two options.
+        channel_hex = f&#39;{channel:08x}&#39;
+
+        channell = int(channel_hex[4:], 16)
+
+        # Set the channel registers.
+        self._channel(channell)
+
+    def get_channel(self):
+        &#34;&#34;&#34;gets the current channel setting
+
+        The channel defines how many spaces along the grid
+        the laser&#39;s frequency is displaced from the first channel frequency.
+
+        :returns: channel as an integer.
+
+        &#34;&#34;&#34;
+        # This concatenates the data bytestrings
+        response = self._channel()
+
+        channel = int.from_bytes(response, &#39;big&#39;)
+
+        return channel
+
+    def set_fine_tuning(self, ftf):
+        &#34;&#34;&#34;
+        This function provides off grid tuning for the laser&#39;s frequency.
+        The adjustment applies to all channels uniformly.
+        This is typically used after the laser if locked and minor adjustments
+        are required to the frequency.
+
+        The command may be pending in the event that the laser output is
+        enabled. The pending bit is cleared once the fine tune frequency
+        has been achieved.
+
+        **???** It seems like this can be done with the laser running.
+
+        :param ftf: The fine tune frequency adjustment in GHz
+        &#34;&#34;&#34;
+
+        ftf = int(ftf * 1e3)
+
+        # We will leave this bare. This way the user can set and handle
+        # their own timing and check to make sure the laser has reached the
+        # desired fine tuning frequency.
+        # It WILL throw a &#34;pending&#34; error if the laser is on when setting.
+        self._ftf(ftf)
+
+    def get_fine_tuning(self):
+        &#34;&#34;&#34;
+        This function returns the setting for the
+        off grid tuning for the laser&#39;s frequency.
+
+        :return ftf: The fine tune frequency adjustment in GHz
+        &#34;&#34;&#34;
+
+        response = self._ftf()
+        ftf = int.from_bytes(response, &#39;big&#39;, signed=True)
+
+        return ftf * 1e-3
+
+    def get_temps(self):
+        &#39;&#39;&#39;
+        Returns a list of currents in degrees Celcius.
+        In the following order:
+
+        Technology 1: [Diode Temp, Case Temp]
+        &#39;&#39;&#39;
+        # get response this should be a long byte string
+        response = self._temps()
+
+        data = [int.from_bytes(response[i: i+2], &#39;big&#39;, signed=True) / 100
+                for i in range(0, len(response), 2)]
+
+        return data
+
+    def get_currents(self):
+        &#39;&#39;&#39;
+        Returns a list of currents in mA.
+        In the following order:
+
+        Technology 1: [TEC, Diode]
+        Technology 2: [TED, Diode 1, Diode 2, Diode 3, Diode 4, SOA]
+        Technology 3: [TEC, Diode 1, tbd, tbd, tbd, ...]
+        &#39;&#39;&#39;
+        # get response this should be a long byte string
+        response = self._currents()
+
+        data = [int.from_bytes(response[i: i+2], &#39;big&#39;, signed=True) / 10
+                for i in range(0, len(response), 2)]
+
+        return data
+
+    def get_last_response(self):
+        &#39;&#39;&#39;This function gets the most recent response sent from the laser.
+        The response is parsed for errors and stuff the way any normal response
+        would be. The variable `self._response` is set to the last response again.
+
+        I dont know why you would need to do this.
+        &#39;&#39;&#39;
+        return self._lstresp()
+
+    def get_error_fatal(self, reset=False):
+        &#34;&#34;&#34;
+        reads fatal error register statusf and checks each bit against the
+        fatal error table to determine the fault
+
+        :param reset: resets/clears latching errors
+
+        &#34;&#34;&#34;
+        response = self._statusf()
+        statusf = int.from_bytes(response, &#39;big&#39;)
+        statusf = f&#39;{statusf:016b}&#39;
+        status_array = [int(code) for code in statusf]
+        status_array.reverse()
+        print(status_array)
+
+        if any(status_array):
+            print(&#34;Current Status Fatal Error&#34;)
+
+            if status_array[0] == 1:
+                print(&#34;FPWRL&#34;)
+            if status_array[1] == 1:
+                print(&#34;FTHERML&#34;)
+            if status_array[2] == 1:
+                print(&#34;FFREQL&#34;)
+            if status_array[3] == 1:
+                print(&#34;FVSFL&#34;)
+            if status_array[4] == 1:
+                print(&#34;CRL&#34;)
+            if status_array[5] == 1:
+                print(&#34;MRL&#34;)
+            if status_array[6] == 1:
+                print(&#34;CEL&#34;)
+            if status_array[7] == 1:
+                print(&#34;XEL&#34;)
+            if status_array[8] == 1:
+                print(&#34;FPWR&#34;)
+            if status_array[9] == 1:
+                print(&#34;FTHERM&#34;)
+            if status_array[10] == 1:
+                print(&#34;FFREQ&#34;)
+            if status_array[11] == 1:
+                print(&#34;FVSF&#34;)
+            if status_array[12] == 1:
+                print(&#34;DIS&#34;)
+            if status_array[13] == 1:
+                print(&#34;FATAL&#34;)
+            if status_array[14] == 1:
+                print(&#34;ALM&#34;)
+            if status_array[15] == 1:
+                print(&#34;SRQ &#34;)
+            if reset is True:
+                data_reset = [0] * 16
+                data_reset = int(&#39;&#39;.join(str(x) for x in data_reset[::-1]), 2)
+                self._statusf(data_reset)
+
+    def get_error_warning(self, reset=False):
+        &#34;&#34;&#34;
+        reads warning error register statusw and checks each bit against the
+        warning error table to determine the fault
+
+        If the laser is off then some of the latched warnings will be set on.
+
+        :param reset: resets/clears latching errors
+        &#34;&#34;&#34;
+        response = self._statusw()
+        statusw = int.from_bytes(response, &#39;big&#39;)
+        statusw = f&#39;{statusw:016b}&#39;
+        status_array = [int(code) for code in statusw]
+        status_array.reverse()
+        print(status_array)
+
+        if any(status_array):
+            print(&#34;Current Status Warning Error&#34;)
+
+            if status_array[0] == 1:
+                print(&#34;WPWRL&#34;)
+            if status_array[1] == 1:
+                print(&#34;WTHERML&#34;)
+            if status_array[2] == 1:
+                print(&#34;WFREQL&#34;)
+            if status_array[3] == 1:
+                print(&#34;WVSFL&#34;)
+            if status_array[4] == 1:
+                print(&#34;CRL&#34;)
+            if status_array[5] == 1:
+                print(&#34;MRL&#34;)
+            if status_array[6] == 1:
+                print(&#34;CEL&#34;)
+            if status_array[7] == 1:
+                print(&#34;XEL&#34;)
+            if status_array[8] == 1:
+                print(&#34;WPWR&#34;)
+            if status_array[9] == 1:
+                print(&#34;WTHERM&#34;)
+            if status_array[10] == 1:
+                print(&#34;WFREQ&#34;)
+            if status_array[11] == 1:
+                print(&#34;FVSF&#34;)
+            if status_array[12] == 1:
+                print(&#34;DIS&#34;)
+            if status_array[13] == 1:
+                print(&#34;FATAL&#34;)
+            if status_array[14] == 1:
+                print(&#34;ALM&#34;)
+            if status_array[15] == 1:
+                print(&#34;SRQ &#34;)
+            if reset is True:
+                data_reset = int(&#39;00ff&#39;, 16)
+                self._statusw(data_reset)
+
+    def get_fatal_power_thresh(self):
+        &#34;&#34;&#34;
+        reads maximum plus/minus power deviation in dB for which the fatal alarm is asserted
+
+        &#34;&#34;&#34;
+        response = self._fpowth()
+        pow_fatal = int.from_bytes(response, &#39;big&#39;) / 100
+        # correcting for proper order of magnitude
+        return pow_fatal
+
+    def get_warning_power_thresh(self):
+        &#34;&#34;&#34;
+        reads maximum plus/minus power deviation in dB for which the warning alarm is asserted
+
+        &#34;&#34;&#34;
+        response = self._wpowth()
+        pow_warn = int.from_bytes(response, &#39;big&#39;) / 100
+        # correcting for proper order of magnitude
+        return pow_warn
+
+    def get_fatal_freq_thresh(self):
+        &#34;&#34;&#34;
+        reads maximum plus/minus frequency deviation in GHz for which the fatal alarm is asserted
+
+        &#34;&#34;&#34;
+        response = self._ffreqth()
+        freq_fatal = int.from_bytes(response, &#39;big&#39;) / 10
+        return freq_fatal
+
+    def get_warning_freq_thresh(self):
+        &#34;&#34;&#34;
+        reads maximum plus/minus frequency deviation in GHz for which the warning alarm is asserted
+
+        &#34;&#34;&#34;
+        response = self._wfreqth()
+        freq_warn = int.from_bytes(response, &#39;big&#39;) / 10
+        return freq_warn
+
+    def get_fatal_therm_thresh(self):
+        &#34;&#34;&#34;
+        reads maximum plus/minus thermal deviation in degree celcius for which the fatal alarm is asserted
+
+        &#34;&#34;&#34;
+        response = self._fthermth()
+        therm_fatal = int.from_bytes(response, &#39;big&#39;) / 100
+        # correcting for proper order of magnitude
+        return therm_fatal
+
+    def get_warning_therm_thresh(self):
+        &#34;&#34;&#34;
+        reads maximum plus/minus thermal deviation in degree celcius for which the warning alarm is asserted
+        &#34;&#34;&#34;
+        response = self._wthermth()
+        therm_thresh = int.from_bytes(response, &#39;big&#39;) / 100
+        # correcting for proper order of magnitude
+        return therm_thresh
+
+    def get_srq_trigger(self):
+        &#34;&#34;&#34;
+        Utilizes SRQT register to identify why SRQ was asserted in StatusF and StatusW registers
+
+        &#34;&#34;&#34;
+        response = self._srqt()
+        status = int.from_bytes(response, &#39;big&#39;)
+        status = f&#39;{status:016b}&#39;
+        status_array = [int(code) for code in status]
+        status_array.reverse()
+        print(status_array)
+
+        if any(status_array):
+            print(&#34;SRQ Status: Asserted&#34;)
+
+            if status_array[0] == 1:
+                print(&#34;FPWRL&#34;)
+            if status_array[1] == 1:
+                print(&#34;FTHERML&#34;)
+            if status_array[2] == 1:
+                print(&#34;FFREQL&#34;)
+            if status_array[3] == 1:
+                print(&#34;FVSFL&#34;)
+            if status_array[4] == 1:
+                print(&#34;CRL&#34;)
+            if status_array[5] == 1:
+                print(&#34;MRL&#34;)
+            if status_array[6] == 1:
+                print(&#34;CEL&#34;)
+            if status_array[7] == 1:
+                print(&#34;XEL&#34;)
+            if status_array[8] == 1:
+                print(&#34;WPWRL&#34;)
+            if status_array[9] == 1:
+                print(&#34;WTHERML&#34;)
+            if status_array[10] == 1:
+                print(&#34;WFREQL&#34;)
+            if status_array[11] == 1:
+                print(&#34;WVSFL&#34;)
+            if status_array[12] == 1:
+                print(&#34;DIS&#34;)
+            if status_array[13] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[14] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[15] == 1:
+                print(&#34;NONE&#34;)
+
+    def get_fatal_trigger(self):
+        &#34;&#34;&#34;
+        Utilizes FatalT register to identify which fatal conditon was asserted in StatusF and StatusW registers
+
+        &#34;&#34;&#34;
+        response = self._fatalt()
+        status = int.from_bytes(response, &#39;big&#39;)
+        status = f&#39;{status:016b}&#39;
+        status_array = [int(code) for code in status]
+        status_array.reverse()
+        print(status_array)
+
+        if any(status_array):
+            print(&#34;SRQ Status: Asserted&#34;)
+
+            if status_array[0] == 1:
+                print(&#34;FPWRL&#34;)
+            if status_array[1] == 1:
+                print(&#34;FTHERML&#34;)
+            if status_array[2] == 1:
+                print(&#34;FFREQL&#34;)
+            if status_array[3] == 1:
+                print(&#34;FVSFL&#34;)
+            if status_array[4] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[5] == 1:
+                print(&#34;MRL&#34;)
+            if status_array[6] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[7] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[8] == 1:
+                print(&#34;WPWRL&#34;)
+            if status_array[9] == 1:
+                print(&#34;WTHERML&#34;)
+            if status_array[10] == 1:
+                print(&#34;WFREQL&#34;)
+            if status_array[11] == 1:
+                print(&#34;WVSFL&#34;)
+            if status_array[12] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[13] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[14] == 1:
+                print(&#34;NONE&#34;)
+            if status_array[15] == 1:
+                print(&#34;NONE&#34;)
+
+    def get_alm_trigger(self):
+        &#34;&#34;&#34;
+        Utilizes ALMT register to identify why ALM was asserted in StatusF and StatusW registers
+
+        &#34;&#34;&#34;
+        response = self._almt()
+        status = int.from_bytes(response, &#39;big&#39;)
+        status = f&#39;{status:016b}&#39;
+        status_array = [int(code) for code in status]
+        status_array.reverse()
+        print(status_array)
+
+        if any(status_array):
+            print(&#34;SRQ Status: Asserted&#34;)
+
+        if status_array[0] == 1:
+            print(&#34;FPWR&#34;)
+        if status_array[1] == 1:
+            print(&#34;FTHERM&#34;)
+        if status_array[2] == 1:
+            print(&#34;FFREQ&#34;)
+        if status_array[3] == 1:
+            print(&#34;FVSF&#34;)
+        if status_array[4] == 1:
+            print(&#34;NONE&#34;)
+        if status_array[5] == 1:
+            print(&#34;NONE&#34;)
+        if status_array[6] == 1:
+            print(&#34;NONE&#34;)
+        if status_array[7] == 1:
+            print(&#34;NONE&#34;)
+        if status_array[8] == 1:
+            print(&#34;WPWR&#34;)
+        if status_array[9] == 1:
+            print(&#34;WTHERM&#34;)
+        if status_array[10] == 1:
+            print(&#34;WFREQ&#34;)
+        if status_array[11] == 1:
+            print(&#34;WVSF&#34;)
+        if status_array[12] == 1:
+            print(&#34;NONE&#34;)
+        if status_array[13] == 1:
+            print(&#34;NONE&#34;)
+        if status_array[14] == 1:
+            print(&#34;NONE&#34;)
+        if status_array[15] == 1:
+            print(&#34;NONE&#34;)</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="itla.itla.ITLABase" href="itla.html#itla.itla.ITLABase">ITLABase</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li><a title="itla.pplaser.PPLaser" href="pplaser.html#itla.pplaser.PPLaser">PPLaser</a></li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="itla.itla12.ITLA12.disable"><code class="name flex">
+<span>def <span class="ident">disable</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Tells the laser to stop lasing.</p>
+<p>:returns: None</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def disable(self):
+    &#34;&#34;&#34;Tells the laser to stop lasing.
+
+    :returns: None
+
+    &#34;&#34;&#34;
+    # set SENA bit (bit 3) to zero
+    data = [0] * 16
+    data = int(&#39;&#39;.join(str(x) for x in data[::-1]), 2)
+    self._resena(data)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.dither_disable"><code class="name flex">
+<span>def <span class="ident">dither_disable</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>disables digital dither</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dither_disable(self):
+    &#34;&#34;&#34;
+    disables digital dither
+    &#34;&#34;&#34;
+    # i think that we should try to preserve other bits rather than setting all
+    # data to zero across the board
+    data = [0] * 16
+    data = int(&#39;&#39;.join(str(x) for x in data[::-1]), 2)
+    self._dithere(data)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.dither_enable"><code class="name flex">
+<span>def <span class="ident">dither_enable</span></span>(<span>self, waveform='sinusoidal')</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def dither_enable(self, waveform=&#39;sinusoidal&#39;):
+    &#34;&#34;&#34;
+    &#34;&#34;&#34;
+    if (waveform.lower() != &#39;sinusoid&#39;
+        or waveform.lower() != &#39;triangular&#39;
+          or waveform.lower() != &#39;sin&#39; or waveform.lower() != &#39;tri&#39;):
+
+        raise ValueError(&#39;waveform must be \&#39;sinusoidal\&#39;, or \&#39;triangular\&#39;&#39;)
+
+    data = [0] * 16
+    # bit 1 Digital Dither Enable bit
+    data[1] = 1
+    data = int(&#39;&#39;.join(str(x) for x in data[::-1]), 2)
+
+    self._dithere(data)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.enable"><code class="name flex">
+<span>def <span class="ident">enable</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Enables laser optical output.
+There is a time delay after execution of this function to
+proper stable laser output.</p>
+<p>:returns: None</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def enable(self):
+    &#34;&#34;&#34;Enables laser optical output.
+    There is a time delay after execution of this function to
+    proper stable laser output.
+
+    :returns: None
+
+    &#34;&#34;&#34;
+    # I&#39;m writing this out partially for transparency
+    # Maybe unnecessary or non-optimal
+    data = [0] * 16
+    # bit 3 SENA bit
+    data[3] = 1
+    data = int(&#39;&#39;.join(str(x) for x in data[::-1]), 2)
+
+    self._resena(data)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_age"><code class="name flex">
+<span>def <span class="ident">get_age</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a string representing the percentage of aging of the laser.
+0% indicated a brand new laser
+100% indicates the laser should be replaces.</p>
+<p>:returns:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_age(self):
+    &#34;&#34;&#34;Returns a string representing the percentage of aging of the laser.
+    0% indicated a brand new laser
+    100% indicates the laser should be replaces.
+
+    :returns:
+
+    &#34;&#34;&#34;
+    response = self._age()
+    age = int.from_bytes(response, &#39;big&#39;)
+
+    return f&#39;Age: {age} / 100%&#39;</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_alm_trigger"><code class="name flex">
+<span>def <span class="ident">get_alm_trigger</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Utilizes ALMT register to identify why ALM was asserted in StatusF and StatusW registers</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_alm_trigger(self):
+    &#34;&#34;&#34;
+    Utilizes ALMT register to identify why ALM was asserted in StatusF and StatusW registers
+
+    &#34;&#34;&#34;
+    response = self._almt()
+    status = int.from_bytes(response, &#39;big&#39;)
+    status = f&#39;{status:016b}&#39;
+    status_array = [int(code) for code in status]
+    status_array.reverse()
+    print(status_array)
+
+    if any(status_array):
+        print(&#34;SRQ Status: Asserted&#34;)
+
+    if status_array[0] == 1:
+        print(&#34;FPWR&#34;)
+    if status_array[1] == 1:
+        print(&#34;FTHERM&#34;)
+    if status_array[2] == 1:
+        print(&#34;FFREQ&#34;)
+    if status_array[3] == 1:
+        print(&#34;FVSF&#34;)
+    if status_array[4] == 1:
+        print(&#34;NONE&#34;)
+    if status_array[5] == 1:
+        print(&#34;NONE&#34;)
+    if status_array[6] == 1:
+        print(&#34;NONE&#34;)
+    if status_array[7] == 1:
+        print(&#34;NONE&#34;)
+    if status_array[8] == 1:
+        print(&#34;WPWR&#34;)
+    if status_array[9] == 1:
+        print(&#34;WTHERM&#34;)
+    if status_array[10] == 1:
+        print(&#34;WFREQ&#34;)
+    if status_array[11] == 1:
+        print(&#34;WVSF&#34;)
+    if status_array[12] == 1:
+        print(&#34;NONE&#34;)
+    if status_array[13] == 1:
+        print(&#34;NONE&#34;)
+    if status_array[14] == 1:
+        print(&#34;NONE&#34;)
+    if status_array[15] == 1:
+        print(&#34;NONE&#34;)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_backwardscompatibility"><code class="name flex">
+<span>def <span class="ident">get_backwardscompatibility</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns a manufacturer specific firmware backwards compatibility
+as a null terminated string</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_backwardscompatibility(self):
+    &#34;&#34;&#34;
+    returns a manufacturer specific firmware backwards compatibility
+    as a null terminated string
+    &#34;&#34;&#34;
+    response_bytes = self._relback()
+
+    return response_bytes.decode(&#39;utf-8&#39;)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_channel"><code class="name flex">
+<span>def <span class="ident">get_channel</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>gets the current channel setting</p>
+<p>The channel defines how many spaces along the grid
+the laser's frequency is displaced from the first channel frequency.</p>
+<p>:returns: channel as an integer.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_channel(self):
+    &#34;&#34;&#34;gets the current channel setting
+
+    The channel defines how many spaces along the grid
+    the laser&#39;s frequency is displaced from the first channel frequency.
+
+    :returns: channel as an integer.
+
+    &#34;&#34;&#34;
+    # This concatenates the data bytestrings
+    response = self._channel()
+
+    channel = int.from_bytes(response, &#39;big&#39;)
+
+    return channel</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_currents"><code class="name flex">
+<span>def <span class="ident">get_currents</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a list of currents in mA.
+In the following order:</p>
+<p>Technology 1: [TEC, Diode]
+Technology 2: [TED, Diode 1, Diode 2, Diode 3, Diode 4, SOA]
+Technology 3: [TEC, Diode 1, tbd, tbd, tbd, &hellip;]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_currents(self):
+    &#39;&#39;&#39;
+    Returns a list of currents in mA.
+    In the following order:
+
+    Technology 1: [TEC, Diode]
+    Technology 2: [TED, Diode 1, Diode 2, Diode 3, Diode 4, SOA]
+    Technology 3: [TEC, Diode 1, tbd, tbd, tbd, ...]
+    &#39;&#39;&#39;
+    # get response this should be a long byte string
+    response = self._currents()
+
+    data = [int.from_bytes(response[i: i+2], &#39;big&#39;, signed=True) / 10
+            for i in range(0, len(response), 2)]
+
+    return data</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_device_type"><code class="name flex">
+<span>def <span class="ident">get_device_type</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns a string containing the device type.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_device_type(self):
+    &#34;&#34;&#34;
+    returns a string containing the device type.
+    &#34;&#34;&#34;
+    response_bytes = self._devtyp()
+
+    return response_bytes.decode(&#39;utf-8&#39;)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_dither_amplitude"><code class="name flex">
+<span>def <span class="ident">get_dither_amplitude</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>get dither modulation amplitude, utilizes DitherA register</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_dither_amplitude(self):
+    &#34;&#34;&#34;
+    get dither modulation amplitude, utilizes DitherA register
+    &#34;&#34;&#34;
+    response = self._dithera()
+    return int.from_bytes(response, &#39;big&#39;)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_dither_frequency"><code class="name flex">
+<span>def <span class="ident">get_dither_frequency</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>get dither modulation frequency, utilizes DitherF register</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_dither_frequency(self):
+    &#34;&#34;&#34;
+    get dither modulation frequency, utilizes DitherF register
+    &#34;&#34;&#34;
+    response = self._ditherf()
+    return int.from_bytes(response, &#39;big&#39;)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_dither_rate"><code class="name flex">
+<span>def <span class="ident">get_dither_rate</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>get dither rate, utilizes DitherR register</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_dither_rate(self):
+    &#34;&#34;&#34;
+    get dither rate, utilizes DitherR register
+    &#34;&#34;&#34;
+    response = self._ditherr()
+    return int.from_bytes(response, &#39;big&#39;)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_error_fatal"><code class="name flex">
+<span>def <span class="ident">get_error_fatal</span></span>(<span>self, reset=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>reads fatal error register statusf and checks each bit against the
+fatal error table to determine the fault</p>
+<p>:param reset: resets/clears latching errors</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_error_fatal(self, reset=False):
+    &#34;&#34;&#34;
+    reads fatal error register statusf and checks each bit against the
+    fatal error table to determine the fault
+
+    :param reset: resets/clears latching errors
+
+    &#34;&#34;&#34;
+    response = self._statusf()
+    statusf = int.from_bytes(response, &#39;big&#39;)
+    statusf = f&#39;{statusf:016b}&#39;
+    status_array = [int(code) for code in statusf]
+    status_array.reverse()
+    print(status_array)
+
+    if any(status_array):
+        print(&#34;Current Status Fatal Error&#34;)
+
+        if status_array[0] == 1:
+            print(&#34;FPWRL&#34;)
+        if status_array[1] == 1:
+            print(&#34;FTHERML&#34;)
+        if status_array[2] == 1:
+            print(&#34;FFREQL&#34;)
+        if status_array[3] == 1:
+            print(&#34;FVSFL&#34;)
+        if status_array[4] == 1:
+            print(&#34;CRL&#34;)
+        if status_array[5] == 1:
+            print(&#34;MRL&#34;)
+        if status_array[6] == 1:
+            print(&#34;CEL&#34;)
+        if status_array[7] == 1:
+            print(&#34;XEL&#34;)
+        if status_array[8] == 1:
+            print(&#34;FPWR&#34;)
+        if status_array[9] == 1:
+            print(&#34;FTHERM&#34;)
+        if status_array[10] == 1:
+            print(&#34;FFREQ&#34;)
+        if status_array[11] == 1:
+            print(&#34;FVSF&#34;)
+        if status_array[12] == 1:
+            print(&#34;DIS&#34;)
+        if status_array[13] == 1:
+            print(&#34;FATAL&#34;)
+        if status_array[14] == 1:
+            print(&#34;ALM&#34;)
+        if status_array[15] == 1:
+            print(&#34;SRQ &#34;)
+        if reset is True:
+            data_reset = [0] * 16
+            data_reset = int(&#39;&#39;.join(str(x) for x in data_reset[::-1]), 2)
+            self._statusf(data_reset)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_error_warning"><code class="name flex">
+<span>def <span class="ident">get_error_warning</span></span>(<span>self, reset=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>reads warning error register statusw and checks each bit against the
+warning error table to determine the fault</p>
+<p>If the laser is off then some of the latched warnings will be set on.</p>
+<p>:param reset: resets/clears latching errors</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_error_warning(self, reset=False):
+    &#34;&#34;&#34;
+    reads warning error register statusw and checks each bit against the
+    warning error table to determine the fault
+
+    If the laser is off then some of the latched warnings will be set on.
+
+    :param reset: resets/clears latching errors
+    &#34;&#34;&#34;
+    response = self._statusw()
+    statusw = int.from_bytes(response, &#39;big&#39;)
+    statusw = f&#39;{statusw:016b}&#39;
+    status_array = [int(code) for code in statusw]
+    status_array.reverse()
+    print(status_array)
+
+    if any(status_array):
+        print(&#34;Current Status Warning Error&#34;)
+
+        if status_array[0] == 1:
+            print(&#34;WPWRL&#34;)
+        if status_array[1] == 1:
+            print(&#34;WTHERML&#34;)
+        if status_array[2] == 1:
+            print(&#34;WFREQL&#34;)
+        if status_array[3] == 1:
+            print(&#34;WVSFL&#34;)
+        if status_array[4] == 1:
+            print(&#34;CRL&#34;)
+        if status_array[5] == 1:
+            print(&#34;MRL&#34;)
+        if status_array[6] == 1:
+            print(&#34;CEL&#34;)
+        if status_array[7] == 1:
+            print(&#34;XEL&#34;)
+        if status_array[8] == 1:
+            print(&#34;WPWR&#34;)
+        if status_array[9] == 1:
+            print(&#34;WTHERM&#34;)
+        if status_array[10] == 1:
+            print(&#34;WFREQ&#34;)
+        if status_array[11] == 1:
+            print(&#34;FVSF&#34;)
+        if status_array[12] == 1:
+            print(&#34;DIS&#34;)
+        if status_array[13] == 1:
+            print(&#34;FATAL&#34;)
+        if status_array[14] == 1:
+            print(&#34;ALM&#34;)
+        if status_array[15] == 1:
+            print(&#34;SRQ &#34;)
+        if reset is True:
+            data_reset = int(&#39;00ff&#39;, 16)
+            self._statusw(data_reset)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_fatal_freq_thresh"><code class="name flex">
+<span>def <span class="ident">get_fatal_freq_thresh</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>reads maximum plus/minus frequency deviation in GHz for which the fatal alarm is asserted</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_fatal_freq_thresh(self):
+    &#34;&#34;&#34;
+    reads maximum plus/minus frequency deviation in GHz for which the fatal alarm is asserted
+
+    &#34;&#34;&#34;
+    response = self._ffreqth()
+    freq_fatal = int.from_bytes(response, &#39;big&#39;) / 10
+    return freq_fatal</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_fatal_power_thresh"><code class="name flex">
+<span>def <span class="ident">get_fatal_power_thresh</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>reads maximum plus/minus power deviation in dB for which the fatal alarm is asserted</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_fatal_power_thresh(self):
+    &#34;&#34;&#34;
+    reads maximum plus/minus power deviation in dB for which the fatal alarm is asserted
+
+    &#34;&#34;&#34;
+    response = self._fpowth()
+    pow_fatal = int.from_bytes(response, &#39;big&#39;) / 100
+    # correcting for proper order of magnitude
+    return pow_fatal</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_fatal_therm_thresh"><code class="name flex">
+<span>def <span class="ident">get_fatal_therm_thresh</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>reads maximum plus/minus thermal deviation in degree celcius for which the fatal alarm is asserted</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_fatal_therm_thresh(self):
+    &#34;&#34;&#34;
+    reads maximum plus/minus thermal deviation in degree celcius for which the fatal alarm is asserted
+
+    &#34;&#34;&#34;
+    response = self._fthermth()
+    therm_fatal = int.from_bytes(response, &#39;big&#39;) / 100
+    # correcting for proper order of magnitude
+    return therm_fatal</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_fatal_trigger"><code class="name flex">
+<span>def <span class="ident">get_fatal_trigger</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Utilizes FatalT register to identify which fatal conditon was asserted in StatusF and StatusW registers</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_fatal_trigger(self):
+    &#34;&#34;&#34;
+    Utilizes FatalT register to identify which fatal conditon was asserted in StatusF and StatusW registers
+
+    &#34;&#34;&#34;
+    response = self._fatalt()
+    status = int.from_bytes(response, &#39;big&#39;)
+    status = f&#39;{status:016b}&#39;
+    status_array = [int(code) for code in status]
+    status_array.reverse()
+    print(status_array)
+
+    if any(status_array):
+        print(&#34;SRQ Status: Asserted&#34;)
+
+        if status_array[0] == 1:
+            print(&#34;FPWRL&#34;)
+        if status_array[1] == 1:
+            print(&#34;FTHERML&#34;)
+        if status_array[2] == 1:
+            print(&#34;FFREQL&#34;)
+        if status_array[3] == 1:
+            print(&#34;FVSFL&#34;)
+        if status_array[4] == 1:
+            print(&#34;NONE&#34;)
+        if status_array[5] == 1:
+            print(&#34;MRL&#34;)
+        if status_array[6] == 1:
+            print(&#34;NONE&#34;)
+        if status_array[7] == 1:
+            print(&#34;NONE&#34;)
+        if status_array[8] == 1:
+            print(&#34;WPWRL&#34;)
+        if status_array[9] == 1:
+            print(&#34;WTHERML&#34;)
+        if status_array[10] == 1:
+            print(&#34;WFREQL&#34;)
+        if status_array[11] == 1:
+            print(&#34;WVSFL&#34;)
+        if status_array[12] == 1:
+            print(&#34;NONE&#34;)
+        if status_array[13] == 1:
+            print(&#34;NONE&#34;)
+        if status_array[14] == 1:
+            print(&#34;NONE&#34;)
+        if status_array[15] == 1:
+            print(&#34;NONE&#34;)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_fcf"><code class="name flex">
+<span>def <span class="ident">get_fcf</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get the currently set first channel frequency.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_fcf(self):
+    &#34;&#34;&#34; Get the currently set first channel frequency.
+    &#34;&#34;&#34;
+    response = self._fcf1()
+    fcf1 = int.from_bytes(response, &#39;big&#39;)
+
+    response = self._fcf2()
+    fcf2 = int.from_bytes(response, &#39;big&#39;)
+
+    return fcf1 + fcf2 * 1e-4</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_fine_tuning"><code class="name flex">
+<span>def <span class="ident">get_fine_tuning</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This function returns the setting for the
+off grid tuning for the laser's frequency.</p>
+<p>:return ftf: The fine tune frequency adjustment in GHz</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_fine_tuning(self):
+    &#34;&#34;&#34;
+    This function returns the setting for the
+    off grid tuning for the laser&#39;s frequency.
+
+    :return ftf: The fine tune frequency adjustment in GHz
+    &#34;&#34;&#34;
+
+    response = self._ftf()
+    ftf = int.from_bytes(response, &#39;big&#39;, signed=True)
+
+    return ftf * 1e-3</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_firmware_release"><code class="name flex">
+<span>def <span class="ident">get_firmware_release</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns a manufacturer specific firmware release</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_firmware_release(self):
+    &#34;&#34;&#34;
+    returns a manufacturer specific firmware release
+    &#34;&#34;&#34;
+    response_bytes = self._release()
+
+    return response_bytes.decode(&#39;utf-8&#39;)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_frequency"><code class="name flex">
+<span>def <span class="ident">get_frequency</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>gets the current laser operating frequency with channels
+and everything accounted for.</p>
+<p>:returns:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_frequency(self):
+    &#34;&#34;&#34;gets the current laser operating frequency with channels
+    and everything accounted for.
+
+    :returns:
+
+    &#34;&#34;&#34;
+    response = self._lf1()
+    lf1 = int.from_bytes(response, &#39;big&#39;)
+
+    response = self._lf2()
+    lf2 = int.from_bytes(response, &#39;big&#39;)
+
+    return lf1 + lf2 * 1e-4</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_frequency_max"><code class="name flex">
+<span>def <span class="ident">get_frequency_max</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>command to read maximum frequency supported by the module</p>
+<p>:returns:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_frequency_max(self):
+    &#34;&#34;&#34;command to read maximum frequency supported by the module
+
+    :returns:
+
+    &#34;&#34;&#34;
+    response = self._lfh1()
+    fcf1 = int.from_bytes(response, &#39;big&#39;)
+
+    response = self._lfh2()
+    fcf2 = int.from_bytes(response, &#39;big&#39;)
+
+    return fcf1 + fcf2 * 1e-4</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_frequency_min"><code class="name flex">
+<span>def <span class="ident">get_frequency_min</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>command to read minimum frequency supported by the module</p>
+<p>:returns:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_frequency_min(self):
+    &#34;&#34;&#34;command to read minimum frequency supported by the module
+
+    :returns:
+
+    &#34;&#34;&#34;
+    response = self._lfl1()
+    lfl1 = int.from_bytes(response, &#39;big&#39;)
+
+    response = self._lfl2()
+    lfl2 = int.from_bytes(response, &#39;big&#39;)
+
+    response = self._lfl3()
+    lfl3 = int.from_bytes(response, &#39;big&#39;)
+
+    return lfl1 + lfl2 * 1e-4 + lfl3 * 1e-6</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_grid"><code class="name flex">
+<span>def <span class="ident">get_grid</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>get the grid spacing in GHz</p>
+<p>:returns: The grid spacing in GHz.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_grid(self):
+    &#34;&#34;&#34;get the grid spacing in GHz
+
+    :returns: The grid spacing in GHz.
+
+    &#34;&#34;&#34;
+    response = self._grid()
+    grid_freq = int.from_bytes(response, &#39;big&#39;, signed=True)
+
+    return grid_freq * 1e-1</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_grid_min"><code class="name flex">
+<span>def <span class="ident">get_grid_min</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>command to read minimum grid supported by the module</p>
+<p>:returns: The minimum grid supported by the module in GHz</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_grid_min(self):
+    &#34;&#34;&#34;command to read minimum grid supported by the module
+
+    :returns: The minimum grid supported by the module in GHz
+
+    &#34;&#34;&#34;
+    try:
+        freq_lgrid = int.from_bytes(self._lgrid(),  &#39;big&#39;, signed=False)
+
+    except ExecutionError as ee:
+        self.nop()
+
+    return freq_lgrid * 1e-1</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_last_response"><code class="name flex">
+<span>def <span class="ident">get_last_response</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This function gets the most recent response sent from the laser.
+The response is parsed for errors and stuff the way any normal response
+would be. The variable <code>self._response</code> is set to the last response again.</p>
+<p>I dont know why you would need to do this.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_last_response(self):
+    &#39;&#39;&#39;This function gets the most recent response sent from the laser.
+    The response is parsed for errors and stuff the way any normal response
+    would be. The variable `self._response` is set to the last response again.
+
+    I dont know why you would need to do this.
+    &#39;&#39;&#39;
+    return self._lstresp()</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_manufacturer"><code class="name flex">
+<span>def <span class="ident">get_manufacturer</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return's a string containing the manufacturer's name.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_manufacturer(self):
+    &#34;&#34;&#34;
+    Return&#39;s a string containing the manufacturer&#39;s name.
+    &#34;&#34;&#34;
+    response_bytes = self._mfgr()
+
+    return response_bytes.decode(&#39;utf-8&#39;)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_manufacturing_date"><code class="name flex">
+<span>def <span class="ident">get_manufacturing_date</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the manufacturing date</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_manufacturing_date(self):
+    &#34;&#34;&#34;returns the manufacturing date&#34;&#34;&#34;
+    response_bytes = self._mfgdate()
+
+    return response_bytes.decode(&#39;utf-8&#39;)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_model"><code class="name flex">
+<span>def <span class="ident">get_model</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>return's the model as a string</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_model(self):
+    &#34;&#34;&#34;
+    return&#39;s the model as a string
+    &#34;&#34;&#34;
+    response_bytes = self._model()
+
+    return response_bytes.decode(&#39;utf-8&#39;)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_output_wavelength"><code class="name flex">
+<span>def <span class="ident">get_output_wavelength</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Query's the laser for current frequency output (as this is
+sometimes different from the set frequency) and then converts to wavelength.</p>
+<p>:returns:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_output_wavelength(self):
+    &#34;&#34;&#34;
+    Query&#39;s the laser for current frequency output (as this is
+    sometimes different from the set frequency) and then converts to wavelength.
+
+    :returns:
+
+    &#34;&#34;&#34;
+    raise Warning(&#34;this is not implemented yet.&#34;)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_power_max"><code class="name flex">
+<span>def <span class="ident">get_power_max</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Gets the maximum optical power output of the module. Units dBm.</p>
+<p>:returns:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_power_max(self):
+    &#34;&#34;&#34;Gets the maximum optical power output of the module. Units dBm.
+
+    :returns:
+
+    &#34;&#34;&#34;
+    response = self._opsh()
+    return int.from_bytes(response, &#39;big&#39;, signed=True) / 100</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_power_min"><code class="name flex">
+<span>def <span class="ident">get_power_min</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Gets the minimum optical power output of the module. Units dBm.</p>
+<p>:returns:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_power_min(self):
+    &#34;&#34;&#34;Gets the minimum optical power output of the module. Units dBm.
+
+    :returns:
+
+    &#34;&#34;&#34;
+    response = self._opsl()
+    return int.from_bytes(response, &#39;big&#39;, signed=True) / 100</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_power_output"><code class="name flex">
+<span>def <span class="ident">get_power_output</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Gets the actual optical output power of the laser.
+Only an approximation, apparently. Units dBm.</p>
+<p>:returns:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_power_output(self):
+    &#34;&#34;&#34;Gets the actual optical output power of the laser.
+    Only an approximation, apparently. Units dBm.
+
+    :returns:
+
+    &#34;&#34;&#34;
+    response = self._oop()
+
+    return int.from_bytes(response, &#39;big&#39;, signed=True) / 100</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_power_setting"><code class="name flex">
+<span>def <span class="ident">get_power_setting</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Gets current power setting set by set_power. Should be in dBm.</p>
+<p>:returns:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_power_setting(self):
+    &#34;&#34;&#34;Gets current power setting set by set_power. Should be in dBm.
+
+    :returns:
+
+    &#34;&#34;&#34;
+    # Gets power setting, not actual optical output power.
+    response = self._pwr()
+    return int.from_bytes(response, &#39;big&#39;, signed=True) / 100</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_serialnumber"><code class="name flex">
+<span>def <span class="ident">get_serialnumber</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>returns the serial number</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_serialnumber(self):
+    &#34;&#34;&#34;
+    returns the serial number
+    &#34;&#34;&#34;
+    response_bytes = self._serno()
+
+    return response_bytes.decode(&#39;utf-8&#39;)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_srq_trigger"><code class="name flex">
+<span>def <span class="ident">get_srq_trigger</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Utilizes SRQT register to identify why SRQ was asserted in StatusF and StatusW registers</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_srq_trigger(self):
+    &#34;&#34;&#34;
+    Utilizes SRQT register to identify why SRQ was asserted in StatusF and StatusW registers
+
+    &#34;&#34;&#34;
+    response = self._srqt()
+    status = int.from_bytes(response, &#39;big&#39;)
+    status = f&#39;{status:016b}&#39;
+    status_array = [int(code) for code in status]
+    status_array.reverse()
+    print(status_array)
+
+    if any(status_array):
+        print(&#34;SRQ Status: Asserted&#34;)
+
+        if status_array[0] == 1:
+            print(&#34;FPWRL&#34;)
+        if status_array[1] == 1:
+            print(&#34;FTHERML&#34;)
+        if status_array[2] == 1:
+            print(&#34;FFREQL&#34;)
+        if status_array[3] == 1:
+            print(&#34;FVSFL&#34;)
+        if status_array[4] == 1:
+            print(&#34;CRL&#34;)
+        if status_array[5] == 1:
+            print(&#34;MRL&#34;)
+        if status_array[6] == 1:
+            print(&#34;CEL&#34;)
+        if status_array[7] == 1:
+            print(&#34;XEL&#34;)
+        if status_array[8] == 1:
+            print(&#34;WPWRL&#34;)
+        if status_array[9] == 1:
+            print(&#34;WTHERML&#34;)
+        if status_array[10] == 1:
+            print(&#34;WFREQL&#34;)
+        if status_array[11] == 1:
+            print(&#34;WVSFL&#34;)
+        if status_array[12] == 1:
+            print(&#34;DIS&#34;)
+        if status_array[13] == 1:
+            print(&#34;NONE&#34;)
+        if status_array[14] == 1:
+            print(&#34;NONE&#34;)
+        if status_array[15] == 1:
+            print(&#34;NONE&#34;)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_temp"><code class="name flex">
+<span>def <span class="ident">get_temp</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns the current primary control temperature in deg C.</p>
+<p>:returns:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_temp(self):
+    &#34;&#34;&#34;Returns the current primary control temperature in deg C.
+
+    :returns:
+
+    &#34;&#34;&#34;
+    response = self._ctemp()
+    temp_100 = int.from_bytes(response, &#39;big&#39;)
+
+    return temp_100 / 100</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_temps"><code class="name flex">
+<span>def <span class="ident">get_temps</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns a list of currents in degrees Celcius.
+In the following order:</p>
+<p>Technology 1: [Diode Temp, Case Temp]</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_temps(self):
+    &#39;&#39;&#39;
+    Returns a list of currents in degrees Celcius.
+    In the following order:
+
+    Technology 1: [Diode Temp, Case Temp]
+    &#39;&#39;&#39;
+    # get response this should be a long byte string
+    response = self._temps()
+
+    data = [int.from_bytes(response[i: i+2], &#39;big&#39;, signed=True) / 100
+            for i in range(0, len(response), 2)]
+
+    return data</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_warning_freq_thresh"><code class="name flex">
+<span>def <span class="ident">get_warning_freq_thresh</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>reads maximum plus/minus frequency deviation in GHz for which the warning alarm is asserted</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_warning_freq_thresh(self):
+    &#34;&#34;&#34;
+    reads maximum plus/minus frequency deviation in GHz for which the warning alarm is asserted
+
+    &#34;&#34;&#34;
+    response = self._wfreqth()
+    freq_warn = int.from_bytes(response, &#39;big&#39;) / 10
+    return freq_warn</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_warning_power_thresh"><code class="name flex">
+<span>def <span class="ident">get_warning_power_thresh</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>reads maximum plus/minus power deviation in dB for which the warning alarm is asserted</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_warning_power_thresh(self):
+    &#34;&#34;&#34;
+    reads maximum plus/minus power deviation in dB for which the warning alarm is asserted
+
+    &#34;&#34;&#34;
+    response = self._wpowth()
+    pow_warn = int.from_bytes(response, &#39;big&#39;) / 100
+    # correcting for proper order of magnitude
+    return pow_warn</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_warning_therm_thresh"><code class="name flex">
+<span>def <span class="ident">get_warning_therm_thresh</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>reads maximum plus/minus thermal deviation in degree celcius for which the warning alarm is asserted</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_warning_therm_thresh(self):
+    &#34;&#34;&#34;
+    reads maximum plus/minus thermal deviation in degree celcius for which the warning alarm is asserted
+    &#34;&#34;&#34;
+    response = self._wthermth()
+    therm_thresh = int.from_bytes(response, &#39;big&#39;) / 100
+    # correcting for proper order of magnitude
+    return therm_thresh</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.get_wavelength"><code class="name flex">
+<span>def <span class="ident">get_wavelength</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Query's the laser for frequency setting and convert to wavelength.</p>
+<p>:returns:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_wavelength(self):
+    &#34;&#34;&#34;
+    Query&#39;s the laser for frequency setting and convert to wavelength.
+
+    :returns:
+
+    &#34;&#34;&#34;
+    raise Warning(&#34;this is not implemented yet.&#34;)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.hard_reset"><code class="name flex">
+<span>def <span class="ident">hard_reset</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO describe function</p>
+<p>:returns:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def hard_reset(self):
+    &#34;&#34;&#34;TODO describe function
+
+    :returns:
+
+    &#34;&#34;&#34;
+    # I&#39;m writing this out partially for transparency
+    # Maybe unnecessary or non-optimal
+    data = [0] * 16
+    # bit 0: Module Reset
+    data[0] = 1
+    data = int(&#39;&#39;.join(str(x) for x in data[::-1]), 2)
+
+    self._resena(data)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.nop"><code class="name flex">
+<span>def <span class="ident">nop</span></span>(<span>self, data=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The No-Op operation.</p>
+<p>This is a good test to see if your laser is communicating properly.
+It should read 0000 data or echo whatever data you send it if you send it something.
+The data you write to nop gets overwritten as soon as you read it back.</p>
+<p><code>nop()</code> also returns more informative errors following an ExecutionError.
+This is not called by default so you must do this explicitly if you want
+to see more informative error information.</p>
+<p>:param data: Data to write</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def nop(self, data=None):
+    &#34;&#34;&#34;The No-Op operation.
+
+    This is a good test to see if your laser is communicating properly.
+    It should read 0000 data or echo whatever data you send it if you send it something.
+    The data you write to nop gets overwritten as soon as you read it back.
+
+    `nop()` also returns more informative errors following an ExecutionError.
+    This is not called by default so you must do this explicitly if you want
+    to see more informative error information.
+
+    :param data: Data to write
+
+    &#34;&#34;&#34;
+    # pretty sure the data does nothing
+    if data is not None:
+        response = self._nop(data)
+    else:
+        response = self._nop()
+
+    error_field = int(response.hex()[-1], 16)
+    if bool(error_field):
+        raise self._nop_errors[error_field]</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.read_aea"><code class="name flex">
+<span>def <span class="ident">read_aea</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>reads the AEA register data until an execution error is thrown.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def read_aea(self):
+    &#34;&#34;&#34;
+    reads the AEA register data until an execution error is thrown.
+    &#34;&#34;&#34;
+    aea_response = b&#39;&#39;
+    try:
+        while True:
+            aea_response += self._aea_ear()
+
+    except ExecutionError as ee:
+
+        try:
+            self.nop()
+
+        except EREError as eree:
+            # If this throws an ERE error then we have completed reading AEA
+            pass
+
+        except NOPException as nop_e:
+            raise nop_e
+
+    return aea_response</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.set_channel"><code class="name flex">
+<span>def <span class="ident">set_channel</span></span>(<span>self, channel)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Sets the laser's operating channel.</p>
+<p>MSA-01.2 lasers support a 16 bit channel value.</p>
+<p>This defines how many spaces along the grid
+the laser's frequency is displaced from the first channel frequency.</p>
+<p>:param channel:
+:returns:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_channel(self, channel):
+    &#34;&#34;&#34;Sets the laser&#39;s operating channel.
+
+    MSA-01.2 lasers support a 16 bit channel value.
+
+    This defines how many spaces along the grid
+    the laser&#39;s frequency is displaced from the first channel frequency.
+
+    :param channel:
+    :returns:
+
+    &#34;&#34;&#34;
+    # check type and stuff
+    if not isinstance(channel, int):
+        raise TypeError(&#34;Channel must be an integer&#34;)
+    if channel &lt; 0:
+        raise ValueError(&#34;Channel must be positive.&#34;)
+    if channel &gt; 0xFFFF:
+        raise ValueError(&#34;Channel must be a 16 bit integer (&lt;=0xFFFF).&#34;)
+
+    # Split the channel choice into two options.
+    channel_hex = f&#39;{channel:08x}&#39;
+
+    channell = int(channel_hex[4:], 16)
+
+    # Set the channel registers.
+    self._channel(channell)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.set_dither_amplitude"><code class="name flex">
+<span>def <span class="ident">set_dither_amplitude</span></span>(<span>self, amplitude)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>set dither modulation amplitude, utilizes DitherA register
+:param amplitude: an unsigned short integer encoded as the AM peak-to-peak amplitude
+deviation as 10*percentage of the optical power</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_dither_amplitude(self, amplitude):
+    &#34;&#34;&#34;
+    set dither modulation amplitude, utilizes DitherA register
+    :param amplitude: an unsigned short integer encoded as the AM peak-to-peak amplitude
+    deviation as 10*percentage of the optical power
+    &#34;&#34;&#34;
+    self._dithera(amplitude)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.set_dither_frequency"><code class="name flex">
+<span>def <span class="ident">set_dither_frequency</span></span>(<span>self, rate)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>set dither modulation frequency, utilizes DitherF register
+:param rate: an unsigned short integer encoded as the FM peak-to-peak frequency
+deviation as Ghz*10</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_dither_frequency(self, rate):
+    &#34;&#34;&#34;
+    set dither modulation frequency, utilizes DitherF register
+    :param rate: an unsigned short integer encoded as the FM peak-to-peak frequency
+    deviation as Ghz*10
+    &#34;&#34;&#34;
+    self._ditherf(rate)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.set_dither_rate"><code class="name flex">
+<span>def <span class="ident">set_dither_rate</span></span>(<span>self, rate)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>set dither rate in kHz, utilizes DitherR register
+:param rate: an unsigned short integer specifying dither rate in kHz</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_dither_rate(self, rate):
+    &#34;&#34;&#34;
+    set dither rate in kHz, utilizes DitherR register
+    :param rate: an unsigned short integer specifying dither rate in kHz
+    &#34;&#34;&#34;
+    self._ditherr(rate)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.set_fcf"><code class="name flex">
+<span>def <span class="ident">set_fcf</span></span>(<span>self, freq)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This sets the first channel frequency.
+It does not reset the channel so this frequency will only be equal
+to the output frequency if channel=1.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_fcf(self, freq):
+    &#39;&#39;&#39;
+    This sets the first channel frequency.
+    It does not reset the channel so this frequency will only be equal
+    to the output frequency if channel=1.
+
+    &#39;&#39;&#39;
+    # convert frequency to MHz
+    freq = int(freq * 1e6)
+
+    freq_str = str(freq)
+    fcf1 = int(freq_str[0:3])
+    fcf2 = int(freq_str[3:7])
+
+    try:
+        # is it better to split these into their own try/except blocks?
+        self._fcf1(fcf1)
+        self._fcf2(fcf2)
+
+    except ExecutionError:
+        try:
+            self.nop()
+        except RVEError as error:
+            print(int(fcf1) + &#39;THz is out of bounds for this laser. &#39;)
+            print(&#39;The frequency must be within the range, &#39;
+                  + self.get_frequency_min() + &#39; - &#39;
+                  + self.get_frequency_max() + &#39; THz.&#39;)
+            raise error from None
+
+        except CIEError as error:
+            print(&#34;You cannot change the first channel frequency &#34;
+                  + &#34;while the laser is enabled.&#34;)
+            print(&#39;The current frequency is: &#39; + self.get_frequency() + &#39; THz&#39;)
+            raise error from None</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.set_fine_tuning"><code class="name flex">
+<span>def <span class="ident">set_fine_tuning</span></span>(<span>self, ftf)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>This function provides off grid tuning for the laser's frequency.
+The adjustment applies to all channels uniformly.
+This is typically used after the laser if locked and minor adjustments
+are required to the frequency.</p>
+<p>The command may be pending in the event that the laser output is
+enabled. The pending bit is cleared once the fine tune frequency
+has been achieved.</p>
+<p><strong>???</strong> It seems like this can be done with the laser running.</p>
+<p>:param ftf: The fine tune frequency adjustment in GHz</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_fine_tuning(self, ftf):
+    &#34;&#34;&#34;
+    This function provides off grid tuning for the laser&#39;s frequency.
+    The adjustment applies to all channels uniformly.
+    This is typically used after the laser if locked and minor adjustments
+    are required to the frequency.
+
+    The command may be pending in the event that the laser output is
+    enabled. The pending bit is cleared once the fine tune frequency
+    has been achieved.
+
+    **???** It seems like this can be done with the laser running.
+
+    :param ftf: The fine tune frequency adjustment in GHz
+    &#34;&#34;&#34;
+
+    ftf = int(ftf * 1e3)
+
+    # We will leave this bare. This way the user can set and handle
+    # their own timing and check to make sure the laser has reached the
+    # desired fine tuning frequency.
+    # It WILL throw a &#34;pending&#34; error if the laser is on when setting.
+    self._ftf(ftf)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.set_frequency"><code class="name flex">
+<span>def <span class="ident">set_frequency</span></span>(<span>self, freq)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Sets the frequency of the laser in TerraHertz.</p>
+<p>Has MHz resolution. Will round down.</p>
+<p>This function sets the first channel frequency and then sets the
+channel to 1 so that the frequency output when the laser is enabled
+will be the frequency given to this function.</p>
+<p>If you would like to only change the first channel frequency use
+the function <code>set_fcf</code>.</p>
+<p>:param freq: The desired frequency setting in THz.
+:returns: None</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_frequency(self, freq):
+    &#34;&#34;&#34;Sets the frequency of the laser in TerraHertz.
+
+    Has MHz resolution. Will round down.
+
+    This function sets the first channel frequency and then sets the
+    channel to 1 so that the frequency output when the laser is enabled
+    will be the frequency given to this function.
+
+    If you would like to only change the first channel frequency use
+    the function `set_fcf`.
+
+    :param freq: The desired frequency setting in THz.
+    :returns: None
+
+    &#34;&#34;&#34;
+
+    self.set_fcf(freq)
+    self.set_channel(1)
+
+    # This does a check so this only runs if fine tuning has been turned on.
+    if self.get_fine_tuning() != 0:
+
+        # There needs to be some delay between this and setting channel.
+        # even with some delay the CII error occurs from time to time. Fix.
+        # This delay is way longer than i would like.
+        # It would be ideal to have no sleeping necessary conditions.
+        sleep(1)
+        try:
+            self.set_fine_tuning(0)
+
+        except ExecutionError as ee:
+
+            try:
+                self.nop()
+
+            except NOPException as nop_e:
+                raise nop_e
+
+            except CPException as cpe:
+                print(&#39;Fine tuning takes some time. Waiting 5s.&#39;)
+                sleep(5)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.set_grid"><code class="name flex">
+<span>def <span class="ident">set_grid</span></span>(<span>self, grid_freq)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set the grid spacing in GHz.</p>
+<p>MHz resolution.</p>
+<p>:param grid_freq: the grid frequency spacing in GHz
+:returns:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_grid(self, grid_freq):
+    &#34;&#34;&#34;Set the grid spacing in GHz.
+
+    MHz resolution.
+
+    :param grid_freq: the grid frequency spacing in GHz
+    :returns:
+
+    &#34;&#34;&#34;
+    grid_freq = str(int(grid_freq * 1000))
+    data = int(grid_freq[0:4])
+
+    self._grid(data)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.set_power"><code class="name flex">
+<span>def <span class="ident">set_power</span></span>(<span>self, pwr_dBm)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Sets the power of the ITLA laser. Units of dBm.</p>
+<p>:param pwr_dBm: The power setting for the laser in dBm. Has precision XX.XX.
+:returns: None</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_power(self, pwr_dBm):
+    &#34;&#34;&#34;Sets the power of the ITLA laser. Units of dBm.
+
+    :param pwr_dBm: The power setting for the laser in dBm. Has precision XX.XX.
+    :returns: None
+
+    &#34;&#34;&#34;
+    try:
+        self._pwr(int(pwr_dBm * 100))
+
+    except ExecutionError:
+
+        try:
+            self.nop()
+
+        except RVEError as rvee:
+            print(&#34;The provided power &#34; + str(pwr_dBm)
+                  + &#34; is outside of the range for this device.&#34;)
+            print(&#34;The power is currently set to: &#34;
+                  + str(self.get_power_setting()))
+            raise rvee</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.set_wavelength"><code class="name flex">
+<span>def <span class="ident">set_wavelength</span></span>(<span>self, wvl)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Set the wavelength in nm. Converts wavelength to freq and calls set_frequency.</p>
+<p>:param wvl: The desired wavelength in nm.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def set_wavelength(self, wvl):
+    &#34;&#34;&#34;Set the wavelength in nm. Converts wavelength to freq and calls set_frequency.
+
+    :param wvl: The desired wavelength in nm.
+
+    &#34;&#34;&#34;
+    freq = (speed_of_light / (wvl * 1e-9)) * 1e-12  # get frequency in THz
+    self.set_frequency(freq)
+    raise Warning(&#39;There seems to be some roundoff error here. best to avoid this for now.&#39;)</code></pre>
+</details>
+</dd>
+<dt id="itla.itla12.ITLA12.soft_reset"><code class="name flex">
+<span>def <span class="ident">soft_reset</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>TODO describe function</p>
+<p>:returns:</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def soft_reset(self):
+    &#34;&#34;&#34;TODO describe function
+
+    :returns:
+
+    &#34;&#34;&#34;
+    # I&#39;m writing this out partially for transparency
+    # Maybe unnecessary or non-optimal
+    data = [0] * 16
+    # bit 1: Soft Reset
+    data[1] = 1
+    data = int(&#39;&#39;.join(str(x) for x in data[::-1]), 2)
+
+    self._resena(data)</code></pre>
+</details>
+</dd>
+</dl>
+<h3>Inherited members</h3>
+<ul class="hlist">
+<li><code><b><a title="itla.itla.ITLABase" href="itla.html#itla.itla.ITLABase">ITLABase</a></b></code>:
+<ul class="hlist">
+<li><code><a title="itla.itla.ITLABase.connect" href="itla.html#itla.itla.ITLABase.connect">connect</a></code></li>
+<li><code><a title="itla.itla.ITLABase.disconnect" href="itla.html#itla.itla.ITLABase.disconnect">disconnect</a></code></li>
+<li><code><a title="itla.itla.ITLABase.get_response" href="itla.html#itla.itla.ITLABase.get_response">get_response</a></code></li>
+<li><code><a title="itla.itla.ITLABase.send_command" href="itla.html#itla.itla.ITLABase.send_command">send_command</a></code></li>
+<li><code><a title="itla.itla.ITLABase.upgrade_firmware" href="itla.html#itla.itla.ITLABase.upgrade_firmware">upgrade_firmware</a></code></li>
+</ul>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="itla" href="index.html">itla</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="itla.itla12.ITLA12" href="#itla.itla12.ITLA12">ITLA12</a></code></h4>
+<ul class="">
+<li><code><a title="itla.itla12.ITLA12.disable" href="#itla.itla12.ITLA12.disable">disable</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.dither_disable" href="#itla.itla12.ITLA12.dither_disable">dither_disable</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.dither_enable" href="#itla.itla12.ITLA12.dither_enable">dither_enable</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.enable" href="#itla.itla12.ITLA12.enable">enable</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_age" href="#itla.itla12.ITLA12.get_age">get_age</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_alm_trigger" href="#itla.itla12.ITLA12.get_alm_trigger">get_alm_trigger</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_backwardscompatibility" href="#itla.itla12.ITLA12.get_backwardscompatibility">get_backwardscompatibility</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_channel" href="#itla.itla12.ITLA12.get_channel">get_channel</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_currents" href="#itla.itla12.ITLA12.get_currents">get_currents</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_device_type" href="#itla.itla12.ITLA12.get_device_type">get_device_type</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_dither_amplitude" href="#itla.itla12.ITLA12.get_dither_amplitude">get_dither_amplitude</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_dither_frequency" href="#itla.itla12.ITLA12.get_dither_frequency">get_dither_frequency</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_dither_rate" href="#itla.itla12.ITLA12.get_dither_rate">get_dither_rate</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_error_fatal" href="#itla.itla12.ITLA12.get_error_fatal">get_error_fatal</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_error_warning" href="#itla.itla12.ITLA12.get_error_warning">get_error_warning</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_fatal_freq_thresh" href="#itla.itla12.ITLA12.get_fatal_freq_thresh">get_fatal_freq_thresh</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_fatal_power_thresh" href="#itla.itla12.ITLA12.get_fatal_power_thresh">get_fatal_power_thresh</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_fatal_therm_thresh" href="#itla.itla12.ITLA12.get_fatal_therm_thresh">get_fatal_therm_thresh</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_fatal_trigger" href="#itla.itla12.ITLA12.get_fatal_trigger">get_fatal_trigger</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_fcf" href="#itla.itla12.ITLA12.get_fcf">get_fcf</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_fine_tuning" href="#itla.itla12.ITLA12.get_fine_tuning">get_fine_tuning</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_firmware_release" href="#itla.itla12.ITLA12.get_firmware_release">get_firmware_release</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_frequency" href="#itla.itla12.ITLA12.get_frequency">get_frequency</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_frequency_max" href="#itla.itla12.ITLA12.get_frequency_max">get_frequency_max</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_frequency_min" href="#itla.itla12.ITLA12.get_frequency_min">get_frequency_min</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_grid" href="#itla.itla12.ITLA12.get_grid">get_grid</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_grid_min" href="#itla.itla12.ITLA12.get_grid_min">get_grid_min</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_last_response" href="#itla.itla12.ITLA12.get_last_response">get_last_response</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_manufacturer" href="#itla.itla12.ITLA12.get_manufacturer">get_manufacturer</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_manufacturing_date" href="#itla.itla12.ITLA12.get_manufacturing_date">get_manufacturing_date</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_model" href="#itla.itla12.ITLA12.get_model">get_model</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_output_wavelength" href="#itla.itla12.ITLA12.get_output_wavelength">get_output_wavelength</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_power_max" href="#itla.itla12.ITLA12.get_power_max">get_power_max</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_power_min" href="#itla.itla12.ITLA12.get_power_min">get_power_min</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_power_output" href="#itla.itla12.ITLA12.get_power_output">get_power_output</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_power_setting" href="#itla.itla12.ITLA12.get_power_setting">get_power_setting</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_serialnumber" href="#itla.itla12.ITLA12.get_serialnumber">get_serialnumber</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_srq_trigger" href="#itla.itla12.ITLA12.get_srq_trigger">get_srq_trigger</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_temp" href="#itla.itla12.ITLA12.get_temp">get_temp</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_temps" href="#itla.itla12.ITLA12.get_temps">get_temps</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_warning_freq_thresh" href="#itla.itla12.ITLA12.get_warning_freq_thresh">get_warning_freq_thresh</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_warning_power_thresh" href="#itla.itla12.ITLA12.get_warning_power_thresh">get_warning_power_thresh</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_warning_therm_thresh" href="#itla.itla12.ITLA12.get_warning_therm_thresh">get_warning_therm_thresh</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.get_wavelength" href="#itla.itla12.ITLA12.get_wavelength">get_wavelength</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.hard_reset" href="#itla.itla12.ITLA12.hard_reset">hard_reset</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.nop" href="#itla.itla12.ITLA12.nop">nop</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.read_aea" href="#itla.itla12.ITLA12.read_aea">read_aea</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.set_channel" href="#itla.itla12.ITLA12.set_channel">set_channel</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.set_dither_amplitude" href="#itla.itla12.ITLA12.set_dither_amplitude">set_dither_amplitude</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.set_dither_frequency" href="#itla.itla12.ITLA12.set_dither_frequency">set_dither_frequency</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.set_dither_rate" href="#itla.itla12.ITLA12.set_dither_rate">set_dither_rate</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.set_fcf" href="#itla.itla12.ITLA12.set_fcf">set_fcf</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.set_fine_tuning" href="#itla.itla12.ITLA12.set_fine_tuning">set_fine_tuning</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.set_frequency" href="#itla.itla12.ITLA12.set_frequency">set_frequency</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.set_grid" href="#itla.itla12.ITLA12.set_grid">set_grid</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.set_power" href="#itla.itla12.ITLA12.set_power">set_power</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.set_wavelength" href="#itla.itla12.ITLA12.set_wavelength">set_wavelength</a></code></li>
+<li><code><a title="itla.itla12.ITLA12.soft_reset" href="#itla.itla12.ITLA12.soft_reset">soft_reset</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+</footer>
+</body>
+</html>
