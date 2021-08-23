@@ -4,15 +4,20 @@ import serial
 from scipy.constants import speed_of_light
 from serial.serialutil import SerialException
 from pkg_resources import resource_filename
-from .itla import ITLABase
 from .itla_errors import *
 from .utils import compute_checksum
+from .itla import ITLABase
 
 
-class ITLA12(ITLABase):
+class ITLA13(ITLABase):
     '''
     A class that represents the an ITLA
     and exposes a user friendly API for controlling functionality.
+
+    OIF-ITLA-MSA-01.3 is the standard implemented here.
+    Certain functions such as set_frequency() dont fully implement this yet
+    because I dont know how to do checks to see if the optional FCF3
+    functions are implemented for a particular laser.
 
     Things to figure out
 
@@ -20,10 +25,10 @@ class ITLA12(ITLABase):
       * Can we abstract away the concept of registers and stuff
         in here so you don't have to deal with it.
 
-   There are some functions that could be implemented like set_fatalstatus.
-   I think this is probably a bad idea even though it isnt write only.
+    There are some functions that could be implemented like set_fatalstatus.
+    I think this is probably a bad idea even though it isnt write only.
 
-   Set Frequency is my platonic ideal for the higher level functions.
+    Set Frequency is my platonic ideal for the higher level functions.
 
     '''
 
@@ -40,75 +45,10 @@ class ITLA12(ITLABase):
         if register_files is None:
             register_files = []
 
-        register_files = ['registers_itla12.yaml', *register_files]
+        register_files = ['registers_itla.yaml', *register_files]
 
         super().__init__(serial_port, baudrate, timeout=timeout,
                          register_files=register_files)
-
-    def __enter__(self):
-        """TODO describe function
-
-        :returns:
-
-        """
-        self.connect()
-
-    def __exit__(self, exc_type, exc_value, traceback):
-        """TODO describe function
-
-        :param exc_type:
-        :param exc_value:
-        :param traceback:
-        :returns:
-
-        """
-        self.disconnect()
-
-    def __del__(self):
-        """TODO describe function
-
-        :returns:
-
-        """
-        if self._device is not None:
-            self.disconnect()
-
-    def connect(self):
-        """Establishes a serial connection with the port provided
-
-        **For some reason on Linux opening the serial port causes some
-        power output from the laser before it has been activated. This behavior
-        does not occur on Windows.**
-
-        """
-        try:
-            self._device = serial.Serial(self._port, self._baudrate,
-                                         timeout=self._timeout)
-        except SerialException:
-            raise SerialException("Connection to " + self._port + " unsuccessful.")
-
-    def disconnect(self, leave_on=False):
-        """Ends the serial connection to the laser
-
-        :param leave_on:
-        :returns:
-
-        """
-        if not self._device.is_open:
-            return
-
-        if not leave_on:
-            self.disable()
-
-        try:
-            self._device.close()
-        except AttributeError:
-            # When does this error occur?
-            # There are a few ways disconnect can be called.
-            # 1) It can be called purposefully.
-            # 2) It can be called by ending a `with` (ie __exit__)
-            # 3) It can be called by exiting a repl or a script ending (ie. __del__).
-            pass
 
     def nop(self, data=None):
         """TODO describe function
@@ -145,7 +85,6 @@ class ITLA12(ITLABase):
         except CPException:
             print('Waiting for laser to power on and stabilize.')
             # This would be a good place for a waiting function
-
 
     def disable(self):
         """TODO describe function
@@ -340,11 +279,13 @@ class ITLA12(ITLABase):
         freq_str = str(freq)
         fcf1 = int(freq_str[0:3])
         fcf2 = int(freq_str[3:7])
+        fcf3 = int(freq_str[7:])
 
         try:
             # is it better to split these into their own try/except blocks?
             self._fcf1(fcf1)
             self._fcf2(fcf2)
+            self._fcf3(fcf3)
 
         except ExecutionError:
             try:
@@ -414,7 +355,10 @@ class ITLA12(ITLABase):
         response = self._fcf2()
         fcf2 = int.from_bytes(response, 'big')
 
-        return fcf1 + fcf2 * 1e-4
+        response = self._fcf3()
+        fcf3 = int.from_bytes(response, 'big')
+
+        return fcf1 + fcf2 * 1e-4 + fcf3 * 1e-6
 
     def get_frequency(self):
         """gets the current laser operating frequency with channels
@@ -429,7 +373,10 @@ class ITLA12(ITLABase):
         response = self._lf2()
         lf2 = int.from_bytes(response, 'big')
 
-        return lf1 + lf2 * 1e-4
+        response = self._lf3()
+        lf3 = int.from_bytes(response, 'big')
+
+        return lf1 + lf2 * 1e-4 + lf3 * 1e-6
 
     def set_wavelength(self, wvl):
         """Set the wavelength in nm. Converts wavelength to freq and calls set_frequency.
@@ -570,7 +517,10 @@ class ITLA12(ITLABase):
         response = self._lfh2()
         fcf2 = int.from_bytes(response, 'big')
 
-        return fcf1 + fcf2 * 1e-4
+        response = self._lfh3()
+        fcf3 = int.from_bytes(response, 'big')
+
+        return fcf1 + fcf2 * 1e-4 + fcf3 * 1e-6
 
     def get_grid_min(self):
         """command to read minimum grid supported by the module
@@ -579,12 +529,13 @@ class ITLA12(ITLABase):
 
         """
         try:
-            freq_lgrid = int.from_bytes(self._lgrid(),  'big', signed=False)
+            freq_lgrid  = int.from_bytes(self._lgrid(),  'big', signed=False)
+            freq_lgrid2 = int.from_bytes(self._lgrid2(), 'big', signed=False)
 
         except ExecutionError as ee:
             self.nop()
 
-        return freq_lgrid * 1e-1
+        return freq_lgrid * 1e-1 + freq_lgrid2 * 1e-3
 
     def set_grid(self, grid_freq):
         """Set the grid spacing in GHz.
@@ -597,8 +548,10 @@ class ITLA12(ITLABase):
         """
         grid_freq = str(int(grid_freq * 1000))
         data = int(grid_freq[0:4])
+        data_2 = int(grid_freq[4:])
 
         self._grid(data)
+        self._grid2(data_2)
 
     def get_grid(self):
         """get the grid spacing in GHz
@@ -609,7 +562,10 @@ class ITLA12(ITLABase):
         response = self._grid()
         grid_freq = int.from_bytes(response, 'big', signed=True)
 
-        return grid_freq * 1e-1
+        response = self._grid2()
+        grid2_freq = int.from_bytes(response, 'big', signed=True)
+
+        return grid_freq * 1e-1 + grid2_freq * 1e-3
 
     def get_age(self):
         """TODO describe function
@@ -634,16 +590,18 @@ class ITLA12(ITLABase):
             raise TypeError("Channel must be an integer")
         if channel < 0:
             raise ValueError("Channel must be positive.")
-        if channel > 0xFFFF:
-            raise ValueError("Channel must be a 16 bit integer (<=0xFFFF).")
+        if channel > 0xFFFFFFFF:
+            raise ValueError("Channel must be a 32 bit integer (<=0xFFFFFFFF).")
 
         # Split the channel choice into two options.
         channel_hex = f'{channel:08x}'
 
         channell = int(channel_hex[4:], 16)
+        channelh = int(channel_hex[0:4], 16)
 
         # Set the channel registers.
         self._channel(channell)
+        self._channelh(channelh)
 
     def get_channel(self):
         """TODO describe function
@@ -652,7 +610,7 @@ class ITLA12(ITLABase):
 
         """
         # This concatenates the data bytestrings
-        response = self._channel()
+        response = self._channelh() + self._channel()
 
         channel = int.from_bytes(response, 'big')
 
@@ -786,7 +744,7 @@ class ITLA12(ITLABase):
                 print("ALM")
             if status_array[15] == 1:
                 print("SRQ ")
-            if reset is True:
+            if reset == True:
                 data_reset = [0] * 16
                 data_reset = int(''.join(str(x) for x in data_reset[::-1]), 2)
                 self._statusf(data_reset)
@@ -842,9 +800,10 @@ class ITLA12(ITLABase):
                 print("ALM")
             if status_array[15] == 1:
                 print("SRQ ")
-            if reset is True:
+            if reset == True:
                 data_reset = int('00ff', 16)
                 self._statusw(data_reset)
+
 
     def get_fatal_power_thresh(self):
         """
@@ -873,7 +832,12 @@ class ITLA12(ITLABase):
         """
         response = self._ffreqth()
         freq_fatal = int.from_bytes(response, 'big') / 10
-        return freq_fatal
+        # correcting for proper order of magnitude
+        response2 = self._ffreqth2()
+        freq_fatal2 = int.from_bytes(response2, 'big') / 100
+        # get frequency deviation in MHz and add to GHz value
+        return freq_fatal + freq_fatal2
+
 
     def get_warning_freq_thresh(self):
         """
@@ -882,7 +846,12 @@ class ITLA12(ITLABase):
         """
         response = self._wfreqth()
         freq_warn = int.from_bytes(response, 'big') / 10
-        return freq_warn
+        # correcting for proper order of magnitude
+        response2 = self._wfreqth2()
+        freq_warn2 = int.from_bytes(response2, 'big') / 100
+        # get frequency deviation in MHz and add to GHz value
+        return freq_warn + freq_warn2
+
 
     def get_fatal_therm_thresh(self):
         """
@@ -952,97 +921,97 @@ class ITLA12(ITLABase):
                 print("NONE")
 
     def get_fatal_trigger(self):
-        """
-        Utilizes FatalT register to identify which fatal conditon was asserted in StatusF and StatusW registers
+            """
+            Utilizes FatalT register to identify which fatal conditon was asserted in StatusF and StatusW registers
 
-        """
-        response = self._fatalt()
-        status = int.from_bytes(response, 'big')
-        status = f'{status:016b}'
-        status_array = [int(code) for code in status]
-        status_array.reverse()
-        print(status_array)
+            """
+            response = self._fatalt()
+            status = int.from_bytes(response, 'big')
+            status = f'{status:016b}'
+            status_array = [int(code) for code in status]
+            status_array.reverse()
+            print(status_array)
 
-        if any(status_array):
-            print("SRQ Status: Asserted")
+            if any(status_array):
+                print("SRQ Status: Asserted")
 
-            if status_array[0] == 1:
-                print("FPWRL")
-            if status_array[1] == 1:
-                print("FTHERML")
-            if status_array[2] == 1:
-                print("FFREQL")
-            if status_array[3] == 1:
-                print("FVSFL")
-            if status_array[4] == 1:
-                print("NONE")
-            if status_array[5] == 1:
-                print("MRL")
-            if status_array[6] == 1:
-                print("NONE")
-            if status_array[7] == 1:
-                print("NONE")
-            if status_array[8] == 1:
-                print("WPWRL")
-            if status_array[9] == 1:
-                print("WTHERML")
-            if status_array[10] == 1:
-                print("WFREQL")
-            if status_array[11] == 1:
-                print("WVSFL")
-            if status_array[12] == 1:
-                print("NONE")
-            if status_array[13] == 1:
-                print("NONE")
-            if status_array[14] == 1:
-                print("NONE")
-            if status_array[15] == 1:
-                print("NONE")
+                if status_array[0] == 1:
+                    print("FPWRL")
+                if status_array[1] == 1:
+                    print("FTHERML")
+                if status_array[2] == 1:
+                    print("FFREQL")
+                if status_array[3] == 1:
+                    print("FVSFL")
+                if status_array[4] == 1:
+                    print("NONE")
+                if status_array[5] == 1:
+                    print("MRL")
+                if status_array[6] == 1:
+                    print("NONE")
+                if status_array[7] == 1:
+                    print("NONE")
+                if status_array[8] == 1:
+                    print("WPWRL")
+                if status_array[9] == 1:
+                    print("WTHERML")
+                if status_array[10] == 1:
+                    print("WFREQL")
+                if status_array[11] == 1:
+                    print("WVSFL")
+                if status_array[12] == 1:
+                    print("NONE")
+                if status_array[13] == 1:
+                    print("NONE")
+                if status_array[14] == 1:
+                    print("NONE")
+                if status_array[15] == 1:
+                    print("NONE")
 
     def get_alm_trigger(self):
-        """
-        Utilizes ALMT register to identify why ALM was asserted in StatusF and StatusW registers
+            """
+            Utilizes ALMT register to identify why ALM was asserted in StatusF and StatusW registers
 
-        """
-        response = self._almt()
-        status = int.from_bytes(response, 'big')
-        status = f'{status:016b}'
-        status_array = [int(code) for code in status]
-        status_array.reverse()
-        print(status_array)
+            """
+            response = self._almt()
+            status = int.from_bytes(response, 'big')
+            status = f'{status:016b}'
+            status_array = [int(code) for code in status]
+            status_array.reverse()
+            print(status_array)
 
-        if any(status_array):
-            print("SRQ Status: Asserted")
+            if any(status_array):
+                print("SRQ Status: Asserted")
 
-        if status_array[0] == 1:
-            print("FPWR")
-        if status_array[1] == 1:
-            print("FTHERM")
-        if status_array[2] == 1:
-            print("FFREQ")
-        if status_array[3] == 1:
-            print("FVSF")
-        if status_array[4] == 1:
-            print("NONE")
-        if status_array[5] == 1:
-            print("NONE")
-        if status_array[6] == 1:
-            print("NONE")
-        if status_array[7] == 1:
-            print("NONE")
-        if status_array[8] == 1:
-            print("WPWR")
-        if status_array[9] == 1:
-            print("WTHERM")
-        if status_array[10] == 1:
-            print("WFREQ")
-        if status_array[11] == 1:
-            print("WVSF")
-        if status_array[12] == 1:
-            print("NONE")
-        if status_array[13] == 1:
-            print("NONE")
-        if status_array[14] == 1:
-            print("NONE")
-        if status_array[15] == 1:
-            print("NONE")
+                if status_array[0] == 1:
+                    print("FPWR")
+                if status_array[1] == 1:
+                    print("FTHERM")
+                if status_array[2] == 1:
+                    print("FFREQ")
+                if status_array[3] == 1:
+                    print("FVSF")
+                if status_array[4] == 1:
+                    print("NONE")
+                if status_array[5] == 1:
+                    print("NONE")
+                if status_array[6] == 1:
+                    print("NONE")
+                if status_array[7] == 1:
+                    print("NONE")
+                if status_array[8] == 1:
+                    print("WPWR")
+                if status_array[9] == 1:
+                    print("WTHERM")
+                if status_array[10] == 1:
+                    print("WFREQ")
+                if status_array[11] == 1:
+                    print("WVSF")
+                if status_array[12] == 1:
+                    print("NONE")
+                if status_array[13] == 1:
+                    print("NONE")
+                if status_array[14] == 1:
+                    print("NONE")
+                if status_array[15] == 1:
+                    print("NONE")

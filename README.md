@@ -12,6 +12,11 @@ manufacturer requirements with another yaml register file to specify the new reg
 
 * [OIF-ITLA-MSA-01.3](https://www.oiforum.com/wp-content/uploads/2019/01/OIF-ITLA-MSA-01.3.pdf).
   * This communication scheme supports microITLA 1.1 devices as well.
+* [OIF-ITLA-MSA-01.2](https://www.oiforum.com/wp-content/uploads/2019/01/OIF-ITLA-MSA-01.2.pdf).
+  * Some older devices still adhere to the 1.2 standard. These can be accessed
+    by setting `version='1.2` parameter on ITLA object initialization. Example below.
+  * If you are receiving unexpected execution errors on register functions like
+    `_fcf3` it is likely you need to use `version='1.2'`.
 
 ## Status
 
@@ -22,9 +27,9 @@ Hidden functions for each register (names the same as each register but in lower
 are available. Some registers still don't have user friendly functions defined
 for them.
 
-## Example Usage
+## Example Usage (default)
 
-```python
+```python3
 # import, initialize, and connect to laser
 import itla
 laser = itla.ITLA('/dev/ttyUSB0', 9600)
@@ -38,6 +43,33 @@ laser.set_power(10)
 ```
 
 More info about features available currently can be found in [pytla docs](https://alexrkaufman.github.io/pytla).
+
+## Example Usage (version selection)
+
+You can also select the 1.2 spec if your laser does not yet support 1.3.
+This is as simple as setting `version` in initialization of your `ITLA` object.
+
+```python3
+# import, initialize, and connect to laser
+import itla
+laser = itla.ITLA('/dev/ttyUSB0', 9600, version='1.2')
+laser.connect()
+
+# Set the frequency to 193.560 THz
+laser.set_frequency(193.560)
+
+# Set the power to 10 dBm
+laser.set_power(10)
+```
+
+#### Currently supported options under version
+
+- [x] `version='1.3'` (OIF-ITLA-MSA-01.3)
+- [x] `version='1.2'` (OIF-ITlA-MSA-01.2)
+- [x]  (`version='pplaser'`) (for Pure Photonics lasers)
+- [ ] others? Please feel free to suggest or add a pull request for
+implementations of your favorite laser
+
 
 ## Paradigm
 
