@@ -1,10 +1,10 @@
-from .itla import ITLA
+from .itla12 import ITLA12
 from .itla_errors import *
 from time import sleep
 import yaml
 
 
-class PPLaser(ITLA):
+class PPLaser(ITLA12):
     """
     The pure photonics laser class implements specific features or handles particular
     quirks of the pure photonics laser. The pure photonics laser has additional
@@ -50,67 +50,7 @@ class PPLaser(ITLA):
             raise RVEError("The desired frequency is outside "
                            "of the range for this laser.")
 
-        freq = int(freq * 1e6)
-
-        freq_str = str(freq)
-        fcf1 = int(freq_str[0:3])
-        fcf2 = int(freq_str[3:7])
-        # the final two decimal places (0-99MHz) are ignored.
-
-        try:
-            self._fcf1(fcf1)
-            self._fcf2(fcf2)
-
-        except ExecutionError:
-
-            try:
-                self.nop()
-            except RVEError as error:
-                raise error from None
-            except CIEError as error:
-                raise error from None
-
-    def set_channel(self, channel):
-        """
-        It is likely not possible to reach channels in the range where
-        channelh would kick in anyway. However since the laser is built on the
-        OIF-ITLA-1.2 standard we should just avoid calling it.
-        """
-        # check type and stuff
-        if not isinstance(channel, int):
-            raise TypeError("Channel must be an integer")
-        if channel < 0:
-            raise ValueError("Channel must be positive.")
-        if channel > 0xFFFF:
-            raise ValueError("Channel must be a 16 bit integer (<=0xFFFF).")
-
-        # Split the channel choice into two options.
-        channel_hex = f'{channel:08x}'
-
-        channell = int(channel_hex[4:], 16)
-        self._channel(channell)
-
-    def set_grid(self, grid_freq):
-        """
-        Set the grid spacing in GHz. resolution in GHz/10.
-
-        PPLaser built on 1.2 standard so we dont do grid2
-        """
-        grid_freq = int(grid_freq * 10)
-
-        self._grid(grid_freq)
-
-    def get_grid_min(self):
-        """get the minimum grid spacing
-        """
-        try:
-            self._lgrid()
-            freq_lgrid = int(self._response[4:], 16)
-
-        except ExecutionError as ee:
-            self.nop()
-
-        return freq_lgrid * 1e-1
+        super().set_fcf(freq)
 
     def get_mode(self):
         """get which low noise mode"""
