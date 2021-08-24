@@ -82,11 +82,7 @@ class ITLA12(ITLABase):
         data[3] = 1
         data = int(''.join(str(x) for x in data[::-1]), 2)
 
-        try:
-            self._resena(data)
-        except CPException:
-            print('Waiting for laser to power on and stabilize.')
-            # This would be a good place for a waiting function
+        self._resena(data)
 
     def disable(self):
         """Tells the laser to stop lasing.
@@ -396,10 +392,7 @@ class ITLA12(ITLABase):
         data[1] = 1
         data = int(''.join(str(x) for x in data[::-1]), 2)
 
-        try:
-            self._dithere(data)
-        except CPException:
-            print('enabling dither')
+        self._dithere(data)
 
     def dither_disable(self):
         """

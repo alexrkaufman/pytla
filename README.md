@@ -37,6 +37,9 @@ hidden register functions for each class in the pytla docs.
 ```python3
 # import, initialize, and connect to laser
 import itla
+import time
+from itla.itla_errors import CPExcpetion
+
 laser = itla.ITLA('/dev/ttyUSB0', 9600)
 laser.connect()
 
@@ -45,6 +48,16 @@ laser.set_frequency(193.560)
 
 # Set the power to 10 dBm
 laser.set_power(10)
+
+# enable the laser
+# enabling takes some time so a CPExcpetion will be thrown
+# It is necessary to catch this explicitly so the user
+# doesnt continue on without explicitly handling this time delay
+# (at least until we implement checking the pending bit in nop)
+try:
+    laser.enable()
+except CPException:
+    time.sleep(30)
 ```
 
 More info about features available currently can be found in [pytla docs](https://alexrkaufman.github.io/pytla).
@@ -57,6 +70,9 @@ This is as simple as setting `version` in initialization of your `ITLA` object.
 ```python3
 # import, initialize, and connect to laser
 import itla
+import time
+from itla.itla_errors import CPExcpetion
+
 laser = itla.ITLA('/dev/ttyUSB0', 9600, version='1.2')
 laser.connect()
 
@@ -65,6 +81,17 @@ laser.set_frequency(193.560)
 
 # Set the power to 10 dBm
 laser.set_power(10)
+
+# enable the laser
+# enable the laser
+# enabling takes some time so a CPExcpetion will be thrown
+# It is necessary to catch this explicitly so the user
+# doesnt continue on without explicitly handling this time delay
+# (at least until we implement checking the pending bit in nop)
+try:
+    laser.enable()
+except CPException:
+    time.sleep(30)
 ```
 
 #### Currently supported options under version
@@ -81,6 +108,9 @@ ITLA based lasers.
 ```python3
 # import, initialize, and connect to laser
 import itla
+import time
+from itla.itla_errors import CPExcpetion
+
 pplaser = itla.PPLaser('/dev/ttyUSB0')
 pplaser.connect()
 
@@ -90,7 +120,17 @@ laser.set_frequency(193.560)
 # Set the power to 10 dBm
 laser.set_power(10)
 
-laser.enable()
+# enable the laser
+# enable the laser
+# enabling takes some time so a CPExcpetion will be thrown
+# It is necessary to catch this explicitly so the user
+# doesnt continue on without explicitly handling this time delay
+# (at least until we implement checking the pending bit in nop)
+try:
+    laser.enable()
+except CPException:
+    time.sleep(30)
+
 laser.whispermode()
 ```
 
