@@ -387,9 +387,9 @@ class ITLA13(ITLABase):
         :param wvl: The desired wavelength in nm.
 
         """
-        freq = (speed_of_light / (wvl * 1e-9)) * 1e-12  # get frequency in THz
+        freq = (self._speed_of_light / (wvl * 1e-9)) * 1e-12  # get frequency in THz
         self.set_frequency(freq)
-        raise Warning('There seems to be some roundoff error here. best to avoid this for now.')
+        raise Warning("Don't use this until speed of light value fixed.")
 
     def dither_enable(self, waveform='sinusoidal'):
         """
@@ -411,7 +411,7 @@ class ITLA13(ITLABase):
         """
         disables digital dither
         """
-        # i think that we should try to preserve other bits rather than setting all
+        # TODO i think that we should try to preserve other bits rather than setting all
         # data to zero across the board
         data = [0] * 16
         data = int(''.join(str(x) for x in data[::-1]), 2)
@@ -468,7 +468,10 @@ class ITLA13(ITLABase):
         :returns:
 
         """
-        raise Warning("this is not implemented yet.")
+        freq = self.get_frequency()
+        wvl = (self._speed_of_light / (freq * 1e-9)) * 1e-12  # get frequency in THz
+        raise Warning("Don't use this until speed of light value fixed.")
+        return wvl
 
     def get_output_wavelength(self):
         """

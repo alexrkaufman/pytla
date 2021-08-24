@@ -46,6 +46,8 @@ class ITLABase():
         0x03: CPException('CP: Command not complete, pending.')
     }
 
+    _speed_of_light = 299792458.0
+
     def __init__(self, serial_port, baudrate, timeout=0.5,
                  register_files=None):
         """TODO describe function
