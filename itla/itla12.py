@@ -383,7 +383,8 @@ class ITLA12(ITLABase):
         """
         if (waveform.lower() != 'sinusoid'
             or waveform.lower() != 'triangular'
-              or waveform.lower() != 'sin' or waveform.lower() != 'tri'):
+            or waveform.lower() != 'sin'
+            or waveform.lower() != 'tri'):
 
             raise ValueError('waveform must be \'sinusoidal\', or \'triangular\'')
 
