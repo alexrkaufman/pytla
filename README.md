@@ -159,8 +159,8 @@ containing all of the additional registers your laser will utilize. Each entry
 should have the following format.
 
 ```yaml
-RegisterName:
-  register: 0x00
+REGISTERNAME:
+  register: 0xFF
   fnname: registername
   description: >
     Here we provide a description of this particular register for documentation
@@ -169,15 +169,6 @@ RegisterName:
   readonly: [true/false]
   AEA: [true/false]
   signed: [true/false]
-
-MYREGISTER:
-  register: 0xFE
-  fnname: myregister
-  description: >
-  This is my very own register. I can write a signed integer to it or read it back.
-  readonly: true
-  AEA: false
-  signed: true
 ```
 
 You can name your register whatever you'd like and name the function for
@@ -206,20 +197,13 @@ class MyLaser(ITLA13):
         super().__init__(port, baudrate=baudrate, register_files=register_files)
 
     def myfunction(self, data=None):
-        '''This function either writes an integer to register 0xFE or reads an
-            integer from 0xFE
-        '''
+    ''' this function reads from REGISTERNAME and returns whatever bytes it
+    sends back. this is the simplest version of reading a register you could do.
+    it is usually better to do something with the response to convert
+    the byte to an easier type to work with.'''
 
-        if data is not None:
-            response = self._myregister()
-
-        elif type(data) is int:
-            response = self._myregister(data)
-
-        else
-           raise TypeError("Must be an int!")
-
-        return int.from_bytes(response, 'big', signed=True)
+    response = self._registername()
+    return response
 ```
 
 ## Acknowlegements
