@@ -4,26 +4,25 @@ from .itla_errors import *
 
 
 class ITLA12(ITLABase):
-    '''
-    A class that represents the an ITLA
-    and exposes a user friendly API for controlling functionality.
+    """
+     A class that represents the an ITLA
+     and exposes a user friendly API for controlling functionality.
 
-    Things to figure out
+     Things to figure out
 
-      * What should be exposed to the user?
-      * Can we abstract away the concept of registers and stuff
-        in here so you don't have to deal with it.
+       * What should be exposed to the user?
+       * Can we abstract away the concept of registers and stuff
+         in here so you don't have to deal with it.
 
-   There are some functions that could be implemented like set_fatalstatus.
-   I think this is probably a bad idea even though it isnt write only.
+    There are some functions that could be implemented like set_fatalstatus.
+    I think this is probably a bad idea even though it isnt write only.
 
-   Set Frequency is my platonic ideal for the higher level functions.
+    Set Frequency is my platonic ideal for the higher level functions.
 
-    '''
+    """
 
-    def __init__(self, serial_port, baudrate, timeout=0.5,
-                 register_files=None):
-        """ Initializes the ITLA12 object.
+    def __init__(self, serial_port, baudrate, timeout=0.5, register_files=None):
+        """Initializes the ITLA12 object.
 
         :param serial_port: The serial port to connect to.
         Can either be linux/mac type such as '/dev/ttyUSBX' or windows type 'comX'
@@ -38,10 +37,11 @@ class ITLA12(ITLABase):
         if register_files is None:
             register_files = []
 
-        register_files = ['registers_itla12.yaml', *register_files]
+        register_files = ["registers_itla12.yaml", *register_files]
 
-        super().__init__(serial_port, baudrate, timeout=timeout,
-                         register_files=register_files)
+        super().__init__(
+            serial_port, baudrate, timeout=timeout, register_files=register_files
+        )
 
     def nop(self, data=None):
         """The No-Op operation.
@@ -80,7 +80,7 @@ class ITLA12(ITLABase):
         data = [0] * 16
         # bit 3 SENA bit
         data[3] = 1
-        data = int(''.join(str(x) for x in data[::-1]), 2)
+        data = int("".join(str(x) for x in data[::-1]), 2)
 
         self._resena(data)
 
@@ -92,7 +92,7 @@ class ITLA12(ITLABase):
         """
         # set SENA bit (bit 3) to zero
         data = [0] * 16
-        data = int(''.join(str(x) for x in data[::-1]), 2)
+        data = int("".join(str(x) for x in data[::-1]), 2)
         self._resena(data)
 
     def hard_reset(self):
@@ -106,7 +106,7 @@ class ITLA12(ITLABase):
         data = [0] * 16
         # bit 0: Module Reset
         data[0] = 1
-        data = int(''.join(str(x) for x in data[::-1]), 2)
+        data = int("".join(str(x) for x in data[::-1]), 2)
 
         self._resena(data)
 
@@ -121,7 +121,7 @@ class ITLA12(ITLABase):
         data = [0] * 16
         # bit 1: Soft Reset
         data[1] = 1
-        data = int(''.join(str(x) for x in data[::-1]), 2)
+        data = int("".join(str(x) for x in data[::-1]), 2)
 
         self._resena(data)
 
@@ -131,7 +131,7 @@ class ITLA12(ITLABase):
         """
         response_bytes = self._devtyp()
 
-        return response_bytes.decode('utf-8')
+        return response_bytes.decode("utf-8")
 
     def get_manufacturer(self):
         """
@@ -139,7 +139,7 @@ class ITLA12(ITLABase):
         """
         response_bytes = self._mfgr()
 
-        return response_bytes.decode('utf-8')
+        return response_bytes.decode("utf-8")
 
     def get_model(self):
         """
@@ -147,7 +147,7 @@ class ITLA12(ITLABase):
         """
         response_bytes = self._model()
 
-        return response_bytes.decode('utf-8')
+        return response_bytes.decode("utf-8")
 
     def get_serialnumber(self):
         """
@@ -155,13 +155,13 @@ class ITLA12(ITLABase):
         """
         response_bytes = self._serno()
 
-        return response_bytes.decode('utf-8')
+        return response_bytes.decode("utf-8")
 
     def get_manufacturing_date(self):
         """returns the manufacturing date"""
         response_bytes = self._mfgdate()
 
-        return response_bytes.decode('utf-8')
+        return response_bytes.decode("utf-8")
 
     def get_firmware_release(self):
         """
@@ -169,7 +169,7 @@ class ITLA12(ITLABase):
         """
         response_bytes = self._release()
 
-        return response_bytes.decode('utf-8')
+        return response_bytes.decode("utf-8")
 
     def get_backwardscompatibility(self):
         """
@@ -178,19 +178,18 @@ class ITLA12(ITLABase):
         """
         response_bytes = self._relback()
 
-        return response_bytes.decode('utf-8')
+        return response_bytes.decode("utf-8")
 
     def read_aea(self):
         """
         reads the AEA register data until an execution error is thrown.
         """
-        aea_response = b''
+        aea_response = b""
         try:
             while True:
                 aea_response += self._aea_ear()
 
         except ExecutionError as ee:
-
             try:
                 self.nop()
 
@@ -214,15 +213,16 @@ class ITLA12(ITLABase):
             self._pwr(int(pwr_dBm * 100))
 
         except ExecutionError:
-
             try:
                 self.nop()
 
             except RVEError as rvee:
-                print("The provided power " + str(pwr_dBm)
-                      + " is outside of the range for this device.")
-                print("The power is currently set to: "
-                      + str(self.get_power_setting()))
+                print(
+                    "The provided power "
+                    + str(pwr_dBm)
+                    + " is outside of the range for this device."
+                )
+                print("The power is currently set to: " + str(self.get_power_setting()))
                 raise rvee
 
     def get_power_setting(self):
@@ -233,7 +233,7 @@ class ITLA12(ITLABase):
         """
         # Gets power setting, not actual optical output power.
         response = self._pwr()
-        return int.from_bytes(response, 'big', signed=True) / 100
+        return int.from_bytes(response, "big", signed=True) / 100
 
     def get_power_output(self):
         """Gets the actual optical output power of the laser.
@@ -244,7 +244,7 @@ class ITLA12(ITLABase):
         """
         response = self._oop()
 
-        return int.from_bytes(response, 'big', signed=True) / 100
+        return int.from_bytes(response, "big", signed=True) / 100
 
     def get_power_min(self):
         """Gets the minimum optical power output of the module. Units dBm.
@@ -253,7 +253,7 @@ class ITLA12(ITLABase):
 
         """
         response = self._opsl()
-        return int.from_bytes(response, 'big', signed=True) / 100
+        return int.from_bytes(response, "big", signed=True) / 100
 
     def get_power_max(self):
         """Gets the maximum optical power output of the module. Units dBm.
@@ -262,15 +262,15 @@ class ITLA12(ITLABase):
 
         """
         response = self._opsh()
-        return int.from_bytes(response, 'big', signed=True) / 100
+        return int.from_bytes(response, "big", signed=True) / 100
 
     def set_fcf(self, freq):
-        '''
+        """
         This sets the first channel frequency.
         It does not reset the channel so this frequency will only be equal
         to the output frequency if channel=1.
 
-        '''
+        """
         # convert frequency to MHz
         freq = int(freq * 1e6)
 
@@ -287,16 +287,22 @@ class ITLA12(ITLABase):
             try:
                 self.nop()
             except RVEError as error:
-                print(int(fcf1) + 'THz is out of bounds for this laser. ')
-                print('The frequency must be within the range, '
-                      + self.get_frequency_min() + ' - '
-                      + self.get_frequency_max() + ' THz.')
+                print(int(fcf1) + "THz is out of bounds for this laser. ")
+                print(
+                    "The frequency must be within the range, "
+                    + self.get_frequency_min()
+                    + " - "
+                    + self.get_frequency_max()
+                    + " THz."
+                )
                 raise error from None
 
             except CIEError as error:
-                print("You cannot change the first channel frequency "
-                      + "while the laser is enabled.")
-                print('The current frequency is: ' + self.get_frequency() + ' THz')
+                print(
+                    "You cannot change the first channel frequency "
+                    + "while the laser is enabled."
+                )
+                print("The current frequency is: " + self.get_frequency() + " THz")
                 raise error from None
 
     def set_frequency(self, freq):
@@ -321,7 +327,6 @@ class ITLA12(ITLABase):
 
         # This does a check so this only runs if fine tuning has been turned on.
         if self.get_fine_tuning() != 0:
-
             # There needs to be some delay between this and setting channel.
             # even with some delay the CII error occurs from time to time. Fix.
             # This delay is way longer than i would like.
@@ -331,7 +336,6 @@ class ITLA12(ITLABase):
                 self.set_fine_tuning(0)
 
             except ExecutionError as ee:
-
                 try:
                     self.nop()
 
@@ -339,17 +343,16 @@ class ITLA12(ITLABase):
                     raise nop_e
 
                 except CPException as cpe:
-                    print('Fine tuning takes some time. Waiting 5s.')
+                    print("Fine tuning takes some time. Waiting 5s.")
                     sleep(5)
 
     def get_fcf(self):
-        """ Get the currently set first channel frequency.
-        """
+        """Get the currently set first channel frequency."""
         response = self._fcf1()
-        fcf1 = int.from_bytes(response, 'big')
+        fcf1 = int.from_bytes(response, "big")
 
         response = self._fcf2()
-        fcf2 = int.from_bytes(response, 'big')
+        fcf2 = int.from_bytes(response, "big")
 
         return fcf1 + fcf2 * 1e-4
 
@@ -361,10 +364,10 @@ class ITLA12(ITLABase):
 
         """
         response = self._lf1()
-        lf1 = int.from_bytes(response, 'big')
+        lf1 = int.from_bytes(response, "big")
 
         response = self._lf2()
-        lf2 = int.from_bytes(response, 'big')
+        lf2 = int.from_bytes(response, "big")
 
         return lf1 + lf2 * 1e-4
 
@@ -376,21 +379,24 @@ class ITLA12(ITLABase):
         """
         freq = (speed_of_light / (wvl * 1e-9)) * 1e-12  # get frequency in THz
         self.set_frequency(freq)
-        raise Warning('There seems to be some roundoff error here. best to avoid this for now.')
+        raise Warning(
+            "There seems to be some roundoff error here. best to avoid this for now."
+        )
 
-    def dither_enable(self, waveform='sinusoidal'):
-        """
-        """
-        if (waveform.lower() != 'sinusoid'
-            or waveform.lower() != 'triangular'
-              or waveform.lower() != 'sin' or waveform.lower() != 'tri'):
-
-            raise ValueError('waveform must be \'sinusoidal\', or \'triangular\'')
+    def dither_enable(self, waveform="sinusoidal"):
+        """ """
+        if (
+            waveform.lower() != "sinusoid"
+            or waveform.lower() != "triangular"
+            or waveform.lower() != "sin"
+            or waveform.lower() != "tri"
+        ):
+            raise ValueError("waveform must be 'sinusoidal', or 'triangular'")
 
         data = [0] * 16
         # bit 1 Digital Dither Enable bit
         data[1] = 1
-        data = int(''.join(str(x) for x in data[::-1]), 2)
+        data = int("".join(str(x) for x in data[::-1]), 2)
 
         self._dithere(data)
 
@@ -401,7 +407,7 @@ class ITLA12(ITLABase):
         # i think that we should try to preserve other bits rather than setting all
         # data to zero across the board
         data = [0] * 16
-        data = int(''.join(str(x) for x in data[::-1]), 2)
+        data = int("".join(str(x) for x in data[::-1]), 2)
         self._dithere(data)
 
     def set_dither_rate(self, rate):
@@ -416,7 +422,7 @@ class ITLA12(ITLABase):
         get dither rate, utilizes DitherR register
         """
         response = self._ditherr()
-        return int.from_bytes(response, 'big')
+        return int.from_bytes(response, "big")
 
     def set_dither_frequency(self, rate):
         """
@@ -431,7 +437,7 @@ class ITLA12(ITLABase):
         get dither modulation frequency, utilizes DitherF register
         """
         response = self._ditherf()
-        return int.from_bytes(response, 'big')
+        return int.from_bytes(response, "big")
 
     def set_dither_amplitude(self, amplitude):
         """
@@ -446,7 +452,7 @@ class ITLA12(ITLABase):
         get dither modulation amplitude, utilizes DitherA register
         """
         response = self._dithera()
-        return int.from_bytes(response, 'big')
+        return int.from_bytes(response, "big")
 
     def get_wavelength(self):
         """
@@ -474,7 +480,7 @@ class ITLA12(ITLABase):
 
         """
         response = self._ctemp()
-        temp_100 = int.from_bytes(response, 'big')
+        temp_100 = int.from_bytes(response, "big")
 
         return temp_100 / 100
 
@@ -485,10 +491,10 @@ class ITLA12(ITLABase):
 
         """
         response = self._lfl1()
-        lfl1 = int.from_bytes(response, 'big')
+        lfl1 = int.from_bytes(response, "big")
 
         response = self._lfl2()
-        lfl2 = int.from_bytes(response, 'big')
+        lfl2 = int.from_bytes(response, "big")
 
         return lfl1 + lfl2 * 1e-4
 
@@ -499,10 +505,10 @@ class ITLA12(ITLABase):
 
         """
         response = self._lfh1()
-        fcf1 = int.from_bytes(response, 'big')
+        fcf1 = int.from_bytes(response, "big")
 
         response = self._lfh2()
-        fcf2 = int.from_bytes(response, 'big')
+        fcf2 = int.from_bytes(response, "big")
 
         return fcf1 + fcf2 * 1e-4
 
@@ -513,7 +519,7 @@ class ITLA12(ITLABase):
 
         """
         try:
-            freq_lgrid = int.from_bytes(self._lgrid(),  'big', signed=False)
+            freq_lgrid = int.from_bytes(self._lgrid(), "big", signed=False)
 
         except ExecutionError as ee:
             self.nop()
@@ -541,7 +547,7 @@ class ITLA12(ITLABase):
 
         """
         response = self._grid()
-        grid_freq = int.from_bytes(response, 'big', signed=True)
+        grid_freq = int.from_bytes(response, "big", signed=True)
 
         return grid_freq * 1e-1
 
@@ -554,9 +560,9 @@ class ITLA12(ITLABase):
 
         """
         response = self._age()
-        age = int.from_bytes(response, 'big')
+        age = int.from_bytes(response, "big")
 
-        return f'Age: {age} / 100%'
+        return f"Age: {age} / 100%"
 
     def set_channel(self, channel):
         """Sets the laser's operating channel.
@@ -579,7 +585,7 @@ class ITLA12(ITLABase):
             raise ValueError("Channel must be a 16 bit integer (<=0xFFFF).")
 
         # Split the channel choice into two options.
-        channel_hex = f'{channel:08x}'
+        channel_hex = f"{channel:08x}"
 
         channell = int(channel_hex[4:], 16)
 
@@ -598,7 +604,7 @@ class ITLA12(ITLABase):
         # This concatenates the data bytestrings
         response = self._channel()
 
-        channel = int.from_bytes(response, 'big')
+        channel = int.from_bytes(response, "big")
 
         return channel
 
@@ -635,49 +641,53 @@ class ITLA12(ITLABase):
         """
 
         response = self._ftf()
-        ftf = int.from_bytes(response, 'big', signed=True)
+        ftf = int.from_bytes(response, "big", signed=True)
 
         return ftf * 1e-3
 
     def get_temps(self):
-        '''
+        """
         Returns a list of currents in degrees Celcius.
         In the following order:
 
         Technology 1: [Diode Temp, Case Temp]
-        '''
+        """
         # get response this should be a long byte string
         response = self._temps()
 
-        data = [int.from_bytes(response[i: i+2], 'big', signed=True) / 100
-                for i in range(0, len(response), 2)]
+        data = [
+            int.from_bytes(response[i : i + 2], "big", signed=True) / 100
+            for i in range(0, len(response), 2)
+        ]
 
         return data
 
     def get_currents(self):
-        '''
+        """
         Returns a list of currents in mA.
         In the following order:
 
         Technology 1: [TEC, Diode]
         Technology 2: [TED, Diode 1, Diode 2, Diode 3, Diode 4, SOA]
         Technology 3: [TEC, Diode 1, tbd, tbd, tbd, ...]
-        '''
+        """
         # get response this should be a long byte string
         response = self._currents()
 
-        data = [int.from_bytes(response[i: i+2], 'big', signed=True) / 10
-                for i in range(0, len(response), 2)]
+        data = [
+            int.from_bytes(response[i : i + 2], "big", signed=True) / 10
+            for i in range(0, len(response), 2)
+        ]
 
         return data
 
     def get_last_response(self):
-        '''This function gets the most recent response sent from the laser.
+        """This function gets the most recent response sent from the laser.
         The response is parsed for errors and stuff the way any normal response
         would be. The variable `self._response` is set to the last response again.
 
         I dont know why you would need to do this.
-        '''
+        """
         return self._lstresp()
 
     def get_error_fatal(self, reset=False):
@@ -689,8 +699,8 @@ class ITLA12(ITLABase):
 
         """
         response = self._statusf()
-        statusf = int.from_bytes(response, 'big')
-        statusf = f'{statusf:016b}'
+        statusf = int.from_bytes(response, "big")
+        statusf = f"{statusf:016b}"
         status_array = [int(code) for code in statusf]
         status_array.reverse()
         print(status_array)
@@ -732,7 +742,7 @@ class ITLA12(ITLABase):
                 print("SRQ ")
             if reset is True:
                 data_reset = [0] * 16
-                data_reset = int(''.join(str(x) for x in data_reset[::-1]), 2)
+                data_reset = int("".join(str(x) for x in data_reset[::-1]), 2)
                 self._statusf(data_reset)
 
     def get_error_warning(self, reset=False):
@@ -745,8 +755,8 @@ class ITLA12(ITLABase):
         :param reset: resets/clears latching errors
         """
         response = self._statusw()
-        statusw = int.from_bytes(response, 'big')
-        statusw = f'{statusw:016b}'
+        statusw = int.from_bytes(response, "big")
+        statusw = f"{statusw:016b}"
         status_array = [int(code) for code in statusw]
         status_array.reverse()
         print(status_array)
@@ -787,7 +797,7 @@ class ITLA12(ITLABase):
             if status_array[15] == 1:
                 print("SRQ ")
             if reset is True:
-                data_reset = int('00ff', 16)
+                data_reset = int("00ff", 16)
                 self._statusw(data_reset)
 
     def get_fatal_power_thresh(self):
@@ -796,7 +806,7 @@ class ITLA12(ITLABase):
 
         """
         response = self._fpowth()
-        pow_fatal = int.from_bytes(response, 'big') / 100
+        pow_fatal = int.from_bytes(response, "big") / 100
         # correcting for proper order of magnitude
         return pow_fatal
 
@@ -806,7 +816,7 @@ class ITLA12(ITLABase):
 
         """
         response = self._wpowth()
-        pow_warn = int.from_bytes(response, 'big') / 100
+        pow_warn = int.from_bytes(response, "big") / 100
         # correcting for proper order of magnitude
         return pow_warn
 
@@ -816,7 +826,7 @@ class ITLA12(ITLABase):
 
         """
         response = self._ffreqth()
-        freq_fatal = int.from_bytes(response, 'big') / 10
+        freq_fatal = int.from_bytes(response, "big") / 10
         return freq_fatal
 
     def get_warning_freq_thresh(self):
@@ -825,7 +835,7 @@ class ITLA12(ITLABase):
 
         """
         response = self._wfreqth()
-        freq_warn = int.from_bytes(response, 'big') / 10
+        freq_warn = int.from_bytes(response, "big") / 10
         return freq_warn
 
     def get_fatal_therm_thresh(self):
@@ -834,7 +844,7 @@ class ITLA12(ITLABase):
 
         """
         response = self._fthermth()
-        therm_fatal = int.from_bytes(response, 'big') / 100
+        therm_fatal = int.from_bytes(response, "big") / 100
         # correcting for proper order of magnitude
         return therm_fatal
 
@@ -843,7 +853,7 @@ class ITLA12(ITLABase):
         reads maximum plus/minus thermal deviation in degree celcius for which the warning alarm is asserted
         """
         response = self._wthermth()
-        therm_thresh = int.from_bytes(response, 'big') / 100
+        therm_thresh = int.from_bytes(response, "big") / 100
         # correcting for proper order of magnitude
         return therm_thresh
 
@@ -853,8 +863,8 @@ class ITLA12(ITLABase):
 
         """
         response = self._srqt()
-        status = int.from_bytes(response, 'big')
-        status = f'{status:016b}'
+        status = int.from_bytes(response, "big")
+        status = f"{status:016b}"
         status_array = [int(code) for code in status]
         status_array.reverse()
         print(status_array)
@@ -901,8 +911,8 @@ class ITLA12(ITLABase):
 
         """
         response = self._fatalt()
-        status = int.from_bytes(response, 'big')
-        status = f'{status:016b}'
+        status = int.from_bytes(response, "big")
+        status = f"{status:016b}"
         status_array = [int(code) for code in status]
         status_array.reverse()
         print(status_array)
@@ -949,8 +959,8 @@ class ITLA12(ITLABase):
 
         """
         response = self._almt()
-        status = int.from_bytes(response, 'big')
-        status = f'{status:016b}'
+        status = int.from_bytes(response, "big")
+        status = f"{status:016b}"
         status_array = [int(code) for code in status]
         status_array.reverse()
         print(status_array)

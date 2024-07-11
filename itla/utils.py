@@ -2,12 +2,10 @@ import yaml
 
 
 def setup_registers():
-    with open('registers.yaml', 'r') as yaml_file:
+    with open("registers.yaml", "r") as yaml_file:
         yaml_dict = yaml.safe_load(yaml_file)
-        registers = {key: yaml_dict[key]['register']
-                     for key in yaml_dict.keys()}
-        registers_inv = {registers[key]: key
-                         for key in registers.keys()}
+        registers = {key: yaml_dict[key]["register"] for key in yaml_dict.keys()}
+        registers_inv = {registers[key]: key for key in registers.keys()}
 
         return registers, registers_inv
 
@@ -24,15 +22,15 @@ def get_hexstring(register, data, header):
 
     # Each of these change the parameter to a hex and cut off the 0x part
     # It may be possible to remove the 0x parts by removing the '#'
-    header_hex = f'{header:#04x}'[2:]
-    register_hex = f'{register:#04x}'[2:]
-    data_hex = f'{data:#06x}'[2:]
+    header_hex = f"{header:#04x}"[2:]
+    register_hex = f"{register:#04x}"[2:]
+    data_hex = f"{data:#06x}"[2:]
 
     return header_hex + register_hex + data_hex
 
 
 def compute_checksum(hexstring):
-    """ Computes the command checksum
+    """Computes the command checksum
 
     :param register: the register to write to
     :param data: the data to write the register
@@ -63,7 +61,7 @@ def form_packet(register, data, write=False):
         data = 0
 
     if not isinstance(write, bool):
-        raise TypeError('The variable `write` must be True or False')
+        raise TypeError("The variable `write` must be True or False")
 
     hexstring = get_hexstring(register, data, write)
     checksum = compute_checksum(hexstring)
