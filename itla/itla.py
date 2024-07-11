@@ -1,4 +1,5 @@
 from pkg_resources import resource_filename
+from . import logger
 from .itla_errors import *
 from .utils import compute_checksum
 import yaml
@@ -207,7 +208,7 @@ class ITLABase:
         # read four bytes
         response = self._device.read(4)
 
-        print(f"response: {response.hex()}")
+        logger.debug(f"response: {response.hex()}")
 
         # get the checksum and ... check it.
         checksum = int(response.hex()[0], 16)
@@ -219,7 +220,7 @@ class ITLABase:
             )
 
         status = int(f"{response[0]:08b}"[-2:], 2)
-        print(f"status: {status}")
+        logger.debug(f"status: {status}")
 
         try:
             raise self._response_status[status]
