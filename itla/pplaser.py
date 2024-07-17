@@ -14,7 +14,7 @@ class PPLaser(ITLA12):
     * `get_frequency` is *not* overridden because these registers can still be read without issue
     """
 
-    def __init__(self, serial_port, baudrate=9600):
+    def __init__(self, serial_port, baudrate=9600, sleep_time=0.1):
         """sets up the additional frequency max and min variables which will be set upon
         connecting to the laser. We have found that Pure Photonics lasers do not
         return the RVEError when setting the frequency out of spec.
@@ -26,7 +26,9 @@ class PPLaser(ITLA12):
         self._frequency_max = None
         self._frequency_min = None
 
-        super().__init__(serial_port, baudrate, register_files=register_files)
+        super().__init__(
+            serial_port, baudrate, register_files=register_files, sleep_time=sleep_time
+        )
 
     def connect(self):
         """Overriden connect function with query for max and min frequency"""
