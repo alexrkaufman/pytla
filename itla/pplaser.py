@@ -1,4 +1,5 @@
 from time import sleep
+
 from .itla12 import ITLA12
 from .itla_errors import *
 
@@ -10,7 +11,6 @@ class PPLaser(ITLA12):
     registers for a couple of applications.
 
     * `set_frequency` and `set_fcf` had to be overridden
-      * These are overwritten because fcf3 causes some issues
     * `get_frequency` is *not* overridden because these registers can still be read without issue
     """
 
@@ -41,11 +41,6 @@ class PPLaser(ITLA12):
         This sets the first channel frequency.
         It does not reset the channel so this frequency will only be equal
         to the output frequency if channel=1.
-
-        There is an issue in setting the first channel frequency for
-        the pure photonics laser as compared to the ITLA 1.3 standard.
-
-        If we set the FCF3 register it will clear the FCF2 register.
 
         Because the `set_frequency` function calls this function this will also
         correct the issue in setting the frequency generally.
