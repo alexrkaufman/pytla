@@ -1,10 +1,11 @@
+import serial
+import yaml
 from pkg_resources import resource_filename
+from serial.serialutil import SerialException
+
 from . import logger
 from .itla_errors import *
 from .utils import compute_checksum
-import yaml
-import serial
-from serial.serialutil import SerialException
 
 
 class ITLABase:
