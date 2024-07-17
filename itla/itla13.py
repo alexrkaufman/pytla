@@ -1,11 +1,14 @@
 from time import sleep
-from .itla_errors import *
+
+from . import logger
 from .itla import ITLABase
+from .itla_errors import *
+from .itla_status import *
 
 
 class ITLA13(ITLABase):
     """
-    A class that represents the an ITLA
+    A class that represents the ITLA13
     and exposes a user friendly API for controlling functionality.
 
     OIF-ITLA-MSA-01.3 is the standard implemented here.
@@ -237,14 +240,14 @@ class ITLA13(ITLABase):
             try:
                 self.nop()
 
-            except RVEError as rvee:
-                print(
-                    "The provided power "
-                    + str(pwr_dBm)
-                    + " is outside of the range for this device."
+            except RVEError as error:
+                logger.error(
+                    "The provided power %.2f dBm is outside of the range for this device. "
+                    "The power is currently set to: %.2f dBm.",
+                    pwr_dBm,
+                    self.get_power_setting(),
                 )
-                print("The power is currently set to: " + str(self.get_power_setting()))
-                raise rvee
+                raise error
 
     def get_power_setting(self):
         """Gets current power setting set by set_power. Should be in dBm.
@@ -310,26 +313,25 @@ class ITLA13(ITLABase):
             try:
                 self.nop()
             except RVEError as error:
-                print(int(fcf1) + "THz is out of bounds for this laser. ")
-                print(
-                    "The frequency must be within the range, "
-                    + self.get_frequency_min()
-                    + " - "
-                    + self.get_frequency_max()
-                    + " THz."
+                logger.error(
+                    "%.2f THz is out of bounds for this laser. "
+                    "The frequency must be within the range %.2f - %.2f THz.",
+                    fcf1,
+                    self.get_frequency_min(),
+                    self.get_frequency_max(),
                 )
-                raise error from None
+                raise error
 
             except CIEError as error:
-                print(
-                    "You cannot change the first channel frequency "
-                    + "while the laser is enabled."
+                logger.error(
+                    "You cannot change the first channel frequency while the laser is enabled. "
+                    "The current frequency is: %.2f THz",
+                    self.get_frequency(),
                 )
-                print("The current frequency is: " + self.get_frequency() + " THz")
-                raise error from None
+                raise error
 
-    def set_frequency(self, freq):
-        """Sets the frequency of the laser in TerraHertz.
+    def set_frequency(self, freq, ftf=None):
+        """Sets the frequency of the laser in TeraHertz.
 
         Has MHz resolution. Will round down.
 
@@ -743,50 +745,15 @@ class ITLA13(ITLABase):
         """
         response = self._statusf()
         statusf = int.from_bytes(response, "big")
-        statusf = f"{statusf:016b}"
-        status_array = [int(code) for code in statusf]
-        status_array.reverse()
-        print(status_array)
 
-        if any(status_array):
-            print("Current Status Fatal Error")
+        logger.debug("Current Status Fatal Error: %d", statusf)
 
-            if status_array[0] == 1:
-                print("FPWRL")
-            if status_array[1] == 1:
-                print("FTHERML")
-            if status_array[2] == 1:
-                print("FFREQL")
-            if status_array[3] == 1:
-                print("FVSFL")
-            if status_array[4] == 1:
-                print("CRL")
-            if status_array[5] == 1:
-                print("MRL")
-            if status_array[6] == 1:
-                print("CEL")
-            if status_array[7] == 1:
-                print("XEL")
-            if status_array[8] == 1:
-                print("FPWR")
-            if status_array[9] == 1:
-                print("FTHERM")
-            if status_array[10] == 1:
-                print("FFREQ")
-            if status_array[11] == 1:
-                print("FVSF")
-            if status_array[12] == 1:
-                print("DIS")
-            if status_array[13] == 1:
-                print("FATAL")
-            if status_array[14] == 1:
-                print("ALM")
-            if status_array[15] == 1:
-                print("SRQ ")
-            if reset == True:
-                data_reset = [0] * 16
-                data_reset = int("".join(str(x) for x in data_reset[::-1]), 2)
-                self._statusf(data_reset)
+        if reset:
+            data_reset = [0] * 16
+            data_reset = int("".join(str(x) for x in data_reset[::-1]), 2)
+            self._statusf(data_reset)
+
+        return FatalError(statusf)
 
     def get_error_warning(self, reset=False):
         """
@@ -799,49 +766,14 @@ class ITLA13(ITLABase):
         """
         response = self._statusw()
         statusw = int.from_bytes(response, "big")
-        statusw = f"{statusw:016b}"
-        status_array = [int(code) for code in statusw]
-        status_array.reverse()
-        print(status_array)
 
-        if any(status_array):
-            print("Current Status Warning Error")
+        logger.debug("Current Status Warning Error: %d", statusw)
 
-            if status_array[0] == 1:
-                print("WPWRL")
-            if status_array[1] == 1:
-                print("WTHERML")
-            if status_array[2] == 1:
-                print("WFREQL")
-            if status_array[3] == 1:
-                print("WVSFL")
-            if status_array[4] == 1:
-                print("CRL")
-            if status_array[5] == 1:
-                print("MRL")
-            if status_array[6] == 1:
-                print("CEL")
-            if status_array[7] == 1:
-                print("XEL")
-            if status_array[8] == 1:
-                print("WPWR")
-            if status_array[9] == 1:
-                print("WTHERM")
-            if status_array[10] == 1:
-                print("WFREQ")
-            if status_array[11] == 1:
-                print("FVSF")
-            if status_array[12] == 1:
-                print("DIS")
-            if status_array[13] == 1:
-                print("FATAL")
-            if status_array[14] == 1:
-                print("ALM")
-            if status_array[15] == 1:
-                print("SRQ ")
-            if reset == True:
-                data_reset = int("00ff", 16)
-                self._statusw(data_reset)
+        if reset:
+            data_reset = int("00ff", 16)
+            self._statusw(data_reset)
+
+        return WarningError(statusw)
 
     def get_fatal_power_thresh(self):
         """
@@ -915,46 +847,10 @@ class ITLA13(ITLABase):
         """
         response = self._srqt()
         status = int.from_bytes(response, "big")
-        status = f"{status:016b}"
-        status_array = [int(code) for code in status]
-        status_array.reverse()
-        print(status_array)
 
-        if any(status_array):
-            print("SRQ Status: Asserted")
+        logger.debug("SRQT Status: %d", status)
 
-            if status_array[0] == 1:
-                print("FPWRL")
-            if status_array[1] == 1:
-                print("FTHERML")
-            if status_array[2] == 1:
-                print("FFREQL")
-            if status_array[3] == 1:
-                print("FVSFL")
-            if status_array[4] == 1:
-                print("CRL")
-            if status_array[5] == 1:
-                print("MRL")
-            if status_array[6] == 1:
-                print("CEL")
-            if status_array[7] == 1:
-                print("XEL")
-            if status_array[8] == 1:
-                print("WPWRL")
-            if status_array[9] == 1:
-                print("WTHERML")
-            if status_array[10] == 1:
-                print("WFREQL")
-            if status_array[11] == 1:
-                print("WVSFL")
-            if status_array[12] == 1:
-                print("DIS")
-            if status_array[13] == 1:
-                print("NONE")
-            if status_array[14] == 1:
-                print("NONE")
-            if status_array[15] == 1:
-                print("NONE")
+        return SQRTrigger(status)
 
     def get_fatal_trigger(self):
         """
@@ -963,46 +859,10 @@ class ITLA13(ITLABase):
         """
         response = self._fatalt()
         status = int.from_bytes(response, "big")
-        status = f"{status:016b}"
-        status_array = [int(code) for code in status]
-        status_array.reverse()
-        print(status_array)
 
-        if any(status_array):
-            print("SRQ Status: Asserted")
+        logger.debug("FatalT Status: %d", status)
 
-            if status_array[0] == 1:
-                print("FPWRL")
-            if status_array[1] == 1:
-                print("FTHERML")
-            if status_array[2] == 1:
-                print("FFREQL")
-            if status_array[3] == 1:
-                print("FVSFL")
-            if status_array[4] == 1:
-                print("NONE")
-            if status_array[5] == 1:
-                print("MRL")
-            if status_array[6] == 1:
-                print("NONE")
-            if status_array[7] == 1:
-                print("NONE")
-            if status_array[8] == 1:
-                print("WPWRL")
-            if status_array[9] == 1:
-                print("WTHERML")
-            if status_array[10] == 1:
-                print("WFREQL")
-            if status_array[11] == 1:
-                print("WVSFL")
-            if status_array[12] == 1:
-                print("NONE")
-            if status_array[13] == 1:
-                print("NONE")
-            if status_array[14] == 1:
-                print("NONE")
-            if status_array[15] == 1:
-                print("NONE")
+        return FatalTrigger(status)
 
     def get_alm_trigger(self):
         """
@@ -1011,43 +871,7 @@ class ITLA13(ITLABase):
         """
         response = self._almt()
         status = int.from_bytes(response, "big")
-        status = f"{status:016b}"
-        status_array = [int(code) for code in status]
-        status_array.reverse()
-        print(status_array)
 
-        if any(status_array):
-            print("SRQ Status: Asserted")
+        logger.debug("AlarmT Status: %d", status)
 
-            if status_array[0] == 1:
-                print("FPWR")
-            if status_array[1] == 1:
-                print("FTHERM")
-            if status_array[2] == 1:
-                print("FFREQ")
-            if status_array[3] == 1:
-                print("FVSF")
-            if status_array[4] == 1:
-                print("NONE")
-            if status_array[5] == 1:
-                print("NONE")
-            if status_array[6] == 1:
-                print("NONE")
-            if status_array[7] == 1:
-                print("NONE")
-            if status_array[8] == 1:
-                print("WPWR")
-            if status_array[9] == 1:
-                print("WTHERM")
-            if status_array[10] == 1:
-                print("WFREQ")
-            if status_array[11] == 1:
-                print("WVSF")
-            if status_array[12] == 1:
-                print("NONE")
-            if status_array[13] == 1:
-                print("NONE")
-            if status_array[14] == 1:
-                print("NONE")
-            if status_array[15] == 1:
-                print("NONE")
+        return AlarmTrigger(status)
