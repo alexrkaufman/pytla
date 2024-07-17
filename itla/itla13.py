@@ -26,7 +26,9 @@ class ITLA13(ITLABase):
 
     """
 
-    def __init__(self, serial_port, baudrate, timeout=0.5, register_files=None):
+    def __init__(
+        self, serial_port, baudrate, timeout=0.5, register_files=None, sleep_time=0.1
+    ):
         """Initializes the ITLA12 object.
 
         :param serial_port: The serial port to connect to.
@@ -38,11 +40,14 @@ class ITLA13(ITLABase):
         :param register_files: Any additional register files you would like to include
         beyond the default MSA-01.3 defined registers. These must be in a yaml format as
         described in the project's README.
+        :param sleep_time: time in seconds. Use in wait function
         """
         if register_files is None:
             register_files = []
 
-        register_files = ["registers_itla.yaml", *register_files]
+        register_files = ["registers_itla12.yaml", *register_files]
+
+        self.default_sleep_time = sleep_time
 
         super().__init__(
             serial_port, baudrate, timeout=timeout, register_files=register_files
@@ -206,6 +211,17 @@ class ITLA13(ITLABase):
                 raise nop_e
 
         return aea_response
+
+    def wait(self):
+        """Wait until operation is complete. It check if the operation is completed every self.sleep_time seconds."""
+        while True:
+            try:
+                self.nop()
+            except CPException:
+                if self.default_sleep_time is not None:
+                    sleep(self.default_sleep_time)
+            else:
+                break
 
     def set_power(self, pwr_dBm):
         """Sets the power of the ITLA laser. Units of dBm.
