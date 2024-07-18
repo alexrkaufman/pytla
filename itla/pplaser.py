@@ -1,5 +1,6 @@
 from time import sleep
 
+from . import logger
 from .itla12 import ITLA12
 from .itla_errors import *
 
@@ -214,12 +215,12 @@ class PPLaser(ITLA12):
 
         calibration_points = [fcf + grid * n * 1e-3 for n in range(n_jumppoints)]
 
-        print(
+        logger.debug(
             f"You are calibrating {n_jumppoints} clean jump setpoints",
             f"at frequencies:\n{calibration_points}(THz).",
             f"With power = {pwr}(dBm).",
         )
-        print(
+        logger.debug(
             "Write these down in your lab notebook because",
             "you cannot query the device for these values later.",
         )
@@ -235,7 +236,7 @@ class PPLaser(ITLA12):
             self._cleanjump_calibration(n_jumppoints)
 
         elif confirmation.lower() == "n":
-            print(
+            logger.debug(
                 f"You answered {confirmation!r}.", "Calibration will not be performed."
             )
 
