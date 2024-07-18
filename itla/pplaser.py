@@ -220,28 +220,12 @@ class PPLaser(ITLA12):
             f"at frequencies:\n{calibration_points}(THz).",
             f"With power = {pwr}(dBm).",
         )
-        logger.debug(
-            "Write these down in your lab notebook because",
-            "you cannot query the device for these values later.",
-        )
 
-        if confirmation is None:
-            confirmation = input("Is the information above correct? (y/n): ")
-
-        if confirmation.lower() == "y":
-            # set up the first channel frequency, grid spacing, and power
-            self.set_frequency(fcf)
-            self.set_grid(grid)
-            self.set_power(pwr)
-            self._cleanjump_calibration(n_jumppoints)
-
-        elif confirmation.lower() == "n":
-            logger.debug(
-                f"You answered {confirmation!r}.", "Calibration will not be performed."
-            )
-
-        else:
-            raise Exception("input not recognized")
+        # set up the first channel frequency, grid spacing, and power
+        self.set_frequency(fcf)
+        self.set_grid(grid)
+        self.set_power(pwr)
+        self._cleanjump_calibration(n_jumppoints)
 
     def _cleanjump_calibration(self, n_jumppoints):
         # does this return a response with bit 15 active?
