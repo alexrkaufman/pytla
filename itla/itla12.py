@@ -348,7 +348,7 @@ class ITLA12(ITLABase):
                 try:
                     self.set_fine_tuning(0)
                 except ExecutionError:
-                    sleep(self.default_sleep_time)
+                    sleep(self.sleep_time)
                 except CPException:
                     self.wait()
                     break

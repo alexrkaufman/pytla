@@ -50,7 +50,7 @@ class ITLA13(ITLABase):
 
         register_files = ["registers_itla12.yaml", *register_files]
 
-        self.default_sleep_time = sleep_time
+        self.sleep_time = sleep_time
 
         super().__init__(
             serial_port, baudrate, timeout=timeout, register_files=register_files
@@ -221,8 +221,8 @@ class ITLA13(ITLABase):
             try:
                 self.nop()
             except CPException:
-                if self.default_sleep_time is not None:
-                    sleep(self.default_sleep_time)
+                if self.sleep_time is not None:
+                    sleep(self.sleep_time)
             else:
                 break
 
@@ -354,7 +354,7 @@ class ITLA13(ITLABase):
                 try:
                     self.set_fine_tuning(0)
                 except ExecutionError:
-                    sleep(self.default_sleep_time)
+                    sleep(self.sleep_time)
                 except CPException:
                     self.wait()
                     break
