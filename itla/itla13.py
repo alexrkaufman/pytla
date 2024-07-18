@@ -349,9 +349,6 @@ class ITLA13(ITLABase):
 
         """
 
-        self.set_fcf(freq)
-        self.set_channel(1)
-
         # This does a check so this only runs if fine tuning has been turned on.
         if self.get_fine_tuning() != 0:
             # Set the fine tuning off!
