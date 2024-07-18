@@ -664,6 +664,17 @@ class ITLA12(ITLABase):
 
         return ftf * 1e-3
 
+    def get_ftf_range(self):
+        """
+        Return the maximum and minimum off grid tuning for the laser's frequency.
+        :return ftfr: The fine tune frequency range [-ftfr, + ftfr] in GHz
+        """
+        response = self._ftfr()
+
+        ftfr = int.from_bytes(response, "big")
+
+        return ftfr * 1e-3
+
     def get_temps(self):
         """
         Returns a list of currents in degrees Celcius.
