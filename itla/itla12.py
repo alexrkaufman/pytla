@@ -45,7 +45,7 @@ class ITLA12(ITLABase):
 
         register_files = ["registers_itla12.yaml", *register_files]
 
-        self.sleep_time = sleep_time
+        self.default_sleep_time = sleep_time
 
         super().__init__(
             serial_port, baudrate, timeout=timeout, register_files=register_files
@@ -216,8 +216,8 @@ class ITLA12(ITLABase):
             try:
                 self.nop()
             except CPException:
-                if self.sleep_time is not None:
-                    sleep(self.sleep_time)
+                if self.default_sleep_time is not None:
+                    sleep(self.default_sleep_time)
             else:
                 break
 
@@ -323,7 +323,7 @@ class ITLA12(ITLABase):
                 )
                 raise error
 
-    def set_frequency(self, freq, ftf=None):
+    def set_frequency(self, freq):
         """Sets the frequency of the laser in TeraHertz.
 
         Has MHz resolution. Will round down.
@@ -335,34 +335,35 @@ class ITLA12(ITLABase):
         If you would like to only change the first channel frequency use
         the function `set_fcf`.
 
+        Disable the laser before calling this function.
+
         :param freq: The desired frequency setting in THz.
         :returns: None
-
         """
-
-        self.set_fcf(freq)
-        self.set_channel(1)
 
         # This does a check so this only runs if fine tuning has been turned on.
         if self.get_fine_tuning() != 0:
-            # There needs to be some delay between this and setting channel.
-            # even with some delay the CII error occurs from time to time. Fix.
-            # This delay is way longer than i would like.
-            # It would be ideal to have no sleeping necessary conditions.
-            sleep(1)
-            try:
-                self.set_fine_tuning(0)
-
-            except ExecutionError as ee:
+            # Set the fine tuning off!
+            while True:
                 try:
-                    self.nop()
+                    self.set_fine_tuning(0)
+                except ExecutionError:
+                    sleep(self.default_sleep_time)
+                except CPException:
+                    self.wait()
+                    break
+                else:
+                    break
 
-                except NOPException as nop_e:
-                    raise nop_e
+        try:
+            self.set_fcf(freq)
+        except CPException:
+            self.wait()
 
-                except CPException as cpe:
-                    print("Fine tuning takes some time. Waiting 5s.")
-                    sleep(5)
+        try:
+            self.set_channel(1)
+        except CPException:
+            self.wait()
 
     def get_fcf(self):
         """Get the currently set first channel frequency."""
