@@ -8,14 +8,14 @@ from .itla_status import *
 
 class ITLA12(ITLABase):
     """
-     A class that represents the ITLA12
-     and exposes a user friendly API for controlling functionality.
+    A class that represents the ITLA12
+    and exposes a user friendly API for controlling functionality.
 
-     Things to figure out
+    Things to figure out
 
-       * What should be exposed to the user?
-       * Can we abstract away the concept of registers and stuff
-         in here so you don't have to deal with it.
+    * What should be exposed to the user?
+    * Can we abstract away the concept of registers and stuff
+        in here so you don't have to deal with it.
 
     There are some functions that could be implemented like set_fatalstatus.
     I think this is probably a bad idea even though it isnt write only.
