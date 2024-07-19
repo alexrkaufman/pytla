@@ -256,6 +256,16 @@ class ITLA13(ITLABase):
             else:
                 break
 
+    def wait_until_enabled(self):
+        while self.is_disabled():
+            if self.sleep_time is not None:
+                sleep(self.sleep_time)
+
+    def wait_until_disabled(self):
+        while self.is_enabled():
+            if self.sleep_time is not None:
+                sleep(self.sleep_time)
+
     def set_power(self, pwr_dBm):
         """Sets the power of the ITLA laser. Units of dBm.
 
