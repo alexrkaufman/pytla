@@ -85,12 +85,7 @@ class ITLA12(ITLABase):
         """
         # I'm writing this out partially for transparency
         # Maybe unnecessary or non-optimal
-        data = [0] * 16
-        # bit 3 SENA bit
-        data[3] = 1
-        data = int("".join(str(x) for x in data[::-1]), 2)
-
-        self._resena(data)
+        self._resena(Resena.SENA)
 
     def disable(self):
         """Tells the laser to stop lasing.
@@ -98,10 +93,7 @@ class ITLA12(ITLABase):
         :returns: None
 
         """
-        # set SENA bit (bit 3) to zero
-        data = [0] * 16
-        data = int("".join(str(x) for x in data[::-1]), 2)
-        self._resena(data)
+        self._resena(0)
 
     def hard_reset(self):
         """TODO describe function
@@ -109,14 +101,7 @@ class ITLA12(ITLABase):
         :returns:
 
         """
-        # I'm writing this out partially for transparency
-        # Maybe unnecessary or non-optimal
-        data = [0] * 16
-        # bit 0: Module Reset
-        data[0] = 1
-        data = int("".join(str(x) for x in data[::-1]), 2)
-
-        self._resena(data)
+        self._resena(Resena.MR)
 
     def soft_reset(self):
         """TODO describe function
@@ -124,14 +109,59 @@ class ITLA12(ITLABase):
         :returns:
 
         """
-        # I'm writing this out partially for transparency
-        # Maybe unnecessary or non-optimal
-        data = [0] * 16
-        # bit 1: Soft Reset
-        data[1] = 1
-        data = int("".join(str(x) for x in data[::-1]), 2)
+        self._resena(Resena.SR)
 
-        self._resena(data)
+    def get_reset_enable(self):
+        """
+        Return ResEna register.
+        """
+        response = self._resena()
+        return Resena(int.from_bytes(response, "big"))
+
+    def set_alarm_during_tuning(self):
+        """Set alarm during tuning
+        mcb(ADT)
+        """
+        self._mcb(MCB.ADT)
+
+    def set_shutdown_on_fatal(self):
+        """Set shutdown on fatal.
+        mcb(SDF)
+        """
+        self._mcb(MCB.SDF)
+
+    def get_configuration_behavior(self):
+        """
+        Return MCB register.
+        """
+        response = self._mcb()
+        return MCB(int.from_bytes(response, "big"))
+
+    def is_disabled(self):
+        """
+        Return if disabled.
+
+        See 9.6.3 Reset/Enable (ResEna 0x32) [RW] in OIF-ITLA-MSI.
+
+        For some lasers, FatalError.DIS is not triggered (even if TriggerT allows it). 
+        Consider overwriting this methods and monitoring FatalError.ALM.
+        """
+        fatal_error = self.get_error_fatal()
+        fatal_trigger = self.get_fatal_trigger()
+        resena = self.get_reset_enable()
+        mcb = self.get_configuration_behavior()
+
+        sdf = MCB.SDF in mcb
+        sena = Resena.SENA in resena
+        dis = FatalError.DIS in fatal_error
+
+        return ((fatal_error & fatal_trigger) and sdf) or (not sena) or (not dis)
+
+    def is_enabled(self, *args):
+        """
+        Return if enabled.  See is_disabled.
+        """
+        return not self.is_disabled(*args)
 
     def get_device_type(self):
         """
@@ -724,8 +754,7 @@ class ITLA12(ITLABase):
         logger.debug("Current Status Fatal Error: %d", statusf)
 
         if reset:
-            data_reset = [0] * 16
-            data_reset = int("".join(str(x) for x in data_reset[::-1]), 2)
+            data_reset = 0x00FF
             self._statusf(data_reset)
 
         return FatalError(statusf)
@@ -745,7 +774,7 @@ class ITLA12(ITLABase):
         logger.debug("Current Status Warning Error: %d", statusw)
 
         if reset:
-            data_reset = int("00ff", 16)
+            data_reset = 0x00FF
             self._statusw(data_reset)
 
         return WarningError(statusw)

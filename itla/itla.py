@@ -37,6 +37,10 @@ class ITLABase:
         0x08: EXFError("EXF: Execution general failure"),
         0x09: CIEError("CIE: Command ignored while module's optical output is enabled"),
         0x0A: IVCError("IVC: Invalid configuration command ignored."),
+        0x0B: NOPException(),
+        0x0C: NOPException(),
+        0x0D: NOPException(),
+        0x0E: NOPException(),
         0x0F: VSEError("VSE: Vendor specific error"),
     }
 
