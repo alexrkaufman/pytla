@@ -1,6 +1,44 @@
 from enum import IntFlag, auto
 
 
+class Resena(IntFlag):
+    MR = auto()
+    SR = auto()
+    _2 = auto()
+    SENA = auto()
+    _4 = auto()
+    _5 = auto()
+    _6 = auto()
+    _7 = auto()
+    _8 = auto()
+    _9 = auto()
+    _10 = auto()
+    _11 = auto()
+    _12 = auto()
+    _13 = auto()
+    _14 = auto()
+    _15 = auto()
+
+
+class MCB(IntFlag):
+    _0 = auto()
+    ADT = auto()
+    SDF = auto()
+    _3 = auto()
+    _4 = auto()
+    _5 = auto()
+    _6 = auto()
+    _7 = auto()
+    _8 = auto()
+    _9 = auto()
+    _10 = auto()
+    _11 = auto()
+    _12 = auto()
+    _13 = auto()
+    _14 = auto()
+    _15 = auto()
+
+
 class FatalError(IntFlag):
     FPWRL = auto()
     FTHERML = auto()
