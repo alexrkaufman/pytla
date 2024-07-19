@@ -330,7 +330,7 @@ class ITLA13(ITLABase):
                 )
                 raise error
 
-    def set_frequency(self, freq):
+    def set_frequency(self, freq, reset_ftf=True):
         """Sets the frequency of the laser in TeraHertz.
 
         Has MHz resolution. Will round down.
@@ -348,7 +348,7 @@ class ITLA13(ITLABase):
         :returns: None
         """
         # This does a check so this only runs if fine tuning has been turned on.
-        if self.get_fine_tuning() != 0:
+        if reset_ftf and self.get_fine_tuning() != 0:
             # Set the fine tuning off!
             while True:
                 try:

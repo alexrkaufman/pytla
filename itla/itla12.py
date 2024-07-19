@@ -323,7 +323,7 @@ class ITLA12(ITLABase):
                 )
                 raise error
 
-    def set_frequency(self, freq):
+    def set_frequency(self, freq, reset_ftf=True):
         """Sets the frequency of the laser in TeraHertz.
 
         Has MHz resolution. Will round down.
@@ -338,11 +338,12 @@ class ITLA12(ITLABase):
         Disable the laser before calling this function.
 
         :param freq: The desired frequency setting in THz.
+        :param reset_ftf: boolean if the user wants to reset the fine tune frequency.
         :returns: None
         """
 
         # This does a check so this only runs if fine tuning has been turned on.
-        if self.get_fine_tuning() != 0:
+        if reset_ftf and self.get_fine_tuning() != 0:
             # Set the fine tuning off!
             while True:
                 try:
