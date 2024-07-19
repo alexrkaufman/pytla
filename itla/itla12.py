@@ -143,7 +143,7 @@ class ITLA12(ITLABase):
 
         See 9.6.3 Reset/Enable (ResEna 0x32) [RW] in OIF-ITLA-MSI.
 
-        For some lasers, FatalError.DIS is not triggered (even if TriggerT allows it). 
+        For some lasers, FatalError.DIS is not triggered (even if TriggerT allows it).
         Consider overwriting this methods and monitoring FatalError.ALM.
         """
         fatal_error = self.get_error_fatal()
@@ -250,6 +250,16 @@ class ITLA12(ITLABase):
                     sleep(self.sleep_time)
             else:
                 break
+
+    def wait_until_enabled(self):
+        while self.is_disabled():
+            if self.sleep_time is not None:
+                sleep(self.sleep_time)
+
+    def wait_until_disabled(self):
+        while self.is_enabled():
+            if self.sleep_time is not None:
+                sleep(self.sleep_time)
 
     def set_power(self, pwr_dBm):
         """Sets the power of the ITLA laser. Units of dBm.
