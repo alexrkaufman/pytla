@@ -402,18 +402,6 @@ class ITLA13(ITLABase):
 
         return lf1 + lf2 * 1e-4 + lf3 * 1e-6
 
-    def set_wavelength(self, wvl):
-        """Set the wavelength in nm. Converts wavelength to freq and calls set_frequency.
-
-        :param wvl: The desired wavelength in nm.
-
-        """
-        freq = (speed_of_light / (wvl * 1e-9)) * 1e-12  # get frequency in THz
-        self.set_frequency(freq)
-        raise Warning(
-            "There seems to be some roundoff error here. best to avoid this for now."
-        )
-
     def dither_enable(self, waveform="sinusoidal"):
         """ """
         if (
