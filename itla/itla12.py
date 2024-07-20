@@ -218,6 +218,44 @@ class ITLA12(ITLABase):
 
         return response_bytes.decode("utf-8")
 
+    def get_general_module_configuration(self):
+        """returns the power on/reset module configuration
+
+        GenCfg defines the general module configuration for the generic tunable device. For the
+        tunable laser, the register is used to save the power on/reset module configuration
+        defaults.
+
+        See 9.4.9 General Module Configuration (GenCfg 0x08) [RW]
+        """
+        raise NotImplementedError()
+
+    def set_general_module_configuration(self):
+        """returns the power on/reset module configuration
+
+        GenCfg defines the general module configuration for the generic tunable device. For the
+        tunable laser, the register is used to save the power on/reset module configuration
+        defaults.
+
+        See 9.4.9 General Module Configuration (GenCfg 0x08) [RW]
+        """
+        raise NotImplementedError()
+
+    def get_iocap(self):
+        """
+        The IOCap register returns or sets the I/O interface capabilities
+
+        See 9.4.10 IO Capabilities (IOCap 0x0D) [RW]
+        """
+        raise NotImplementedError()
+
+    def set_iocap(self, data):
+        """
+        The IOCap register returns or sets the I/O interface capabilities
+
+        See 9.4.10 IO Capabilities (IOCap 0x0D) [RW]
+        """
+        raise NotImplementedError()
+
     def read_aea(self):
         """
         reads the AEA register data until an execution error is thrown.
@@ -239,6 +277,36 @@ class ITLA12(ITLABase):
                 raise nop_e
 
         return aea_response
+
+    def get_download_configuration(self):
+        """
+        The DLConfig register configures a host to module download of code or data for
+        reconfiguration purposes or configures a module to host upload of code or data to the host.
+        A file transfer may occur at several locations such as vendor factory, customer site (on the
+        bench), customer system (circuit down), or potentially a customer system (live circuit)
+
+        See 9.4.13 Download Configuration (DLConfig 0x14) [RW]
+        """
+        raise NotImplementedError()
+
+    def set_download_configuration(self):
+        """
+        The DLConfig register configures a host to module download of code or data for
+        reconfiguration purposes or configures a module to host upload of code or data to the host.
+        A file transfer may occur at several locations such as vendor factory, customer site (on the
+        bench), customer system (circuit down), or potentially a customer system (live circuit)
+
+        See 9.4.13 Download Configuration (DLConfig 0x14) [RW]
+        """
+        raise NotImplementedError()
+
+    def get_download_status(self):
+        """
+        DLStatus provides information about the status or viability of a code segment.
+
+        See 9.4.14 Download Status (DLStatus 0x15) [R]
+        """
+        raise NotImplementedError()
 
     def wait(self):
         """Wait until operation is complete. It check if the operation is completed every self.sleep_time seconds."""
