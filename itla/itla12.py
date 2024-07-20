@@ -54,7 +54,7 @@ class ITLA12(ITLABase):
         :param register_files: Any additional register files you would like to include
         beyond the default MSA-01.2 defined registers. These must be in a yaml format as
         described in the project's README.
-        :param sleep_time: time in seconds. Use in wait function
+        :param sleep_time: time in seconds. Used in wait function
         """
         if register_files is None:
             register_files = []
@@ -78,8 +78,11 @@ class ITLA12(ITLABase):
         This is not called by default so you must do this explicitly if you want
         to see more informative error information.
 
+        See 9.4.1 NOP/Status (ResEna 0x00) [RW] in OIF-ITLA-MSA.
+
         :param data: Data to write
 
+        :returns: None
         """
         # pretty sure the data does nothing
         if data is not None:
@@ -96,40 +99,45 @@ class ITLA12(ITLABase):
         There is a time delay after execution of this function to
         proper stable laser output.
 
-        :returns: None
+        See 9.6.3 Reset/Enable (ResEna 0x32) [RW]
 
+        :returns: None
         """
         # I'm writing this out partially for transparency
         # Maybe unnecessary or non-optimal
         self._resena(Resena.SENA)
 
     def disable(self):
-        """Tells the laser to stop lasing.
+        """disables the laser
+
+        See 9.6.3 Reset/Enable (ResEna 0x32) [RW]
 
         :returns: None
-
         """
         self._resena(0)
 
     def hard_reset(self):
         """TODO describe function
 
-        :returns:
+        See 9.6.3 Reset/Enable (ResEna 0x32) [RW]
 
+        :returns: None
         """
         self._resena(Resena.MR)
 
     def soft_reset(self):
         """TODO describe function
 
-        :returns:
+        See 9.6.3 Reset/Enable (ResEna 0x32) [RW]
 
+        :returns: None
         """
         self._resena(Resena.SR)
 
     def get_reset_enable(self):
-        """
-        Return ResEna register.
+        """return ResEna register.
+
+        See 9.6.3 Reset/Enable (ResEna 0x32) [RW]
         """
         response = self._resena()
         return Resena(int.from_bytes(response, "big"))
@@ -137,18 +145,24 @@ class ITLA12(ITLABase):
     def set_alarm_during_tuning(self):
         """Set alarm during tuning
         mcb(ADT)
+
+        See 9.6.4 Module Configuration Behavior (MCB 0x33) [RW]
         """
         self._mcb(MCB.ADT)
 
     def set_shutdown_on_fatal(self):
         """Set shutdown on fatal.
         mcb(SDF)
+
+        See 9.6.4 Module Configuration Behavior (MCB 0x33) [RW]
         """
         self._mcb(MCB.SDF)
 
     def get_configuration_behavior(self):
         """
         Return MCB register.
+
+        See 9.6.4 Module Configuration Behavior (MCB 0x33) [RW]
         """
         response = self._mcb()
         return MCB(int.from_bytes(response, "big"))
@@ -180,55 +194,63 @@ class ITLA12(ITLABase):
         return not self.is_disabled(*args)
 
     def get_device_type(self):
-        """
-        returns a string containing the device type.
+        """returns a string containing the device type
+        See 9.4.2 Device Type (DevTyp 0x01) [R]
         """
         response_bytes = self._devtyp()
 
         return response_bytes.decode("utf-8")
 
     def get_manufacturer(self):
-        """
-        Return's a string containing the manufacturer's name.
+        """returns a string containing the manufacturer's name.
+
+        See 9.4.3 Manufacturer (MFGR 0x02) [R]
         """
         response_bytes = self._mfgr()
 
         return response_bytes.decode("utf-8")
 
     def get_model(self):
-        """
-        return's the model as a string
+        """returns the model as a string
+
+        See 9.4.4 Model (Model 0x03) [R]
         """
         response_bytes = self._model()
 
         return response_bytes.decode("utf-8")
 
     def get_serialnumber(self):
-        """
-        returns the serial number
+        """returns the serial number
+
+        See 9.4.5 Serial Number (SerNo 0x04) [R]
         """
         response_bytes = self._serno()
 
         return response_bytes.decode("utf-8")
 
     def get_manufacturing_date(self):
-        """returns the manufacturing date"""
+        """returns the manufacturing date
+
+        See 9.4.5 Manufaturing Date (MFGDate 0x05) [R]
+        """
         response_bytes = self._mfgdate()
 
         return response_bytes.decode("utf-8")
 
     def get_firmware_release(self):
-        """
-        returns a manufacturer specific firmware release
+        """returns a manufacturer specific firmware release
+
+        See 9.4.7 Release (Release 0x06) [R]
         """
         response_bytes = self._release()
 
         return response_bytes.decode("utf-8")
 
     def get_backwardscompatibility(self):
-        """
-        returns a manufacturer specific firmware backwards compatibility
+        """returns a manufacturer specific firmware backwards compatibility
         as a null terminated string
+
+        See 9.4.8 Release Backwards Compatibility (RelBack 0x07) [R]
         """
         response_bytes = self._relback()
 
@@ -237,6 +259,8 @@ class ITLA12(ITLABase):
     def read_aea(self):
         """
         reads the AEA register data until an execution error is thrown.
+
+        See 9.4.11 Extended Addressing Mode Registers (0x09-0x0B, 0x0E-0x10) [RW]
         """
         aea_response = b""
         try:
@@ -257,7 +281,9 @@ class ITLA12(ITLABase):
         return aea_response
 
     def wait(self):
-        """Wait until operation is complete. It check if the operation is completed every self.sleep_time seconds."""
+        """Wait until operation is complete.
+        It check if the operation is completed every self.sleep_time seconds.
+        """
         while True:
             try:
                 self.nop()
@@ -278,11 +304,13 @@ class ITLA12(ITLABase):
                 sleep(self.sleep_time)
 
     def set_power(self, pwr_dBm):
-        """Sets the power of the ITLA laser. Units of dBm.
+        """Sets the power of the ITLA laser.
+        Units of dBm.
+
+        See 9.6.2 Optical Power Set Point (PWR 0x31) [RW]
 
         :param pwr_dBm: The power setting for the laser in dBm. Has precision XX.XX.
         :returns: None
-
         """
         try:
             self._pwr(round(pwr_dBm * 100))
@@ -301,40 +329,46 @@ class ITLA12(ITLABase):
                 raise error
 
     def get_power_setting(self):
-        """Gets current power setting set by set_power. Should be in dBm.
+        """Gets current power setting set by set_power.
+        Should be in dBm.
+
+        See 9.6.2 Optical Power Set Point (PWR 0x31) [RW]
 
         :returns:
-
         """
         # Gets power setting, not actual optical output power.
         response = self._pwr()
         return int.from_bytes(response, "big", signed=True) / 100
 
     def get_power_output(self):
-        """Gets the actual optical output power of the laser.
-        Only an approximation, apparently. Units dBm.
+        """returns external optical power estimate
 
-        :returns:
+        See 9.6.8 Optical Output Power (OOP 0x42) [R]
 
+        :returns: External optical power estimate in dBm
         """
         response = self._oop()
 
         return int.from_bytes(response, "big", signed=True) / 100
 
     def get_power_min(self):
-        """Gets the minimum optical power output of the module. Units dBm.
+        """returns minimum optical power output of the module.
+        Units dBm.
 
-        :returns:
+        See 9.7.2 Optical Power Min/Max Set Points (OPSL, OPSH 0x50 – 0x51) [R]
 
+        :returns: minimum optical power
         """
         response = self._opsl()
         return int.from_bytes(response, "big", signed=True) / 100
 
     def get_power_max(self):
-        """Gets the maximum optical power output of the module. Units dBm.
+        """returns maximum optical power output of the module.
+        Units dBm.
 
-        :returns:
+        See 9.7.2 Optical Power Min/Max Set Points (OPSL, OPSH 0x50 – 0x51) [R]
 
+        :returns: maximum optical power
         """
         response = self._opsh()
         return int.from_bytes(response, "big", signed=True) / 100
@@ -345,6 +379,9 @@ class ITLA12(ITLABase):
         It does not reset the channel so this frequency will only be equal
         to the output frequency if channel=1.
 
+        See 9.6.6 First Channel’s Frequency (FCF1, FCF2 0x35 – 0x36) [RW]
+
+        :returns: None
         """
         # convert frequency to MHz
         freq = round(freq * 1e6)
@@ -393,6 +430,8 @@ class ITLA12(ITLABase):
 
         Disable the laser before calling this function.
 
+        See 9.6.6 First Channel’s Frequency (FCF1, FCF2 0x35 – 0x36) [RW]
+
         :param freq: The desired frequency setting in THz.
         :returns: None
         """
@@ -422,7 +461,12 @@ class ITLA12(ITLABase):
             self.wait()
 
     def get_fcf(self):
-        """Get the currently set first channel frequency."""
+        """returns first channel frequency
+
+        See 9.6.6 First Channel’s Frequency (FCF1, FCF2 0x35 – 0x36) [RW]
+
+        :returns: First channel frequency in THz
+        """
         response = self._fcf1()
         fcf1 = int.from_bytes(response, "big")
 
@@ -432,11 +476,11 @@ class ITLA12(ITLABase):
         return fcf1 + fcf2 * 1e-4
 
     def get_frequency(self):
-        """gets the current laser operating frequency with channels
-        and everything accounted for.
+        """gets the current laser operating frequency
 
-        :returns:
+        See 9.6.7 Laser Frequency (LF1, LF2 0x40 – 0x41) [R]
 
+        :returns: Current laser frequency in THz.
         """
         response = self._lf1()
         lf1 = int.from_bytes(response, "big")
@@ -459,50 +503,76 @@ class ITLA12(ITLABase):
         self._dithere(data)
 
     def dither_disable(self):
-        """disables digital dither"""
+        """disables digital dither
+
+        See 9.8.3 Digital Dither (Dither(E,R,A,F) 0x59-0x5C) [RW] [Optional]
+        """
         # TODO: This should preserve the waveform setting if possible
         self._dithere(0)
 
     def set_dither_rate(self, rate):
-        """
-        set dither rate in kHz, utilizes DitherR register
+        """set dither rate in kHz
+        utilizes DitherR register
+
+        See 9.8.3 Digital Dither (Dither(E,R,A,F) 0x59-0x5C) [RW] [Optional]
+
         :param rate: an unsigned short integer specifying dither rate in kHz
         """
         self._ditherr(rate)
 
     def get_dither_rate(self):
-        """
-        get dither rate, utilizes DitherR register
+        """get dither rate
+        utilizes DitherR register
+
+        See 9.8.3 Digital Dither (Dither(E,R,A,F) 0x59-0x5C) [RW] [Optional]
+
+        :returns: Dither rate in kHz
         """
         response = self._ditherr()
         return int.from_bytes(response, "big")
 
     def set_dither_frequency(self, rate):
-        """
-        set dither modulation frequency, utilizes DitherF register
+        """set dither modulation frequency
+        utilizes DitherF register
+
+        See 9.8.3 Digital Dither (Dither(E,R,A,F) 0x59-0x5C) [RW] [Optional]
+
         :param rate: an unsigned short integer encoded as the FM peak-to-peak frequency
         deviation as Ghz*10
         """
         self._ditherf(rate)
 
     def get_dither_frequency(self):
-        """
-        get dither modulation frequency, utilizes DitherF register
+        """get dither modulation frequency
+        utilizes DitherF register
+
+        See 9.8.3 Digital Dither (Dither(E,R,A,F) 0x59-0x5C) [RW] [Optional]
+
+        :returns: dither modulation frequency in GHz * 10
         """
         response = self._ditherf()
         return int.from_bytes(response, "big")
 
     def set_dither_amplitude(self, amplitude):
-        """
-        set dither modulation amplitude, utilizes DitherA register
+        """set dither modulation amplitude
+        utilizes DitherA register
+
+        See 9.8.3 Digital Dither (Dither(E,R,A,F) 0x59-0x5C) [RW] [Optional]
+
         :param amplitude: an unsigned short integer encoded as the AM peak-to-peak amplitude
         deviation as 10*percentage of the optical power
+
+        :returns: None
         """
         self._dithera(amplitude)
 
     def get_dither_amplitude(self):
-        """
-        get dither modulation amplitude, utilizes DitherA register
+        """get dither modulation amplitude
+        utilizes DitherA register
+
+        See 9.8.3 Digital Dither (Dither(E,R,A,F) 0x59-0x5C) [RW] [Optional]
+
+        :returns: dither aplitude in 10ths of percents
         """
         response = self._dithera()
         return int.from_bytes(response, "big")
@@ -510,8 +580,9 @@ class ITLA12(ITLABase):
     def get_temp(self):
         """Returns the current primary control temperature in deg C.
 
-        :returns:
+        See 9.6.9 Current Temperature (CTemp 0x43) [R]
 
+        :returns: current primary control temperature in deg C
         """
         response = self._ctemp()
         temp_100 = int.from_bytes(response, "big")
@@ -519,10 +590,11 @@ class ITLA12(ITLABase):
         return temp_100 / 100
 
     def get_frequency_min(self):
-        """command to read minimum frequency supported by the module
+        """returns minimum frequency supported by the module
 
-        :returns:
+        See 9.7.3 Laser’s First/Last Frequency (LFL1/2, LFH1/2 0x52-0x55) [R]
 
+        :returns: minimum frequency in THz
         """
         response = self._lfl1()
         lfl1 = int.from_bytes(response, "big")
@@ -533,10 +605,11 @@ class ITLA12(ITLABase):
         return lfl1 + lfl2 * 1e-4
 
     def get_frequency_max(self):
-        """command to read maximum frequency supported by the module
+        """returns maximum frequency supported by the module
 
-        :returns:
+        See 9.7.3 Laser’s First/Last Frequency (LFL1/2, LFH1/2 0x52-0x55) [R]
 
+        :returns: maximum frequency in THz
         """
         response = self._lfh1()
         fcf1 = int.from_bytes(response, "big")
@@ -547,10 +620,11 @@ class ITLA12(ITLABase):
         return fcf1 + fcf2 * 1e-4
 
     def get_grid_min(self):
-        """command to read minimum grid supported by the module
+        """returns minimum grid spacing of the module
+
+        See 9.7.4 Laser’s Minimum Grid Spacing (LGrid 0x56) [R]
 
         :returns: The minimum grid supported by the module in GHz
-
         """
         try:
             freq_lgrid = int.from_bytes(self._lgrid(), "big", signed=False)
@@ -562,8 +636,9 @@ class ITLA12(ITLABase):
 
     def set_grid(self, grid_freq):
         """Set the grid spacing in GHz.
-
         MHz resolution.
+
+        See 9.6.5 Grid Spacing (Grid 0x34) [RW]
 
         :param grid_freq: the grid frequency spacing in GHz
         :returns:
@@ -577,8 +652,9 @@ class ITLA12(ITLABase):
     def get_grid(self):
         """get the grid spacing in GHz
 
-        :returns: The grid spacing in GHz.
+        See 9.6.5 Grid Spacing (Grid 0x34) [RW]
 
+        :returns: The grid spacing in GHz.
         """
         response = self._grid()
         grid_freq = int.from_bytes(response, "big", signed=True)
@@ -590,8 +666,9 @@ class ITLA12(ITLABase):
         0% indicated a brand new laser
         100% indicates the laser should be replaces.
 
-        :returns:
+        See 9.8.6 Laser Age (Age 0x61) [R]
 
+        :returns: percent aging of the laser
         """
         response = self._age()
         age = int.from_bytes(response, "big")
@@ -606,8 +683,10 @@ class ITLA12(ITLABase):
         This defines how many spaces along the grid
         the laser's frequency is displaced from the first channel frequency.
 
+        See 9.6.1 Channel (Channel 0x30) [RW]
+
         :param channel:
-        :returns:
+        :returns: None
 
         """
         # check type and stuff
@@ -632,6 +711,8 @@ class ITLA12(ITLABase):
         The channel defines how many spaces along the grid
         the laser's frequency is displaced from the first channel frequency.
 
+        See 9.6.1 Channel (Channel 0x30) [RW]
+
         :returns: channel as an integer.
 
         """
@@ -653,6 +734,8 @@ class ITLA12(ITLABase):
         enabled. The pending bit is cleared once the fine tune frequency
         has been achieved.
 
+        See 9.8.7 Fine Tune Frequency (FTF 0x62) [RW]
+
         **???** It seems like this can be done with the laser running.
 
         :param ftf: The fine tune frequency adjustment in GHz
@@ -671,6 +754,8 @@ class ITLA12(ITLABase):
         This function returns the setting for the
         off grid tuning for the laser's frequency.
 
+        See 9.8.7 Fine Tune Frequency (FTF 0x62) [RW]
+
         :return ftf: The fine tune frequency adjustment in GHz
         """
 
@@ -680,8 +765,9 @@ class ITLA12(ITLABase):
         return ftf * 1e-3
 
     def get_ftf_range(self):
-        """
-        Return the maximum and minimum off grid tuning for the laser's frequency.
+        """return the maximum and minimum off grid tuning for the laser's frequency.
+
+        See 9.7.1 Fine Tune Frequency Range (FTF 0x4F) [R]
 
         :return ftfr: The fine tune frequency range [-ftfr, + ftfr] in GHz
         """
@@ -692,11 +778,17 @@ class ITLA12(ITLABase):
         return ftfr * 1e-3
 
     def get_temps(self):
-        """
-        Returns a list of currents in degrees Celcius.
-        In the following order:
+        """returns a list of technology specific temperatures
+        units in deg C unless otherwise specified
 
+        **Technologies**
         Technology 1: [Diode Temp, Case Temp]
+        Technology 2: [Diode Temp, Case Temp]
+        (why are they the same?)
+
+        See 9.8.2 Module Temperatures (Temps 0x58) [R]
+
+        :returns: list of temperatures in deg C
         """
         # get response this should be a long byte string
         response = self._temps()
@@ -709,13 +801,16 @@ class ITLA12(ITLABase):
         return data
 
     def get_currents(self):
-        """
-        Returns a list of currents in mA.
-        In the following order:
+        """returns a list of technology specific currents in mA.
 
+        **Technologies**
         Technology 1: [TEC, Diode]
         Technology 2: [TED, Diode 1, Diode 2, Diode 3, Diode 4, SOA]
         Technology 3: [TEC, Diode 1, tbd, tbd, tbd, ...]
+
+        See 9.8.1 Module Currents (Currents 0x57) [R]
+
+        :returns: list of currents in mA
         """
         # get response this should be a long byte string
         response = self._currents()
@@ -728,18 +823,22 @@ class ITLA12(ITLABase):
         return data
 
     def get_last_response(self):
-        """This function gets the most recent response sent from the laser.
-        The response is parsed for errors and stuff the way any normal response
+        """reads the last response sent from the laser
+
+        This function gets the most recent response sent from the laser.
+        The response is parsed for errors the way any normal response
         would be. The variable `self._response` is set to the last response again.
 
-        I dont know why you would need to do this.
+        See 9.4.12 Last Response (LstResp 0x13) [R]
+
         """
         return self._lstresp()
 
     def get_error_fatal(self, reset=False):
-        """
-        reads fatal error register statusf and checks each bit against the
+        """reads fatal error register statusf and checks each bit against the
         fatal error table to determine the fault
+
+        See 9.5.1 StatusF, StatusW (0x20, 0x21) [RW]
 
         :param reset: resets/clears latching errors
 
@@ -756,11 +855,12 @@ class ITLA12(ITLABase):
         return FatalError(statusf)
 
     def get_error_warning(self, reset=False):
-        """
-        reads warning error register statusw and checks each bit against the
+        """reads warning error register statusw and checks each bit against the
         warning error table to determine the fault
 
         If the laser is off then some of the latched warnings will be set on.
+
+        See 9.5.1 StatusF, StatusW (0x20, 0x21) [RW]
 
         :param reset: resets/clears latching errors
         """
@@ -776,9 +876,9 @@ class ITLA12(ITLABase):
         return WarningError(statusw)
 
     def get_fatal_power_thresh(self):
-        """
-        reads maximum plus/minus power deviation in dB for which the fatal alarm is asserted
+        """reads maximum plus/minus power deviation in dB for which the fatal alarm is asserted
 
+        See 9.5.2 Power Threshold (FPowTh, WPowTh 0x22, 0x23) [RW]
         """
         response = self._fpowth()
         pow_fatal = int.from_bytes(response, "big") / 100
@@ -786,9 +886,9 @@ class ITLA12(ITLABase):
         return pow_fatal
 
     def get_warning_power_thresh(self):
-        """
-        reads maximum plus/minus power deviation in dB for which the warning alarm is asserted
+        """reads maximum plus/minus power deviation in dB for which the warning alarm is asserted
 
+        See 9.5.2 Power Threshold (FPowTh, WPowTh 0x22, 0x23) [RW]
         """
         response = self._wpowth()
         pow_warn = int.from_bytes(response, "big") / 100
@@ -796,27 +896,27 @@ class ITLA12(ITLABase):
         return pow_warn
 
     def get_fatal_freq_thresh(self):
-        """
-        reads maximum plus/minus frequency deviation in GHz for which the fatal alarm is asserted
+        """reads maximum plus/minus frequency deviation in GHz for which the fatal alarm is asserted
 
+        See 9.5.3 Frequency Threshold (FFreqTh, WFreqTh 0x24, 0x25) [RW]
         """
         response = self._ffreqth()
         freq_fatal = int.from_bytes(response, "big") / 10
         return freq_fatal
 
     def get_warning_freq_thresh(self):
-        """
-        reads maximum plus/minus frequency deviation in GHz for which the warning alarm is asserted
+        """reads maximum plus/minus frequency deviation in GHz for which the warning alarm is asserted
 
+        See 9.5.3 Frequency Threshold (FFreqTh, WFreqTh 0x24, 0x25) [RW]
         """
         response = self._wfreqth()
         freq_warn = int.from_bytes(response, "big") / 10
         return freq_warn
 
     def get_fatal_therm_thresh(self):
-        """
-        reads maximum plus/minus thermal deviation in degree celcius for which the fatal alarm is asserted
+        """reads maximum plus/minus thermal deviation in degree celcius for which the fatal alarm is asserted
 
+        See 9.5.4 Thermal Threshold (FThermTh, WThermTh 0x26, 0x27) [RW]
         """
         response = self._fthermth()
         therm_fatal = int.from_bytes(response, "big") / 100
@@ -824,8 +924,9 @@ class ITLA12(ITLABase):
         return therm_fatal
 
     def get_warning_therm_thresh(self):
-        """
-        reads maximum plus/minus thermal deviation in degree celcius for which the warning alarm is asserted
+        """reads maximum plus/minus thermal deviation in degree celcius for which the warning alarm is asserted
+
+        See 9.5.4 Thermal Threshold (FThermTh, WThermTh 0x26, 0x27) [RW]
         """
         response = self._wthermth()
         therm_thresh = int.from_bytes(response, "big") / 100
@@ -833,9 +934,11 @@ class ITLA12(ITLABase):
         return therm_thresh
 
     def get_srq_trigger(self):
-        """
+        """identifies corresponding bits in status registers StatusF, StatusW
+
         Utilizes SRQT register to identify why SRQ was asserted in StatusF and StatusW registers
 
+        See 9.5.5 SRQ* Triggers (SRQT 0x28) [RW]
         """
         response = self._srqt()
         status = int.from_bytes(response, "big")
@@ -845,9 +948,9 @@ class ITLA12(ITLABase):
         return SQRTrigger(status)
 
     def get_fatal_trigger(self):
-        """
-        Utilizes FatalT register to identify which fatal conditon was asserted in StatusF and StatusW registers
+        """identifies which fatal condition was asserted in StatusF and StatusW registers
 
+        See 9.5.6 FATAL Triggers (FatalT 0x29) [RW]
         """
         response = self._fatalt()
         status = int.from_bytes(response, "big")
@@ -857,9 +960,9 @@ class ITLA12(ITLABase):
         return FatalTrigger(status)
 
     def get_alm_trigger(self):
-        """
-        Utilizes ALMT register to identify why ALM was asserted in StatusF and StatusW registers
+        """identifies why ALM was asserted in StatusF and StatusW registers
 
+        See 9.5.7 ALM Triggers (ALMT 0x2A) [RW]
         """
         response = self._almt()
         status = int.from_bytes(response, "big")
