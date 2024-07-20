@@ -117,7 +117,15 @@ class ITLA12(ITLABase):
         self._resena(0)
 
     def hard_reset(self):
-        """TODO describe function
+        """initiate module reset
+
+        The hardware reset is typically traffic interrupting since it will reset
+        control loops as well. The host can poll the communication’s interface
+        waiting for a response packet indicating that the interface is ready to
+        communicate. Note that a response is returned to acknowledge the reset
+        request before the reset is started
+
+        The impact to the optical signal is undefined. This bit is self clearing.
 
         See 9.6.3 Reset/Enable (ResEna 0x32) [RW]
 
@@ -126,7 +134,10 @@ class ITLA12(ITLABase):
         self._resena(Resena.MR)
 
     def soft_reset(self):
-        """TODO describe function
+        """initiate soft reset
+
+        The soft reset resets the communication’s interface and is traffic
+        non-interrupting. Extended address registers are reset.
 
         See 9.6.3 Reset/Enable (ResEna 0x32) [RW]
 
@@ -195,6 +206,12 @@ class ITLA12(ITLABase):
 
     def get_device_type(self):
         """returns a string containing the device type
+
+        DevTyp returns the module’s device type. For all tunable lasers covered by this MSA, the
+        module will return the null terminated string “CW ITLA\0” (eight bytes including the
+        terminating null character) indirectly through the AEA mechanism. The device type register
+        is provided such that a host can distinguish between different types of tunable devices.type.
+
         See 9.4.2 Device Type (DevTyp 0x01) [R]
         """
         response_bytes = self._devtyp()
@@ -203,6 +220,9 @@ class ITLA12(ITLABase):
 
     def get_manufacturer(self):
         """returns a string containing the manufacturer's name.
+
+        MFGR returns the module’s manufacturers ID null terminated string indirectly through the
+        AEA mechanism
 
         See 9.4.3 Manufacturer (MFGR 0x02) [R]
         """
@@ -213,6 +233,11 @@ class ITLA12(ITLABase):
     def get_model(self):
         """returns the model as a string
 
+        Model returns the module’s model designation string indirectly through the AEA
+        mechanism. The null terminated string containing the module’s model designation is
+        placed into a field of not more than 80 bytes in size. The model string is defined by the
+        manufacturer
+
         See 9.4.4 Model (Model 0x03) [R]
         """
         response_bytes = self._model()
@@ -221,6 +246,10 @@ class ITLA12(ITLABase):
 
     def get_serialnumber(self):
         """returns the serial number
+
+        SerNo returns the module’s serial number string indirectly through the AEA mechanism.
+        The null terminated string containing the module’s serial number is placed into a field of not
+        more than 80 bytes in size. The serial number string is defined by the manufacturer.
 
         See 9.4.5 Serial Number (SerNo 0x04) [R]
         """
@@ -231,6 +260,10 @@ class ITLA12(ITLABase):
     def get_manufacturing_date(self):
         """returns the manufacturing date
 
+        MFGDate returns the manufacturing date string of the module indirectly through the AEA
+        mechanism. The null terminated string containing the date string is contained in a field
+        size of 12 bytes.
+
         See 9.4.5 Manufaturing Date (MFGDate 0x05) [R]
         """
         response_bytes = self._mfgdate()
@@ -239,6 +272,12 @@ class ITLA12(ITLABase):
 
     def get_firmware_release(self):
         """returns a manufacturer specific firmware release
+
+        Release returns the release string of the module indirectly through the AEA mechanism.
+        The null terminated string containing the module release information is placed into a field of
+        not more than 80 bytes in size. Note that a module may have one or more firmware and/or
+        hardware revisions to track. The release field also encodes the application space
+        identifier.
 
         See 9.4.7 Release (Release 0x06) [R]
         """
@@ -250,6 +289,12 @@ class ITLA12(ITLABase):
         """returns a manufacturer specific firmware backwards compatibility
         as a null terminated string
 
+        RelBack returns the release backwards compatibility string of the module indirectly through
+        the AEA mechanism. The null terminated string containing the earliest release string which
+        is fully backwards compatible with the current module. The string is contained in a field of
+        not more than 80 bytes in size. Note that a module may have one or more firmware and/or
+        hardware revisions to track as described in the Release (0x06) register
+
         See 9.4.8 Release Backwards Compatibility (RelBack 0x07) [R]
         """
         response_bytes = self._relback()
@@ -257,8 +302,7 @@ class ITLA12(ITLABase):
         return response_bytes.decode("utf-8")
 
     def read_aea(self):
-        """
-        reads the AEA register data until an execution error is thrown.
+        """reads the AEA register data until an execution error is thrown.
 
         See 9.4.11 Extended Addressing Mode Registers (0x09-0x0B, 0x0E-0x10) [RW]
         """
