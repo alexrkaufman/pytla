@@ -2,8 +2,35 @@ from time import sleep
 
 from . import logger
 from .itla import ITLABase
-from .itla_errors import *
-from .itla_status import *
+
+from .itla_status import (
+    Resena,
+    MCB,
+    FatalError,
+    WarningError,
+    SQRTrigger,
+    FatalTrigger,
+    AlarmTrigger,
+)
+
+from .itla_errors import (
+    StatusException,
+    ExecutionError,
+    AEAException,
+    CPException,
+    NOPException,
+    RNIError,
+    RNWError,
+    RVEError,
+    CIPError,
+    CIIError,
+    EREError,
+    EROError,
+    EXFError,
+    CIEError,
+    IVCError,
+    VSEError,
+)
 
 
 class ITLA12(ITLABase):

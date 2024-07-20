@@ -4,8 +4,36 @@ from pkg_resources import resource_filename
 from serial.serialutil import SerialException
 
 from . import logger
-from .itla_errors import *
 from .utils import compute_checksum
+
+from .itla_status import (
+    Resena,
+    MCB,
+    FatalError,
+    WarningError,
+    SQRTrigger,
+    FatalTrigger,
+    AlarmTrigger,
+)
+
+from .itla_errors import (
+    StatusException,
+    ExecutionError,
+    AEAException,
+    CPException,
+    NOPException,
+    RNIError,
+    RNWError,
+    RVEError,
+    CIPError,
+    CIIError,
+    EREError,
+    EROError,
+    EXFError,
+    CIEError,
+    IVCError,
+    VSEError,
+)
 
 
 class ITLABase:

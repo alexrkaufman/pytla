@@ -1,7 +1,25 @@
 from time import sleep
 
 from .itla12 import ITLA12
-from .itla_errors import *
+
+from .itla_errors import (
+    StatusException,
+    ExecutionError,
+    AEAException,
+    CPException,
+    NOPException,
+    RNIError,
+    RNWError,
+    RVEError,
+    CIPError,
+    CIIError,
+    EREError,
+    EROError,
+    EXFError,
+    CIEError,
+    IVCError,
+    VSEError,
+)
 
 
 class PPLaser(ITLA12):
