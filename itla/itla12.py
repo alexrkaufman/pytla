@@ -294,11 +294,13 @@ class ITLA12(ITLABase):
                 break
 
     def wait_until_enabled(self):
+        """TODO: Add documentation."""
         while self.is_disabled():
             if self.sleep_time is not None:
                 sleep(self.sleep_time)
 
     def wait_until_disabled(self):
+        """TODO: Add documentation."""
         while self.is_enabled():
             if self.sleep_time is not None:
                 sleep(self.sleep_time)
