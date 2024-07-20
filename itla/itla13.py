@@ -148,7 +148,7 @@ class ITLA13(ITLABase):
 
         See 9.6.3 Reset/Enable (ResEna 0x32) [RW] in OIF-ITLA-MSI.
 
-        For some lasers, FatalError.DIS is not triggered (even if TriggerT allows it). 
+        For some lasers, FatalError.DIS is not triggered (even if TriggerT allows it).
         Consider overwriting this methods and monitoring FatalError.ALM.
         """
         fatal_error = self.get_error_fatal()
@@ -512,25 +512,6 @@ class ITLA13(ITLABase):
         """
         response = self._dithera()
         return int.from_bytes(response, "big")
-
-    def get_wavelength(self):
-        """
-        Query's the laser for frequency setting and convert to wavelength.
-
-        :returns:
-
-        """
-        raise Warning("this is not implemented yet.")
-
-    def get_output_wavelength(self):
-        """
-        Query's the laser for current frequency output (as this is
-        sometimes different from the set frequency) and then converts to wavelength.
-
-        :returns:
-
-        """
-        raise Warning("this is not implemented yet.")
 
     def get_temp(self):
         """Returns the current primary control temperature in deg C.

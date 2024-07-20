@@ -501,25 +501,6 @@ class ITLA12(ITLABase):
         response = self._dithera()
         return int.from_bytes(response, "big")
 
-    def get_wavelength(self):
-        """
-        Query's the laser for frequency setting and convert to wavelength.
-
-        :returns:
-
-        """
-        raise Warning("this is not implemented yet.")
-
-    def get_output_wavelength(self):
-        """
-        Query's the laser for current frequency output (as this is
-        sometimes different from the set frequency) and then converts to wavelength.
-
-        :returns:
-
-        """
-        raise Warning("this is not implemented yet.")
-
     def get_temp(self):
         """Returns the current primary control temperature in deg C.
 
