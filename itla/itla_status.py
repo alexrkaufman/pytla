@@ -1,4 +1,4 @@
-from enum import IntFlag, auto
+from enum import IntEnum, IntFlag, auto
 
 
 class Resena(IntFlag):
@@ -132,3 +132,8 @@ class AlarmTrigger(IntFlag):
     _13 = auto()
     _14 = auto()
     _15 = auto()
+
+
+class Waveform(IntEnum):
+    SIN = 0
+    TRI = auto()

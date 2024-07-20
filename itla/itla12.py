@@ -18,6 +18,7 @@ from .itla_status import (
     Resena,
     SQRTrigger,
     WarningError,
+    Waveform,
 )
 
 
@@ -445,32 +446,22 @@ class ITLA12(ITLABase):
 
         return lf1 + lf2 * 1e-4
 
-    def dither_enable(self, waveform="sinusoidal"):
-        """ """
-        if (
-            waveform.lower() != "sinusoid"
-            or waveform.lower() != "triangular"
-            or waveform.lower() != "sin"
-            or waveform.lower() != "tri"
-        ):
-            raise ValueError("waveform must be 'sinusoidal', or 'triangular'")
+    def dither_enable(self, waveform: Waveform = Waveform.SIN):
+        """enables dither
 
-        data = [0] * 16
-        # bit 1 Digital Dither Enable bit
-        data[1] = 1
-        data = int("".join(str(x) for x in data[::-1]), 2)
+        See 9.8.3 Digital Dither (Dither(E,R,A,F) 0x59-0x5C) [RW] [Optional]
+
+        :param waveform: specifies the dither waveform
+        """
+
+        data = (waveform << 4) | 2
 
         self._dithere(data)
 
     def dither_disable(self):
-        """
-        disables digital dither
-        """
-        # i think that we should try to preserve other bits rather than setting all
-        # data to zero across the board
-        data = [0] * 16
-        data = int("".join(str(x) for x in data[::-1]), 2)
-        self._dithere(data)
+        """disables digital dither"""
+        # TODO: This should preserve the waveform setting if possible
+        self._dithere(0)
 
     def set_dither_rate(self, rate):
         """
