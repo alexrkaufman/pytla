@@ -62,6 +62,9 @@ class ITLA12(ITLABase):
         This is not called by default so you must do this explicitly if you want
         to see more informative error information.
 
+        TODO: This does not handle or return information about the pending operation
+        status or the MRDY flag.
+
         :param data: Data to write
 
         """
@@ -160,6 +163,8 @@ class ITLA12(ITLABase):
     def is_enabled(self, *args):
         """
         Return if enabled.  See is_disabled.
+
+        TODO: Why are we passing *args here?
         """
         return not self.is_disabled(*args)
 
@@ -558,6 +563,9 @@ class ITLA12(ITLABase):
         """Set the grid spacing in GHz.
 
         MHz resolution.
+
+        TODO: I think this is implemented incorrectly.
+        Should be in 100MHz resolution.
 
         :param grid_freq: the grid frequency spacing in GHz
         :returns:
