@@ -458,13 +458,7 @@ class ITLA12(ITLABase):
 
     def dither_disable(self):
         """
-        disables digital dither
-        """
-        # i think that we should try to preserve other bits rather than setting all
-        # data to zero across the board
-        data = [0] * 16
-        data = int("".join(str(x) for x in data[::-1]), 2)
-        self._dithere(data)
+        self._dithere(0)
 
     def set_dither_rate(self, rate):
         """
