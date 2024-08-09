@@ -1,7 +1,14 @@
+from enum import IntEnum
 from time import sleep
 
 from .itla12 import ITLA12
 from .itla_errors import *
+
+
+class Mode(IntEnum):
+    normal = 0
+    nodither = 1
+    whisper = 2
 
 
 class PPLaser(ITLA12):
@@ -57,16 +64,18 @@ class PPLaser(ITLA12):
 
     def get_mode(self):
         """get which low noise mode"""
-        modes = {0: "normal", 1: "nodither", 2: "whisper"}
 
         response = self._mode()
-        response = int.from_bytes(response, "big")
+        response = Mode(int.from_bytes(response, "big"))
 
-        return modes[response]
+        return response
+
+    def set_mode(self, mode):
+        self._mode(mode)
 
     def normalmode(self):
         """set mode to standard dither mode"""
-        self._mode(0)
+        self._mode(Mode.normal)
 
     def nodithermode(self):
         """Set mode to nodither mode
@@ -74,12 +83,12 @@ class PPLaser(ITLA12):
         It is unclear whether this just also activates whisper mode.
         The feature guide says "a value of 1 defaults to 2".
         """
-        self._mode(1)
+        self._mode(Mode.nodither)
 
     def whispermode(self):
         """Enables whisper mode where all control loops
         are disabled resulting in a lower noise mode."""
-        self._mode(2)
+        self._mode(Mode.whisper)
 
     def get_cleansweep_amplitude(self):
         """get the amplitude of the clean sweep.
