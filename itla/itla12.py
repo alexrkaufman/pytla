@@ -269,7 +269,7 @@ class ITLA12(ITLABase):
 
         """
         try:
-            self._pwr(int(pwr_dBm * 100))
+            self._pwr(round(pwr_dBm * 100))
 
         except ExecutionError:
             try:
@@ -331,7 +331,7 @@ class ITLA12(ITLABase):
 
         """
         # convert frequency to MHz
-        freq = int(freq * 1e6)
+        freq = round(freq * 1e6)
 
         freq_str = str(freq)
         fcf1 = int(freq_str[0:3])
@@ -563,7 +563,7 @@ class ITLA12(ITLABase):
         :returns:
 
         """
-        grid_freq = str(int(grid_freq * 1000))
+        grid_freq = str(round(grid_freq * 1000))
         data = int(grid_freq[0:4])
 
         self._grid(data)
@@ -580,7 +580,7 @@ class ITLA12(ITLABase):
         return grid_freq * 1e-1
 
     def get_age(self):
-        """Returns a string representing the percentage of aging of the laser.
+        """Returns the percentage of aging of the laser.
         0% indicated a brand new laser
         100% indicates the laser should be replaces.
 
@@ -590,7 +590,7 @@ class ITLA12(ITLABase):
         response = self._age()
         age = int.from_bytes(response, "big")
 
-        return f"Age: {age} / 100%"
+        return age
 
     def set_channel(self, channel):
         """Sets the laser's operating channel.
@@ -652,7 +652,7 @@ class ITLA12(ITLABase):
         :param ftf: The fine tune frequency adjustment in GHz
         """
 
-        ftf = int(ftf * 1e3)
+        ftf = round(ftf * 1e3)
 
         # We will leave this bare. This way the user can set and handle
         # their own timing and check to make sure the laser has reached the

@@ -198,7 +198,7 @@ class PPLaser(ITLA12):
         Set the size of the jump in THz to the fourth decimal place.
         XXX.XXXX
         """
-        freq_jump = str(freq_jump * 10000)
+        freq_jump = str(round(freq_jump * 1e4))
         self._cjthz(int(freq_jump[0:3]))
         self._cjghz(int(freq_jump[3:]))
 
