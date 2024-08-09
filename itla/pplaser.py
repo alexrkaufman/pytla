@@ -115,7 +115,7 @@ class PPLaser(ITLA12):
         (Basically it will be centered at the current frequency.)
         """
         response = self.get_mode()
-        if response == "normal":
+        if response == Mode.normal:
             raise Exception(
                 "Laser currently in normal mode.",
                 "please set to nodither or whisper mode",
@@ -186,7 +186,7 @@ class PPLaser(ITLA12):
         or written down somewhere.
         If not you should perform the clean jump calibration."""
         mode = self.get_mode()
-        if mode == "normal":
+        if mode == Mode.normal:
             raise Exception(
                 "Laser in normal mode. You must be in nodither"
                 "or whisper mode to use cleanjump."
