@@ -4,7 +4,23 @@ from pkg_resources import resource_filename
 from serial.serialutil import SerialException
 
 from . import logger
-from .itla_errors import *
+from .itla_errors import (
+    AEAException,
+    CIEError,
+    CIIError,
+    CIPError,
+    CPException,
+    EREError,
+    EROError,
+    ExecutionError,
+    EXFError,
+    IVCError,
+    NOPException,
+    RNIError,
+    RNWError,
+    RVEError,
+    VSEError,
+)
 from .utils import compute_checksum
 
 

@@ -2,7 +2,9 @@ from enum import IntEnum
 from time import sleep
 
 from .itla12 import ITLA12
-from .itla_errors import *
+from .itla_errors import (
+    RVEError,
+)
 
 
 class Mode(IntEnum):
@@ -57,7 +59,7 @@ class PPLaser(ITLA12):
         """
         if freq < self._frequency_min or freq > self._frequency_max:
             raise RVEError(
-                "The desired frequency is outside " "of the range for this laser."
+                "The desired frequency is outside of the range for this laser."
             )
 
         super().set_fcf(freq)
