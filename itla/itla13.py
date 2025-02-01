@@ -248,11 +248,11 @@ class ITLA13(ITLABase):
             while True:
                 aea_response += self._aea_ear()
 
-        except ExecutionError as ee:
+        except ExecutionError:
             try:
                 self.nop()
 
-            except EREError as eree:
+            except EREError:
                 # If this throws an ERE error then we have completed reading AEA
                 pass
 
@@ -573,7 +573,7 @@ class ITLA13(ITLABase):
             freq_lgrid = int.from_bytes(self._lgrid(), "big", signed=False)
             freq_lgrid2 = int.from_bytes(self._lgrid2(), "big", signed=False)
 
-        except ExecutionError as ee:
+        except ExecutionError:
             self.nop()
 
         return freq_lgrid * 1e-1 + freq_lgrid2 * 1e-3
