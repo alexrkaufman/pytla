@@ -621,8 +621,9 @@ class ITLA12(ITLABase):
 
         See 9.8.3 Digital Dither (Dither(E,R,A,F) 0x59-0x5C) [RW] [Optional]
         """
-        # TODO: This should preserve the waveform setting if possible
-        self._dithere(0)
+        dither_setting = self._dithere()
+        dither_setting = dither_setting ^ 2
+        self._dithere(data)
 
     def set_dither_rate(self, rate):
         """set dither rate in kHz

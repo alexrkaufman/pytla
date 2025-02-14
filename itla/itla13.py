@@ -471,8 +471,9 @@ class ITLA13(ITLABase):
 
     def dither_disable(self):
         """disables digital dither"""
-        # TODO: This should preserve the waveform setting if possible
-        self._dithere(0)
+        dither_setting = self._dithere()
+        dither_setting = dither_setting ^ 2
+        self._dithere(data)
 
     def set_dither_rate(self, rate):
         """
